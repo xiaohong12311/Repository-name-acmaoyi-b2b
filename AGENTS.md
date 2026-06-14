@@ -63,3 +63,48 @@
 
 - 模板默认预装核心组件库 `shadcn/ui`，位于`src/components/ui/`目录下
 - Next.js 项目**必须默认**采用 shadcn/ui 组件、风格和规范，**除非用户指定用其他的组件和规范。**
+
+## 项目功能模块
+
+### B2B 批发平台核心功能
+
+本项目是一个 B2B 批发采购平台，包含以下核心功能模块：
+
+#### 前端页面
+| 路径 | 功能 | 说明 |
+|------|------|------|
+| `/` | 首页 | 产品推荐、供应商推荐、平台介绍 |
+| `/products` | 产品列表 | 分类筛选、搜索、阶梯价格展示 |
+| `/products/[id]` | 产品详情 | 规格参数、阶梯价格表、询盘/收藏/样品车 |
+| `/suppliers` | 供应商目录 | 地区筛选、产品分类筛选 |
+| `/suppliers/[id]` | 供应商详情 | 工厂展示、认证资质、联系方式、产品列表 |
+| `/inquiry` | 询盘单 | 批量询盘、目标价格、规格填写 |
+| `/sample-cart` | 样品车 | 样品申请、数量调整、订单提交 |
+| `/favorites` | 收藏夹 | 产品收藏管理 |
+| `/supplier-join` | 供应商入驻 | 入驻申请表单、资质上传 |
+| `/factory` | 工厂展示 | 工厂环境展示、供应商认证信息 |
+| `/customization` | 定制批发 | 定制需求表单、方案提交 |
+| `/catalog` | 目录下载 | 供应商产品目录下载 |
+| `/admin` | 后台管理 | 产品管理、供应商管理、询盘管理、网站设置 |
+
+#### API 接口
+| 路径 | 方法 | 功能 |
+|------|------|------|
+| `/api/admin/settings` | GET/POST | 获取/更新管理数据 |
+| `/api/inquiry` | GET/POST/PUT | 询盘管理 |
+| `/api/supplier-join` | GET/POST/PUT | 供应商入驻申请 |
+
+#### 状态管理
+- `src/hooks/use-b2b-store.tsx` - 全局状态管理 (收藏夹、样品车、询盘单)
+- 使用 React Context + useState 实现
+- 提供 `useFavorites`, `useSampleCart`, `useInquiry` hooks
+
+#### 数据类型
+- `src/types/index.ts` - 所有业务类型定义
+- `Product`, `Supplier`, `TierPrice`, `InquiryItem` 等核心类型
+- `SiteSettings` 网站设置类型
+
+#### 阶梯价格系统
+- 产品支持多档阶梯价格 (`tierPrices`)
+- 根据采购数量自动计算最优价格
+- 前端展示价格区间和折扣信息
