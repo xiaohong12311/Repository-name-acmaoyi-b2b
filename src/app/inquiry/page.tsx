@@ -3,99 +3,45 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useInquiry } from '@/hooks/use-b2b-store';
-import { mockProducts } from '@/data/mock';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  MessageSquarePlus,
-  Trash2,
-  MinusCircle,
-  PlusCircle,
-  Send,
-  FileText,
-  Building2,
-  Mail,
-  Phone,
-  MapPin,
-} from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from '@/components/ui/dialog';
+import { useInquiry } from '@/hooks/use-b2b-store';
+import type { InquiryItem } from '@/types';
+import { mockProducts, getProductById, getSupplierById } from '@/data/mock';
+import { Trash2, Plus, MessageSquarePlus, Send, Calendar, Package, DollarSign } from 'lucide-react';
 
 export default function InquiryPage() {
-  const { inquiryItems, updateInquiryItem, removeFromInquiry, clearInquiry } = useInquiry();
-  
-  const [company, setCompany] = useState('');
+  const { inquiryItems, removeFromInquiry, updateQuantity, clearInquiry } = useInquiry();
+  const [targetPrice, setTargetPrice] = useState('');
+  const [requirements, setRequirements] = useState('');
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
-  const [shippingAddress, setShippingAddress] = useState('');
-  const [additionalNotes, setAdditionalNotes] = useState('');
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [companyName, setCompanyName] = useState('');
 
-  const handleQuantityChange = (productId: string, delta: number) => {
-    const item = inquiryItems.find(i => i.productId === productId);
-    if (item) {
-      const product = mockProducts.find(p => p.id === productId);
-      const newQuantity = Math.max(product?.moq || 1, item.quantity + delta);
-      updateInquiryItem(productId, { quantity: newQuantity });
-    }
-  };
-
-  const handleRemoveItem = (productId: string) => {
-    removeFromInquiry(productId);
-  };
-
-  const handleSubmitInquiry = () => {
-    // 这里应该调用API发送询盘
-    // 目前模拟成功
-    setShowSuccessDialog(true);
+  const handleSubmitInquiry = async () => {
+    // Submit inquiry logic
+    alert('Inquiry submitted successfully! We will contact you within 24 hours.');
     clearInquiry();
   };
-
-  // 按供应商分组
-  const groupedBySupplier = inquiryItems.reduce((acc, item) => {
-    if (!acc[item.supplierName]) {
-      acc[item.supplierName] = [];
-    }
-    acc[item.supplierName].push(item);
-    return acc;
-  }, {} as Record<string, typeof inquiryItems>);
 
   if (inquiryItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-md mx-auto text-center">
-          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-6">
-            <MessageSquarePlus className="h-8 w-8 text-gray-400" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">询盘单为空</h1>
-          <p className="text-gray-500 mb-6">
-            您还没有添加任何产品到询盘单，请先浏览产品目录
+        <div className="max-w-2xl mx-auto text-center">
+          <MessageSquarePlus className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold mb-4">Your Inquiry List is Empty</h1>
+          <p className="text-gray-500 mb-8">
+            Browse products and add them to your inquiry list to send bulk inquiries to suppliers.
           </p>
           <Link href="/products">
             <Button size="lg" className="gap-2">
-              浏览产品
+              <Plus className="h-4 w-4" />
+              Browse Products
             </Button>
           </Link>
         </div>
@@ -107,254 +53,195 @@ export default function InquiryPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">询盘单</h1>
-          <p className="text-gray-500">
-            共 {inquiryItems.length} 个产品，来自 {Object.keys(groupedBySupplier).length} 个供应商
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">Inquiry List</h1>
+          <p className="text-gray-500">Send bulk inquiries to suppliers with your requirements</p>
         </div>
-        <Button variant="outline" onClick={clearInquiry} className="gap-2">
-          <Trash2 className="h-4 w-4" />
-          清空询盘单
-        </Button>
+        <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+          {inquiryItems.length} Items
+        </Badge>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left: Inquiry Items */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Inquiry Items List */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                询盘产品列表
+                <Package className="h-5 w-5" />
+                Product List
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              {Object.entries(groupedBySupplier).map(([supplierName, items]) => (
-                <div key={supplierName} className="mb-6 last:mb-0">
-                  {/* Supplier Header */}
-                  <div className="flex items-center gap-2 mb-3 text-sm font-medium text-gray-700">
-                    <Building2 className="h-4 w-4" />
-                    {supplierName}
-                    <Badge variant="outline" className="ml-2">
-                      {items.length} 个产品
-                    </Badge>
-                  </div>
+            <CardContent className="p-0">
+              <div className="divide-y">
+                {inquiryItems.map((item) => {
+                  const product = getProductById(item.productId);
+                  const supplier = product ? getSupplierById(product.supplierId) : null;
+                  
+                  if (!product) return null;
 
-                  {/* Products Table */}
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>产品</TableHead>
-                        <TableHead>数量</TableHead>
-                        <TableHead className="text-right">目标价</TableHead>
-                        <TableHead className="text-right">备注</TableHead>
-                        <TableHead className="w-12"></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {items.map(item => {
-                        const product = mockProducts.find(p => p.id === item.productId);
-                        return (
-                          <TableRow key={item.productId}>
-                            <TableCell>
-                              <div className="flex items-center gap-3">
-                                <div className="relative w-12 h-12 rounded overflow-hidden bg-gray-100">
-                                  <Image
-                                    src={item.productImage}
-                                    alt={item.productName}
-                                    fill
-                                    className="object-cover"
-                                    sizes="48px"
-                                  />
-                                </div>
-                                <div>
-                                  <Link 
-                                    href={`/products/${item.productId}`}
-                                    className="font-medium text-gray-900 hover:text-blue-700 line-clamp-1"
-                                  >
-                                    {item.productName}
-                                  </Link>
-                                  <div className="text-xs text-gray-500">
-                                    MOQ: {product?.moq} {product?.unit}
-                                  </div>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-2">
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon"
-                                  className="h-6 w-6"
-                                  onClick={() => handleQuantityChange(item.productId, -(product?.moq ?? 10))}
-                                >
-                                  <MinusCircle className="h-4 w-4" />
-                                </Button>
-                                <span className="font-medium tabular-nums w-16 text-center">
-                                  {item.quantity}
-                                </span>
-                                <Button 
-                                  variant="ghost" 
-                                  size="icon"
-                                  className="h-6 w-6"
-                                  onClick={() => handleQuantityChange(item.productId, product?.moq ?? 10)}
-                                >
-                                  <PlusCircle className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <Input
-                                type="number"
-                                placeholder="可选"
-                                className="w-24 h-8 text-right"
-                                value={item.targetPrice || ''}
-                                onChange={e => updateInquiryItem(item.productId, {
-                                  targetPrice: e.target.value ? parseFloat(e.target.value) : undefined
-                                })}
-                              />
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <Input
-                                placeholder="备注"
-                                className="w-32 h-8"
-                                value={item.notes}
-                                onChange={e => updateInquiryItem(item.productId, { notes: e.target.value })}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Button 
-                                variant="ghost" 
-                                size="icon"
-                                className="h-8 w-8 text-red-500 hover:text-red-700"
-                                onClick={() => handleRemoveItem(item.productId)}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
-              ))}
+                  return (
+                    <div key={item.productId} className="p-4 flex gap-4">
+                      {/* Product Image */}
+                      <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                        <Image
+                          src={product.images[0]}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          sizes="96px"
+                        />
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0">
+                        <Link href={`/products/${product.id}`}>
+                          <h3 className="font-medium text-gray-900 hover:text-blue-700 line-clamp-2 mb-1">
+                            {product.name}
+                          </h3>
+                        </Link>
+                        {supplier && (
+                          <p className="text-sm text-gray-500 mb-2">{supplier.name}</p>
+                        )}
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="text-xs">
+                            MOQ: {product.moq} {product.unit}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            Lead: {product.leadTime}
+                          </Badge>
+                        </div>
+
+                        {/* Quantity Input */}
+                        <div className="flex items-center gap-2">
+                          <Label className="text-sm text-gray-500">Quantity:</Label>
+                          <Input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => updateQuantity(item.productId, parseInt(e.target.value) || 0)}
+                            min={product.moq}
+                            className="w-24"
+                          />
+                          <span className="text-sm text-gray-500">{product.unit}</span>
+                        </div>
+                      </div>
+
+                      {/* Price Info */}
+                      <div className="text-right shrink-0">
+                        <div className="text-sm text-gray-500 mb-1">Est. Price</div>
+                        <div className="font-semibold text-blue-700 tabular-nums">
+                          ${((product.tierPrices[product.tierPrices.length - 1]?.price || 0) * item.quantity).toFixed(2)}
+                        </div>
+                      </div>
+
+                      {/* Remove Button */}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                        onClick={() => removeFromInquiry(item.productId)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Right: Contact Form */}
+        {/* Inquiry Form */}
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5" />
-                询盘信息
+                <Send className="h-5 w-5" />
+                Inquiry Details
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="mb-2 block">公司名称 *</Label>
-                <Input 
-                  placeholder="请输入公司名称"
-                  value={company}
-                  onChange={e => setCompany(e.target.value)}
+                <Label htmlFor="companyName">Company Name</Label>
+                <Input
+                  id="companyName"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Your company name"
                 />
               </div>
 
               <div>
-                <Label className="mb-2 block">联系人 *</Label>
-                <Input 
-                  placeholder="请输入联系人姓名"
+                <Label htmlFor="contactName">Contact Person</Label>
+                <Input
+                  id="contactName"
                   value={contactName}
-                  onChange={e => setContactName(e.target.value)}
+                  onChange={(e) => setContactName(e.target.value)}
+                  placeholder="Your name"
                 />
               </div>
 
               <div>
-                <Label className="mb-2 block">邮箱 *</Label>
-                <Input 
+                <Label htmlFor="contactEmail">Email Address</Label>
+                <Input
+                  id="contactEmail"
                   type="email"
-                  placeholder="请输入邮箱地址"
                   value={contactEmail}
-                  onChange={e => setContactEmail(e.target.value)}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  placeholder="your@email.com"
                 />
               </div>
 
               <div>
-                <Label className="mb-2 block">电话 *</Label>
-                <Input 
-                  placeholder="请输入联系电话"
+                <Label htmlFor="contactPhone">Phone Number</Label>
+                <Input
+                  id="contactPhone"
                   value={contactPhone}
-                  onChange={e => setContactPhone(e.target.value)}
+                  onChange={(e) => setContactPhone(e.target.value)}
+                  placeholder="+1 (888) 888-8888"
                 />
               </div>
 
               <div>
-                <Label className="mb-2 block">收货地址 *</Label>
-                <Textarea 
-                  placeholder="请输入详细收货地址"
-                  className="h-24"
-                  value={shippingAddress}
-                  onChange={e => setShippingAddress(e.target.value)}
-                />
+                <Label htmlFor="targetPrice">Target Price (Optional)</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
+                    id="targetPrice"
+                    value={targetPrice}
+                    onChange={(e) => setTargetPrice(e.target.value)}
+                    placeholder="Your expected price range"
+                    className="pl-9"
+                  />
+                </div>
               </div>
 
               <div>
-                <Label className="mb-2 block">补充说明</Label>
-                <Textarea 
-                  placeholder="如有其他需求请在此说明..."
-                  className="h-32"
-                  value={additionalNotes}
-                  onChange={e => setAdditionalNotes(e.target.value)}
+                <Label htmlFor="requirements">Additional Requirements</Label>
+                <Textarea
+                  id="requirements"
+                  value={requirements}
+                  onChange={(e) => setRequirements(e.target.value)}
+                  placeholder="Customization needs, delivery timeline, quality requirements..."
+                  rows={4}
                 />
-              </div>
-
-              <Separator />
-
-              <div className="bg-blue-50 rounded-lg p-4 text-sm">
-                <h4 className="font-medium text-blue-900 mb-2">询盘说明</h4>
-                <ul className="space-y-1 text-blue-700">
-                  <li>• 供应商将在1-2个工作日内回复</li>
-                  <li>• 您可以设置目标价格供供应商参考</li>
-                  <li>• 多个供应商的产品将分别发送询盘</li>
-                </ul>
               </div>
 
               <Button 
-                size="lg" 
                 className="w-full bg-blue-700 hover:bg-blue-800 gap-2"
+                size="lg"
                 onClick={handleSubmitInquiry}
-                disabled={!company || !contactName || !contactEmail || !contactPhone || !shippingAddress}
               >
-                <Send className="h-5 w-5" />
-                发送询盘
+                <Send className="h-4 w-4" />
+                Send Inquiry
               </Button>
+
+              <p className="text-xs text-gray-500 text-center">
+                Suppliers will respond within 24 hours
+              </p>
             </CardContent>
           </Card>
         </div>
       </div>
-
-      {/* Success Dialog */}
-      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Send className="h-5 w-5 text-green-600" />
-              询盘发送成功
-            </DialogTitle>
-            <DialogDescription>
-              您的询盘已成功发送给相关供应商，供应商将在1-2个工作日内通过邮件回复您。
-              您可以在后台查看询盘状态和历史记录。
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Link href="/products">
-              <Button>继续浏览产品</Button>
-            </Link>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

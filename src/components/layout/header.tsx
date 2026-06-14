@@ -9,11 +9,11 @@ import { Menu, ShoppingCart, Heart, MessageSquarePlus, Download, Building2, File
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { href: '/', label: '首页' },
-  { href: '/products', label: '产品目录' },
-  { href: '/suppliers', label: '供应商' },
-  { href: '/factory', label: '工厂展示' },
-  { href: '/supplier-join', label: '供应商入驻' },
+  { href: '/', label: 'Home' },
+  { href: '/products', label: 'Products' },
+  { href: '/suppliers', label: 'Suppliers' },
+  { href: '/factory', label: 'Factory' },
+  { href: '/supplier-join', label: 'Join as Supplier' },
 ];
 
 export function Header() {
@@ -28,7 +28,7 @@ export function Header() {
             B2B
           </div>
           <span className="hidden sm:inline-block font-semibold text-lg text-gray-900">
-            批发采购平台
+            Wholesale Platform
           </span>
         </Link>
 
@@ -49,7 +49,7 @@ export function Header() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          {/* 收藏夹 */}
+          {/* Favorites */}
           <Link href="/favorites">
             <Button variant="ghost" size="icon" className="relative">
               <Heart className="h-5 w-5" />
@@ -61,7 +61,7 @@ export function Header() {
             </Button>
           </Link>
 
-          {/* 样品车 */}
+          {/* Sample Cart */}
           <Link href="/sample-cart">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
@@ -73,7 +73,7 @@ export function Header() {
             </Button>
           </Link>
 
-          {/* 询盘单 */}
+          {/* Inquiry */}
           <Link href="/inquiry">
             <Button variant="ghost" size="icon" className="relative">
               <MessageSquarePlus className="h-5 w-5" />
@@ -85,19 +85,19 @@ export function Header() {
             </Button>
           </Link>
 
-          {/* 获取目录 */}
+          {/* Get Catalog */}
           <Link href="/catalog" className="hidden sm:flex">
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
-              获取目录
+              Get Catalog
             </Button>
           </Link>
 
-          {/* 后台管理 */}
+          {/* Admin */}
           <Link href="/admin" className="hidden sm:flex">
             <Button variant="outline" size="sm" className="gap-2">
               <FileText className="h-4 w-4" />
-              后台管理
+              Admin
             </Button>
           </Link>
 
@@ -109,7 +109,7 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-300px p-4">
-              <SheetTitle className="text-left">菜单导航</SheetTitle>
+              <SheetTitle className="text-left">Menu</SheetTitle>
               <nav className="flex flex-col gap-4 mt-6">
                 {navLinks.map(link => (
                   <Link
@@ -123,11 +123,11 @@ export function Header() {
                 <div className="border-t pt-4 mt-4">
                   <Link href="/catalog" className="flex items-center gap-2 py-2 text-sm font-medium text-gray-600 hover:text-blue-700">
                     <Download className="h-4 w-4" />
-                    获取目录
+                    Get Catalog
                   </Link>
                   <Link href="/admin" className="flex items-center gap-2 py-2 text-sm font-medium text-gray-600 hover:text-blue-700">
                     <Building2 className="h-4 w-4" />
-                    后台管理
+                    Admin Panel
                   </Link>
                 </div>
               </nav>

@@ -233,6 +233,7 @@ export function useSampleCart() {
     sampleCart: store.sampleCart,
     addToSampleCart: store.addToSampleCart,
     updateSampleCartItem: store.updateSampleCartItem,
+    updateQuantity: store.updateSampleCartItem, // Alias for compatibility
     removeFromSampleCart: store.removeFromSampleCart,
     clearSampleCart: store.clearSampleCart,
     getSampleCartTotal: store.getSampleCartTotal,
@@ -242,12 +243,120 @@ export function useSampleCart() {
 
 export function useInquiry() {
   const store = useB2BStore();
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
+    store.updateInquiryItem(productId, { quantity });
+  }, [store]);
   return {
     inquiryItems: store.inquiryItems,
     addToInquiry: store.addToInquiry,
     updateInquiryItem: store.updateInquiryItem,
+    updateQuantity,
     removeFromInquiry: store.removeFromInquiry,
     clearInquiry: store.clearInquiry,
     getInquiryCount: store.getInquiryCount,
+  };
+}
+
+// Supplier join application state
+interface SupplierJoinApplication {
+  companyInfo: {
+    companyName: string;
+    businessType: string;
+    country: string;
+    website: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+  certifications: string[];
+  productCategories: string[];
+  message: string;
+  status: 'draft' | 'submitted' | 'pending' | 'approved' | 'rejected';
+}
+
+export function useSupplierJoin() {
+  const [application, setApplication] = useState<SupplierJoinApplication>({
+    companyInfo: {
+      companyName: '',
+      businessType: '',
+      country: '',
+      website: '',
+      email: '',
+      phone: '',
+      address: '',
+    },
+    certifications: [],
+    productCategories: [],
+    message: '',
+    status: 'draft',
+  });
+
+  const updateCompanyInfo = useCallback((field: keyof SupplierJoinApplication['companyInfo'], value: string) => {
+    setApplication(prev => ({
+      ...prev,
+      companyInfo: {
+        ...prev.companyInfo,
+        [field]: value,
+      },
+    }));
+  }, []);
+
+  const updateCertifications = useCallback((certifications: string[]) => {
+    setApplication(prev => ({
+      ...prev,
+      certifications,
+    }));
+  }, []);
+
+  const updateProductCategories = useCallback((categories: string[]) => {
+    setApplication(prev => ({
+      ...prev,
+      productCategories: categories,
+    }));
+  }, []);
+
+  const updateMessage = useCallback((message: string) => {
+    setApplication(prev => ({
+      ...prev,
+      message,
+    }));
+  }, []);
+
+  const submitApplication = useCallback((data?: Record<string, unknown>) => {
+    setApplication(prev => ({
+      ...prev,
+      status: 'submitted',
+    }));
+    // In real implementation, this would send to API with the data
+    console.log('Submitting application:', data);
+    return Promise.resolve({ success: true });
+  }, []);
+
+  const resetApplication = useCallback(() => {
+    setApplication({
+      companyInfo: {
+        companyName: '',
+        businessType: '',
+        country: '',
+        website: '',
+        email: '',
+        phone: '',
+        address: '',
+      },
+      certifications: [],
+      productCategories: [],
+      message: '',
+      status: 'draft',
+    });
+  }, []);
+
+  return {
+    application,
+    updateCompanyInfo,
+    updateCertifications,
+    updateProductCategories,
+    updateMessage,
+    submitApplication,
+    resetApplication,
   };
 }

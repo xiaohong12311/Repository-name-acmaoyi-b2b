@@ -1,492 +1,427 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import {
-  Factory,
-  Palette,
-  Package,
-  Ruler,
-  Lightbulb,
-  Upload,
-  Send,
-  CheckCircle,
-  MessageSquarePlus,
-  Clock,
-  ShieldCheck,
-  TrendingUp,
-} from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
+  DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs';
+import { 
+  Palette, Package, Tag, Ruler, Boxes, FileText, 
+  CheckCircle, Clock, Shield, ChevronRight, Sparkles
+} from 'lucide-react';
 
 export default function CustomizationPage() {
   const [formData, setFormData] = useState({
-    customizationType: '',
     productName: '',
+    category: '',
     quantity: '',
-    description: '',
-    targetPrice: '',
+    budget: '',
+    customizationType: '',
+    logoRequirement: '',
+    packagingRequirement: '',
+    sizeRequirement: '',
+    materialRequirement: '',
+    colorRequirement: '',
+    additionalRequirements: '',
     deadline: '',
     contactName: '',
-    contactEmail: '',
-    contactPhone: '',
-    company: '',
+    email: '',
+    phone: '',
   });
   
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setShowSuccessDialog(true);
+  const handleSubmit = () => {
+    // In real implementation, this would submit to API
+    setSubmitted(true);
   };
 
-  const customizationTypes = [
-    {
-      icon: Palette,
-      title: 'Logo定制',
-      desc: '在产品上印刷或刺绣您的品牌Logo',
-      examples: '工作服Logo、餐具Logo、包装盒Logo等',
-    },
-    {
-      icon: Package,
-      title: '包装定制',
-      desc: '定制专属包装设计和包装材料',
-      examples: '礼盒包装、定制纸箱、产品说明书等',
-    },
-    {
-      icon: Ruler,
-      title: '规格定制',
-      desc: '根据需求调整产品尺寸和规格',
-      examples: '尺寸调整、材质替换、功能定制等',
-    },
-    {
-      icon: Lightbulb,
-      title: '设计定制',
-      desc: '全新产品设计或现有产品改良',
-      examples: '产品外观设计、结构改良、新品开发等',
-    },
-  ];
-
-  const cases = [
-    {
-      title: '酒店餐具定制',
-      client: '某连锁酒店集团',
-      desc: '为酒店定制带有品牌Logo的餐具套装，包含餐刀、餐叉、餐勺等，配合酒店整体风格设计。',
-      result: '成功交付5000套定制餐具，客户满意度100%',
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400',
-    },
-    {
-      title: '电商包装定制',
-      client: '某电商平台',
-      desc: '为电商定制专属包装盒，包含品牌Logo、产品说明、防震内托，提升品牌形象和用户体验。',
-      result: '月产10万+定制包装盒，降低物流破损率30%',
-      image: 'https://images.unsplash.com/photo-1586769852044-692d6e3703f0?w=400',
-    },
-    {
-      title: '企业制服定制',
-      client: '某制造企业',
-      desc: '为企业员工定制工作服，包含Logo绣花、尺码定制、面料选择，提升企业形象。',
-      result: '为2000名员工提供定制制服，续签第二年合同',
-      image: 'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?w=400',
-    },
-  ];
+  if (submitted) {
+    return (
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold mb-4">Custom Request Submitted!</h1>
+          <p className="text-gray-500 mb-8">
+            Thank you for your customization request. 
+            Our team will analyze your requirements and provide a customized quote within 24-48 hours.
+          </p>
+          <Button onClick={() => setSubmitted(false)}>
+            Submit Another Request
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-900 to-purple-700 text-white py-16 overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <Image
-            src="https://images.unsplash.com/photo-1586769852044-692d6e3703f0?w=1200"
-            alt="定制背景"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <Badge className="bg-white/20 text-white border-0 mb-6">
-              定制批发服务
-            </Badge>
-            <h1 className="text-4xl font-bold mb-6">
-              专业定制批发
-              <br />
-              <span className="text-purple-200">打造专属品牌产品</span>
-            </h1>
-            <p className="text-lg text-purple-100 mb-8">
-              Logo定制、包装设计、规格调整、新品开发
-              <br />
-              一站式定制解决方案，满足您的品牌需求
-            </p>
-            <div className="flex gap-4 justify-center">
-              <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50 gap-2">
-                <MessageSquarePlus className="h-4 w-4" />
-                提交定制需求
-              </Button>
-              <Link href="/products?custom=true">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  浏览可定制产品
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="container mx-auto px-4 py-8">
+      {/* Hero */}
+      <div className="max-w-3xl mx-auto mb-12 text-center">
+        <Badge variant="secondary" className="bg-purple-100 text-purple-700 mb-4">
+          <Sparkles className="h-3 w-3 mr-1" />
+          Custom Wholesale
+        </Badge>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          Custom Product Manufacturing
+        </h1>
+        <p className="text-gray-500 text-lg">
+          Get products customized to your exact specifications. 
+          From logo printing to full OEM/ODM solutions.
+        </p>
+      </div>
 
       {/* Customization Types */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">
-            定制服务类型
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {customizationTypes.map((type, index) => (
-              <Card key={index} className="hover:shadow-lg transition-all hover:-translate-y-1">
-                <CardContent className="p-6">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 text-purple-700 mb-4">
-                    <type.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{type.title}</h3>
-                  <p className="text-sm text-gray-600 mb-3">{type.desc}</p>
-                  <p className="text-xs text-gray-400 bg-gray-50 rounded p-2">
-                    {type.examples}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="grid md:grid-cols-4 gap-6 mb-12">
+        <Card className="hover:shadow-md transition-all">
+          <CardContent className="p-6 text-center">
+            <Tag className="h-10 w-10 text-blue-700 mx-auto mb-4" />
+            <h3 className="font-semibold mb-2">Logo Printing</h3>
+            <p className="text-sm text-gray-500">
+              Print or engrave your brand logo
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="hover:shadow-md transition-all">
+          <CardContent className="p-6 text-center">
+            <Package className="h-10 w-10 text-green-600 mx-auto mb-4" />
+            <h3 className="font-semibold mb-2">Custom Packaging</h3>
+            <p className="text-sm text-gray-500">
+              Design your own packaging
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="hover:shadow-md transition-all">
+          <CardContent className="p-6 text-center">
+            <Ruler className="h-10 w-10 text-orange-500 mx-auto mb-4" />
+            <h3 className="font-semibold mb-2">Size Modification</h3>
+            <p className="text-sm text-gray-500">
+              Adjust product dimensions
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="hover:shadow-md transition-all">
+          <CardContent className="p-6 text-center">
+            <Palette className="h-10 w-10 text-purple-600 mx-auto mb-4" />
+            <h3 className="font-semibold mb-2">Color Customization</h3>
+            <p className="text-sm text-gray-500">
+              Choose custom colors
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
-      {/* Process Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">
-            定制流程
-          </h2>
-          
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {[
-                { step: 1, title: '提交需求', desc: '填写定制要求和参考图片' },
-                { step: 2, title: '方案沟通', desc: '供应商提供定制方案和报价' },
-                { step: 3, title: '确认订单', desc: '确认方案和价格，签署合同' },
-                { step: 4, title: '样品确认', desc: '制作样品，确认效果' },
-                { step: 5, title: '批量生产', desc: '正式生产，按时交付' },
-              ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-700 text-white font-bold mb-3">
-                    {item.step}
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
-                  <p className="text-xs text-gray-500">{item.desc}</p>
+      {/* Process */}
+      <div className="mb-12">
+        <h2 className="text-xl font-bold mb-6 text-center">Customization Process</h2>
+        <div className="grid md:grid-cols-4 gap-4">
+          {[
+            { step: 1, title: 'Submit Request', desc: 'Fill in your requirements' },
+            { step: 2, title: 'Quote Review', desc: 'Receive pricing within 48h' },
+            { step: 3, title: 'Sample Production', desc: 'Approve samples before bulk' },
+            { step: 4, title: 'Mass Production', desc: 'Production and delivery' },
+          ].map((item) => (
+            <Card key={item.step}>
+              <CardContent className="p-4 text-center">
+                <div className="w-8 h-8 rounded-full bg-blue-700 text-white font-bold flex items-center justify-center mx-auto mb-2">
+                  {item.step}
                 </div>
-              ))}
-            </div>
-            
-            <div className="mt-8 flex justify-center gap-4">
-              <Badge variant="outline" className="gap-2 py-2">
-                <Clock className="h-4 w-4" />
-                样品周期：5-10天
-              </Badge>
-              <Badge variant="outline" className="gap-2 py-2">
-                <Factory className="h-4 w-4" />
-                生产周期：15-30天
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Cases Section */}
-      <section className="py-16 bg-white border-t">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">
-            定制案例
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {cases.map((caseItem, index) => (
-              <Card key={index} className="overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="relative aspect-video overflow-hidden">
-                    <Image
-                      src={caseItem.image}
-                      alt={caseItem.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <Badge variant="secondary" className="mb-2">{caseItem.client}</Badge>
-                    <h3 className="font-semibold text-gray-900 mb-2">{caseItem.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{caseItem.desc}</p>
-                    <div className="bg-green-50 rounded p-2 text-sm text-green-700">
-                      <CheckCircle className="h-4 w-4 inline mr-1" />
-                      {caseItem.result}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Advantages */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">
-            定制批发优势
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: ShieldCheck,
-                title: '品质保障',
-                desc: '样品确认后再大批生产',
-              },
-              {
-                icon: TrendingUp,
-                title: '批量优惠',
-                desc: '定制批量采购享阶梯价格',
-              },
-              {
-                icon: Clock,
-                title: '按时交付',
-                desc: '明确交货周期，准时交付',
-              },
-              {
-                icon: Factory,
-                title: '专业团队',
-                desc: '认证供应商，专业定制',
-              },
-            ].map((adv, index) => (
-              <Card key={index} className="text-center">
-                <CardContent className="p-6">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 text-purple-700 mb-4">
-                    <adv.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{adv.title}</h3>
-                  <p className="text-sm text-gray-500">{adv.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Request Form */}
-      <section className="py-16 bg-white border-t">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
-            提交定制需求
-          </h2>
-          
-          <div className="max-w-3xl mx-auto">
-            <Card>
-              <CardHeader>
-                <CardTitle>定制需求申请</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="basic" className="mb-6">
-                  <TabsList>
-                    <TabsTrigger value="basic">基本信息</TabsTrigger>
-                    <TabsTrigger value="detail">详细需求</TabsTrigger>
-                    <TabsTrigger value="contact">联系方式</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="basic" className="space-y-4 mt-4">
-                    <div>
-                      <Label className="mb-2 block">定制类型 *</Label>
-                      <Select 
-                        value={formData.customizationType}
-                        onValueChange={v => setFormData({...formData, customizationType: v})}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="选择定制类型" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="logo">Logo定制</SelectItem>
-                          <SelectItem value="packaging">包装定制</SelectItem>
-                          <SelectItem value="size">规格定制</SelectItem>
-                          <SelectItem value="design">设计定制</SelectItem>
-                          <SelectItem value="other">其他定制</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <Label className="mb-2 block">产品名称 *</Label>
-                      <Input 
-                        placeholder="如：不锈钢餐具套装"
-                        value={formData.productName}
-                        onChange={e => setFormData({...formData, productName: e.target.value})}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label className="mb-2 block">采购数量 *</Label>
-                      <Input 
-                        type="number"
-                        placeholder="如：5000"
-                        value={formData.quantity}
-                        onChange={e => setFormData({...formData, quantity: e.target.value})}
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="mb-2 block">目标价格（可选）</Label>
-                        <Input 
-                          type="number"
-                          placeholder="如：15"
-                          value={formData.targetPrice}
-                          onChange={e => setFormData({...formData, targetPrice: e.target.value})}
-                        />
-                      </div>
-                      <div>
-                        <Label className="mb-2 block">期望交货日期（可选）</Label>
-                        <Input 
-                          type="date"
-                          value={formData.deadline}
-                          onChange={e => setFormData({...formData, deadline: e.target.value})}
-                        />
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="detail" className="space-y-4 mt-4">
-                    <div>
-                      <Label className="mb-2 block">定制需求描述 *</Label>
-                      <Textarea 
-                        placeholder="请详细描述您的定制需求，包括尺寸、材质、颜色、Logo位置等..."
-                        className="h-32"
-                        value={formData.description}
-                        onChange={e => setFormData({...formData, description: e.target.value})}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label className="mb-2 block">参考图片</Label>
-                      <div className="grid grid-cols-2 gap-4">
-                        {[1, 2].map(i => (
-                          <div key={i} className="border-2 border-dashed rounded-lg p-6 text-center hover:border-purple-500 transition-colors cursor-pointer">
-                            <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                            <p className="text-sm text-gray-500">上传参考图片 {i}</p>
-                            <p className="text-xs text-gray-400 mt-1">支持 JPG、PNG</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="contact" className="space-y-4 mt-4">
-                    <div>
-                      <Label className="mb-2 block">公司名称 *</Label>
-                      <Input 
-                        placeholder="请输入公司名称"
-                        value={formData.company}
-                        onChange={e => setFormData({...formData, company: e.target.value})}
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="mb-2 block">联系人 *</Label>
-                        <Input 
-                          placeholder="请输入联系人姓名"
-                          value={formData.contactName}
-                          onChange={e => setFormData({...formData, contactName: e.target.value})}
-                        />
-                      </div>
-                      <div>
-                        <Label className="mb-2 block">联系电话 *</Label>
-                        <Input 
-                          placeholder="请输入联系电话"
-                          value={formData.contactPhone}
-                          onChange={e => setFormData({...formData, contactPhone: e.target.value})}
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label className="mb-2 block">邮箱 *</Label>
-                      <Input 
-                        type="email"
-                        placeholder="请输入邮箱地址"
-                        value={formData.contactEmail}
-                        onChange={e => setFormData({...formData, contactEmail: e.target.value})}
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
-
-                <Separator className="my-6" />
-
-                <Button 
-                  size="lg" 
-                  className="w-full bg-purple-700 hover:bg-purple-800 gap-2"
-                  onClick={handleSubmit}
-                >
-                  <Send className="h-5 w-5" />
-                  提交定制需求
-                </Button>
-                
-                <p className="text-xs text-center text-gray-500 mt-4">
-                  提交后，相关供应商将在1-2个工作日内联系您沟通定制方案
-                </p>
+                <h4 className="font-medium mb-1">{item.title}</h4>
+                <p className="text-xs text-gray-500">{item.desc}</p>
               </CardContent>
             </Card>
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* Success Dialog */}
-      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-purple-600" />
-              定制需求提交成功
-            </DialogTitle>
-            <DialogDescription>
-              您的定制需求已提交成功，相关供应商将在1-2个工作日内联系您沟通定制方案和报价。
-              您可以在询盘单中查看跟进状态。
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Link href="/products">
-              <Button>继续浏览产品</Button>
-            </Link>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Application Form */}
+      <Card className="max-w-3xl mx-auto">
+        <CardHeader>
+          <CardTitle>Custom Request Form</CardTitle>
+          <CardDescription>
+            Describe your customization requirements. Our team will provide a tailored solution.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-6 space-y-8">
+          {/* Product Information */}
+          <div>
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <Boxes className="h-5 w-5 text-blue-700" />
+              Product Information
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="productName">Product Name *</Label>
+                <Input
+                  id="productName"
+                  value={formData.productName}
+                  onChange={(e) => setFormData({...formData, productName: e.target.value})}
+                  placeholder="What product do you want to customize?"
+                />
+              </div>
+              <div>
+                <Label htmlFor="category">Product Category *</Label>
+                <Select value={formData.category} onValueChange={(v) => setFormData({...formData, category: v})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="packaging">Packaging & Shipping</SelectItem>
+                    <SelectItem value="electronics">Electronics</SelectItem>
+                    <SelectItem value="textiles">Textiles & Apparel</SelectItem>
+                    <SelectItem value="food">Food & Beverage</SelectItem>
+                    <SelectItem value="furniture">Furniture & Home</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="quantity">Estimated Quantity *</Label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  value={formData.quantity}
+                  onChange={(e) => setFormData({...formData, quantity: e.target.value})}
+                  placeholder="e.g., 10000"
+                />
+              </div>
+              <div>
+                <Label htmlFor="budget">Budget Range (USD) *</Label>
+                <Select value={formData.budget} onValueChange={(v) => setFormData({...formData, budget: v})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select budget" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1-5k">$1,000 - $5,000</SelectItem>
+                    <SelectItem value="5-10k">$5,000 - $10,000</SelectItem>
+                    <SelectItem value="10-50k">$10,000 - $50,000</SelectItem>
+                    <SelectItem value="50k+">$50,000+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          {/* Customization Requirements */}
+          <div>
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-blue-700" />
+              Customization Requirements
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="customizationType">Customization Type *</Label>
+                <Select value={formData.customizationType} onValueChange={(v) => setFormData({...formData, customizationType: v})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="logo">Logo Printing Only</SelectItem>
+                    <SelectItem value="packaging">Custom Packaging</SelectItem>
+                    <SelectItem value="partial">Partial OEM</SelectItem>
+                    <SelectItem value="full">Full OEM/ODM</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="deadline">Expected Deadline</Label>
+                <Input
+                  id="deadline"
+                  type="date"
+                  value={formData.deadline}
+                  onChange={(e) => setFormData({...formData, deadline: e.target.value})}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <Label htmlFor="logoRequirement">Logo Requirements</Label>
+                <Textarea
+                  id="logoRequirement"
+                  value={formData.logoRequirement}
+                  onChange={(e) => setFormData({...formData, logoRequirement: e.target.value})}
+                  placeholder="Describe your logo requirements (size, position, printing method...)"
+                  rows={2}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <Label htmlFor="packagingRequirement">Packaging Requirements</Label>
+                <Textarea
+                  id="packagingRequirement"
+                  value={formData.packagingRequirement}
+                  onChange={(e) => setFormData({...formData, packagingRequirement: e.target.value})}
+                  placeholder="Describe packaging needs (material, design, labels...)"
+                  rows={2}
+                />
+              </div>
+              <div>
+                <Label htmlFor="sizeRequirement">Size Requirements</Label>
+                <Input
+                  id="sizeRequirement"
+                  value={formData.sizeRequirement}
+                  onChange={(e) => setFormData({...formData, sizeRequirement: e.target.value})}
+                  placeholder="e.g., 10x15cm, custom dimensions"
+                />
+              </div>
+              <div>
+                <Label htmlFor="materialRequirement">Material Requirements</Label>
+                <Input
+                  id="materialRequirement"
+                  value={formData.materialRequirement}
+                  onChange={(e) => setFormData({...formData, materialRequirement: e.target.value})}
+                  placeholder="e.g., PLA, recyclable paper"
+                />
+              </div>
+              <div>
+                <Label htmlFor="colorRequirement">Color Requirements</Label>
+                <Input
+                  id="colorRequirement"
+                  value={formData.colorRequirement}
+                  onChange={(e) => setFormData({...formData, colorRequirement: e.target.value})}
+                  placeholder="e.g., Navy blue, custom Pantone"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Details */}
+          <div>
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <FileText className="h-5 w-5 text-blue-700" />
+              Additional Details
+            </h3>
+            <div>
+              <Label htmlFor="additionalRequirements">Other Requirements</Label>
+              <Textarea
+                id="additionalRequirements"
+                value={formData.additionalRequirements}
+                onChange={(e) => setFormData({...formData, additionalRequirements: e.target.value})}
+                placeholder="Any other specific requirements, certifications needed, quality standards..."
+                rows={4}
+              />
+            </div>
+          </div>
+
+          {/* Contact Information */}
+          <div>
+            <h3 className="font-semibold mb-4 flex items-center gap-2">
+              <FileText className="h-5 w-5 text-blue-700" />
+              Contact Information
+            </h3>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="contactName">Contact Name *</Label>
+                <Input
+                  id="contactName"
+                  value={formData.contactName}
+                  onChange={(e) => setFormData({...formData, contactName: e.target.value})}
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  placeholder="business@example.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone *</Label>
+                <Input
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  placeholder="+1 234 567 8900"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Submit Dialog */}
+          <div className="flex items-center justify-between pt-6 border-t">
+            <div className="text-sm text-gray-500 flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Response within 24-48 hours
+            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  size="lg" 
+                  className="gap-2 bg-purple-600 hover:bg-purple-700"
+                >
+                  Submit Custom Request
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Confirm Submission</DialogTitle>
+                  <DialogDescription>
+                    Please review your customization request.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-2">
+                  <p><strong>Product:</strong> {formData.productName}</p>
+                  <p><strong>Category:</strong> {formData.category}</p>
+                  <p><strong>Quantity:</strong> {formData.quantity}</p>
+                  <p><strong>Customization:</strong> {formData.customizationType}</p>
+                  <p><strong>Budget:</strong> {formData.budget}</p>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline">Cancel</Button>
+                  <Button onClick={handleSubmit} className="bg-purple-600 hover:bg-purple-700">Submit Request</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Benefits */}
+      <div className="max-w-3xl mx-auto mt-12">
+        <h2 className="text-xl font-bold mb-6">Customization Benefits</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-start gap-3">
+                <Shield className="h-6 w-6 text-green-500 shrink-0" />
+                <div>
+                  <h4 className="font-medium mb-2">Quality Guarantee</h4>
+                  <p className="text-sm text-gray-600">
+                    All customized products undergo quality inspection before shipment.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-start gap-3">
+                <Clock className="h-6 w-6 text-blue-700 shrink-0" />
+                <div>
+                  <h4 className="font-medium mb-2">Fast Turnaround</h4>
+                  <p className="text-sm text-gray-600">
+                    Sample production within 7-10 days, bulk orders based on quantity.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

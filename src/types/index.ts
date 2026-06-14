@@ -1,21 +1,20 @@
-// B2B 批发平台类型定义
-
-// 产品类型
+// Product Types
 export interface Product {
   id: string;
   name: string;
+  slug?: string; // URL-friendly identifier
   description: string;
   images: string[];
   categoryId: string;
   supplierId: string;
-  moq: number; // 最小起订量
-  unit: string; // 单位：件、箱、套等
+  moq: number; // Minimum Order Quantity
+  unit: string; // Unit: pcs, box, set, etc.
   specifications: ProductSpecification[];
-  tierPrices: TierPrice[]; // 阶梯价格
-  samplePrice?: number; // 样品价格
-  sampleAvailable: boolean; // 是否提供样品
-  customizationAvailable: boolean; // 是否支持定制
-  leadTime: string; // 交货期
+  tierPrices: TierPrice[]; // Tier pricing
+  samplePrice?: number; // Sample price
+  sampleAvailable: boolean; // Sample available
+  customizationAvailable: boolean; // Customization available
+  leadTime: string; // Lead time
   status: 'active' | 'inactive' | 'out_of_stock';
   createdAt: string;
   updatedAt: string;
@@ -42,16 +41,20 @@ export interface Supplier {
   logo: string;
   description: string;
   location: string;
+  country: string;
+  businessType: string;
   categories: string[];
   rating: number;
   reviewCount: number;
   verified: boolean; // 是否认证供应商
-  yearEstablished: number;
-  totalEmployees: string;
+  yearsInBusiness: number;
+  employees: number;
+  productCount: number;
   annualRevenue: string;
   certifications: string[];
   mainProducts: string[];
-  factoryImages: string[];
+  images: string[];
+  website: string;
   contactPerson: string;
   contactPhone: string;
   contactEmail: string;

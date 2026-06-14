@@ -37,7 +37,7 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
             {supplier.verified && (
               <Badge variant="secondary" className="bg-green-100 text-green-700">
                 <Award className="h-3 w-3 mr-1" />
-                认证
+                Verified
               </Badge>
             )}
           </CardContent>
@@ -49,7 +49,7 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300">
       <CardContent className="p-0">
-        {/* 供应商信息 */}
+        {/* Supplier Info */}
         <div className="p-4">
           <Link href={`/suppliers/${supplier.id}`}>
             <div className="flex items-start gap-4">
@@ -64,7 +64,7 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
                 />
               </div>
               
-              {/* 基本信息 */}
+              {/* Basic Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="font-semibold text-gray-900 group-hover:text-blue-700 line-clamp-1">
@@ -73,7 +73,7 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
                   {supplier.verified && (
                     <Badge variant="secondary" className="bg-green-100 text-green-700 shrink-0">
                       <Award className="h-3 w-3 mr-1" />
-                      认证供应商
+                      Verified Supplier
                     </Badge>
                   )}
                 </div>
@@ -83,7 +83,7 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
                   {supplier.location}
                 </div>
 
-                {/* 评分 */}
+                {/* Rating */}
                 <div className="flex items-center gap-2 mb-2">
                   <div className="flex items-center gap-1">
                     <span className="text-sm font-medium text-gray-700">{supplier.rating}</span>
@@ -99,10 +99,10 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
                       ))}
                     </div>
                   </div>
-                  <span className="text-xs text-gray-400">{supplier.reviewCount}条评价</span>
+                  <span className="text-xs text-gray-400">{supplier.reviewCount} reviews</span>
                 </div>
 
-                {/* 主营产品 */}
+                {/* Main Products */}
                 <div className="flex flex-wrap gap-1">
                   {supplier.mainProducts.slice(0, 3).map(product => (
                     <Badge key={product} variant="outline" className="text-xs">
@@ -115,26 +115,26 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
           </Link>
         </div>
 
-        {/* 统计信息 */}
+        {/* Stats */}
         <div className="grid grid-cols-3 gap-0 border-t bg-gray-50">
           <div className="p-3 text-center border-r">
             <div className="flex items-center justify-center gap-1 text-xs text-gray-500 mb-1">
               <Users className="h-3 w-3" />
-              员工规模
+              Employees
             </div>
-            <div className="text-sm font-medium">{supplier.totalEmployees}</div>
+            <div className="text-sm font-medium">{supplier.employees}</div>
           </div>
           <div className="p-3 text-center border-r">
             <div className="flex items-center justify-center gap-1 text-xs text-gray-500 mb-1">
               <Building2 className="h-3 w-3" />
-              成立年份
+              Established
             </div>
-            <div className="text-sm font-medium">{supplier.yearEstablished}</div>
+            <div className="text-sm font-medium">{supplier.yearsInBusiness}</div>
           </div>
           <div className="p-3 text-center">
             <div className="flex items-center justify-center gap-1 text-xs text-gray-500 mb-1">
               <Clock className="h-3 w-3" />
-              响应时间
+              Response Time
             </div>
             <div className="text-sm font-medium">{supplier.responseTime}</div>
           </div>
@@ -143,4 +143,3 @@ export function SupplierCard({ supplier, compact = false }: SupplierCardProps) {
     </Card>
   );
 }
-

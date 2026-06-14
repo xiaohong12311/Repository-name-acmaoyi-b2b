@@ -23,9 +23,9 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  // 取前4个产品作为推荐
+  // Featured products (top 4)
   const featuredProducts = mockProducts.slice(0, 4);
-  // 取前3个供应商作为推荐
+  // Featured suppliers (top 3)
   const featuredSuppliers = mockSuppliers.slice(0, 3);
 
   return (
@@ -35,7 +35,7 @@ export default function HomePage() {
         <div className="absolute inset-0 opacity-20">
           <Image
             src="https://images.unsplash.com/photo-1581091226826-a8a4d5d88f16?w=1200"
-            alt="工厂背景"
+            alt="Factory background"
             fill
             className="object-cover"
             priority
@@ -44,29 +44,29 @@ export default function HomePage() {
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
             <Badge className="bg-white/20 text-white border-0 mb-6 px-4 py-2">
-              专业B2B批发采购平台
+              Professional B2B Wholesale Platform
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-              连接优质工厂与采购商
+              Connecting Quality Manufacturers with Buyers
               <br />
-              <span className="text-blue-200">一站式批发解决方案</span>
+              <span className="text-blue-200">One-Stop Wholesale Solution</span>
             </h1>
             <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              阶梯价格、样品申请、询盘管理、定制批发
+              Tiered Pricing, Sample Requests, Inquiry Management, Custom Wholesale
               <br />
-              让批发采购更高效、更透明
+              Making wholesale procurement more efficient and transparent
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/products">
                 <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 gap-2">
-                  浏览产品目录
+                  Browse Product Catalog
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
               <Link href="/inquiry">
                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 gap-2">
                   <MessageSquarePlus className="h-4 w-4" />
-                  发送询盘
+                  Send Inquiry
                 </Button>
               </Link>
             </div>
@@ -79,16 +79,14 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { icon: TrendingUp, title: '阶梯价格', desc: '批量采购享优惠' },
-              { icon: ShoppingCart, title: '样品车', desc: '先看样再大批' },
-              { icon: MessageSquarePlus, title: '询盘单', desc: '一键发送询价' },
-              { icon: Factory, title: '工厂直供', desc: '源头品质保障' },
+              { icon: TrendingUp, title: 'Tiered Pricing', desc: 'Bulk discounts available', link: '/products' },
+              { icon: ShoppingCart, title: 'Sample Cart', desc: 'Request samples first', link: '/sample-cart' },
+              { icon: MessageSquarePlus, title: 'Inquiry', desc: 'Send inquiries easily', link: '/inquiry' },
+              { icon: Factory, title: 'Factory Direct', desc: 'Quality guaranteed', link: '/factory' },
             ].map((feature, index) => (
               <Link 
                 key={index}
-                href={feature.title === '阶梯价格' ? '/products' : 
-                      feature.title === '样品车' ? '/sample-cart' :
-                      feature.title === '询盘单' ? '/inquiry' : '/factory'}
+                href={feature.link}
                 className="group"
               >
                 <Card className="hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer">
@@ -111,12 +109,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">产品分类</h2>
-              <p className="text-gray-500">按行业快速找到所需产品</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Categories</h2>
+              <p className="text-gray-500">Find products by industry quickly</p>
             </div>
             <Link href="/products">
               <Button variant="outline" className="gap-2">
-                查看全部
+                View All
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -153,12 +151,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">热门批发产品</h2>
-              <p className="text-gray-500">阶梯价格清晰展示，批量采购更优惠</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Featured Wholesale Products</h2>
+              <p className="text-gray-500">Clear tiered pricing, better bulk discounts</p>
             </div>
             <Link href="/products">
               <Button variant="outline" className="gap-2">
-                查看全部产品
+                View All Products
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -177,12 +175,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">认证供应商</h2>
-              <p className="text-gray-500">经过严格审核的优质供应商</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Verified Suppliers</h2>
+              <p className="text-gray-500">Rigorously vetted quality suppliers</p>
             </div>
             <Link href="/suppliers">
               <Button variant="outline" className="gap-2">
-                查看全部供应商
+                View All Suppliers
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -199,35 +197,35 @@ export default function HomePage() {
       {/* Additional Features */}
       <section className="py-16 bg-blue-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">更多核心功能</h2>
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">More Core Features</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: Heart,
-                title: '收藏夹',
-                desc: '收藏感兴趣的产品，方便后续询盘',
+                title: 'Favorites',
+                desc: 'Save products for later inquiries',
                 link: '/favorites',
                 color: 'text-red-500 bg-red-100',
               },
               {
                 icon: Building2,
-                title: '供应商入驻',
-                desc: '工厂入驻展示产品，对接采购商',
+                title: 'Supplier Portal',
+                desc: 'Manufacturers showcase products',
                 link: '/supplier-join',
                 color: 'text-green-600 bg-green-100',
               },
               {
                 icon: Download,
-                title: '获取目录',
-                desc: '下载产品目录PDF，方便查阅',
+                title: 'Get Catalog',
+                desc: 'Download product catalog PDF',
                 link: '/catalog',
                 color: 'text-blue-600 bg-blue-100',
               },
               {
                 icon: Factory,
-                title: '定制批发',
-                desc: 'Logo定制、包装定制、规格定制',
+                title: 'Custom Wholesale',
+                desc: 'Logo, packaging & specs customization',
                 link: '/customization',
                 color: 'text-purple-600 bg-purple-100',
               },
@@ -253,10 +251,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { icon: ShieldCheck, value: '100+', label: '认证供应商' },
-              { icon: TrendingUp, value: '5000+', label: '批发产品' },
-              { icon: Clock, value: '24h', label: '快速响应' },
-              { icon: Truck, value: '全球', label: '物流覆盖' },
+              { icon: ShieldCheck, value: '100+', label: 'Verified Suppliers' },
+              { icon: TrendingUp, value: '5,000+', label: 'Wholesale Products' },
+              { icon: Clock, value: '24h', label: 'Quick Response' },
+              { icon: Truck, value: 'Global', label: 'Shipping Coverage' },
             ].map((stat, index) => (
               <div key={index}>
                 <stat.icon className="h-8 w-8 text-blue-700 mx-auto mb-2" />
@@ -271,19 +269,19 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-r from-blue-700 to-blue-900 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">准备好开始批发采购了吗？</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Start Wholesale Procurement?</h2>
           <p className="text-blue-100 mb-8 max-w-xl mx-auto">
-            注册成为采购商，享受阶梯价格、样品申请、定制批发等专属服务
+            Register as a buyer to enjoy tiered pricing, sample requests, custom wholesale and exclusive services
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/products">
               <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
-                开始采购
+                Start Shopping
               </Button>
             </Link>
             <Link href="/supplier-join">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                供应商入驻
+                Become a Supplier
               </Button>
             </Link>
           </div>

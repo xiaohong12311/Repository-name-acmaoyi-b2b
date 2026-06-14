@@ -1,292 +1,168 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProductCard } from '@/components/product/product-card';
 import { mockProducts, mockCategories } from '@/data/mock';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Search, Filter, X, ChevronDown } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuCheckboxItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Search, Filter, Grid, List, ChevronRight } from 'lucide-react';
 
 export default function ProductsPage() {
-  const searchParams = useSearchParams();
-  const categoryParam = searchParams.get('category');
-  
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(categoryParam || '');
-  const [moqRange, setMoqRange] = useState([0, 1000]);
-  const [showSampleOnly, setShowSampleOnly] = useState(false);
-  const [showCustomOnly, setShowCustomOnly] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  // 过滤和排序产品
-  const filteredProducts = useMemo(() => {
-    let products = [...mockProducts];
+  // Filter products
+  const filteredProducts = mockProducts.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          product.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.categoryId === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
-    // 搜索过滤
-    if (searchQuery) {
-      products = products.filter(p => 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+  // Sort products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'price-low') {
+      return (a.tierPrices[a.tierPrices.length - 1]?.price || 0) - 
+             (b.tierPrices[b.tierPrices.length - 1]?.price || 0);
     }
-
-    // 分类过滤
-    if (selectedCategory) {
-      products = products.filter(p => {
-        const category = mockCategories.find(c => c.slug === selectedCategory);
-        return category ? p.categoryId === category.id : true;
-      });
+    if (sortBy === 'price-high') {
+      return (b.tierPrices[b.tierPrices.length - 1]?.price || 0) - 
+             (a.tierPrices[a.tierPrices.length - 1]?.price || 0);
     }
-
-    // MOQ过滤
-    products = products.filter(p => 
-      p.moq >= moqRange[0] && p.moq <= moqRange[1]
-    );
-
-    // 样品过滤
-    if (showSampleOnly) {
-      products = products.filter(p => p.sampleAvailable);
-    }
-
-    // 定制过滤
-    if (showCustomOnly) {
-      products = products.filter(p => p.customizationAvailable);
-    }
-
-    // 排序
-    switch (sortBy) {
-      case 'price-low':
-        products.sort((a, b) => a.tierPrices[0]?.price - b.tierPrices[0]?.price);
-        break;
-      case 'price-high':
-        products.sort((a, b) => b.tierPrices[0]?.price - a.tierPrices[0]?.price);
-        break;
-      case 'moq-low':
-        products.sort((a, b) => a.moq - b.moq);
-        break;
-      case 'moq-high':
-        products.sort((a, b) => b.moq - a.moq);
-        break;
-    }
-
-    return products;
-  }, [searchQuery, selectedCategory, moqRange, showSampleOnly, showCustomOnly, sortBy]);
-
-  const clearFilters = () => {
-    setSearchQuery('');
-    setSelectedCategory('');
-    setMoqRange([0, 1000]);
-    setShowSampleOnly(false);
-    setShowCustomOnly(false);
-    setSortBy('default');
-  };
-
-  const hasActiveFilters = searchQuery || selectedCategory || showSampleOnly || showCustomOnly || 
-    moqRange[0] !== 0 || moqRange[1] !== 1000;
+    return 0;
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+        <Link href="/" className="hover:text-blue-700">Home</Link>
+        <ChevronRight className="h-4 w-4" />
+        <span className="text-gray-900">Products</span>
+      </div>
+
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">产品目录</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Product Catalog</h1>
         <p className="text-gray-500">
-          共 {filteredProducts.length} 件批发产品，阶梯价格清晰展示
+          Browse {sortedProducts.length} wholesale products with tiered pricing
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Filters Sidebar */}
-        <aside className="lg:w-64 shrink-0">
-          <div className="bg-white rounded-lg border p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">筛选条件</h3>
-              {hasActiveFilters && (
-                <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs">
-                  清除全部
-                </Button>
-              )}
-            </div>
-
-            {/* Search */}
-            <div className="mb-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="搜索产品..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
-            </div>
-
-            {/* Categories */}
-            <Accordion type="single" collapsible defaultValue="categories">
-              <AccordionItem value="categories">
-                <AccordionTrigger className="text-sm font-medium py-2">
-                  产品分类
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2">
-                    <Button
-                      variant={selectedCategory === '' ? 'default' : 'ghost'}
-                      size="sm"
-                      className="w-full justify-start text-xs"
-                      onClick={() => setSelectedCategory('')}
-                    >
-                      全部分类
-                    </Button>
-                    {mockCategories.map(cat => (
-                      <Button
-                        key={cat.id}
-                        variant={selectedCategory === cat.slug ? 'default' : 'ghost'}
-                        size="sm"
-                        className="w-full justify-start text-xs"
-                        onClick={() => setSelectedCategory(cat.slug)}
-                      >
-                        {cat.name}
-                      </Button>
-                    ))}
+      {/* Category Navigation */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        {mockCategories.map(category => (
+          <Link key={category.id} href={`/products?category=${category.slug}`}>
+            <Card className={`group hover:shadow-md transition-all overflow-hidden ${
+              selectedCategory === category.id ? 'ring-2 ring-blue-700' : ''
+            }`}>
+              <CardContent className="p-0">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 50vw, 16vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                    <h3 className="font-medium text-sm">{category.name}</h3>
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            {/* MOQ Range */}
-            <Accordion type="single" collapsible defaultValue="moq">
-              <AccordionItem value="moq">
-                <AccordionTrigger className="text-sm font-medium py-2">
-                  MOQ范围
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-4">
-                    <Slider
-                      value={moqRange}
-                      onValueChange={setMoqRange}
-                      max={1000}
-                      step={10}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>{moqRange[0]} 件</span>
-                      <span>{moqRange[1]} 件</span>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            {/* Features */}
-            <Accordion type="single" collapsible defaultValue="features">
-              <AccordionItem value="features">
-                <AccordionTrigger className="text-sm font-medium py-2">
-                  产品特性
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={showSampleOnly}
-                        onChange={e => setShowSampleOnly(e.target.checked)}
-                        className="rounded border-gray-300"
-                      />
-                      <span className="text-sm">可申请样品</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={showCustomOnly}
-                        onChange={e => setShowCustomOnly(e.target.checked)}
-                        className="rounded border-gray-300"
-                      />
-                      <span className="text-sm">支持定制</span>
-                    </label>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </aside>
-
-        {/* Products Grid */}
-        <main className="flex-1">
-          {/* Sort Bar */}
-          <div className="flex items-center justify-between mb-6 bg-white rounded-lg border p-3">
-            <div className="flex items-center gap-2">
-              {hasActiveFilters && (
-                <div className="flex gap-2">
-                  {selectedCategory && (
-                    <Badge variant="secondary" className="gap-1">
-                      {mockCategories.find(c => c.slug === selectedCategory)?.name}
-                      <X className="h-3 w-3 cursor-pointer" onClick={() => setSelectedCategory('')} />
-                    </Badge>
-                  )}
-                  {showSampleOnly && (
-                    <Badge variant="secondary" className="gap-1">
-                      可申请样品
-                      <X className="h-3 w-3 cursor-pointer" onClick={() => setShowSampleOnly(false)} />
-                    </Badge>
-                  )}
-                  {showCustomOnly && (
-                    <Badge variant="secondary" className="gap-1">
-                      支持定制
-                      <X className="h-3 w-3 cursor-pointer" onClick={() => setShowCustomOnly(false)} />
-                    </Badge>
-                  )}
                 </div>
-              )}
-            </div>
-            
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="排序方式" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">默认排序</SelectItem>
-                <SelectItem value="price-low">价格从低到高</SelectItem>
-                <SelectItem value="price-high">价格从高到低</SelectItem>
-                <SelectItem value="moq-low">MOQ从低到高</SelectItem>
-                <SelectItem value="moq-high">MOQ从高到高</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Products */}
-          {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16 bg-white rounded-lg border">
-              <div className="text-gray-400 mb-4">
-                <Search className="h-12 w-12 mx-auto" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">未找到匹配的产品</h3>
-              <p className="text-gray-500 mb-4">尝试调整筛选条件或搜索关键词</p>
-              <Button onClick={clearFilters}>清除筛选</Button>
-            </div>
-          )}
-        </main>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
       </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 mb-8">
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px] max-w-[400px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+
+        {/* Category Filter */}
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+          <SelectTrigger className="w-[180px]">
+            <Filter className="h-4 w-4 mr-2" />
+            <SelectValue placeholder="Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            {mockCategories.map(cat => (
+              <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* Sort */}
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Default</SelectItem>
+            <SelectItem value="price-low">Price: Low to High</SelectItem>
+            <SelectItem value="price-high">Price: High to Low</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* View Mode */}
+        <div className="flex gap-1">
+          <Button
+            variant={viewMode === 'grid' ? 'default' : 'outline'}
+            size="icon"
+            onClick={() => setViewMode('grid')}
+          >
+            <Grid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === 'list' ? 'default' : 'outline'}
+            size="icon"
+            onClick={() => setViewMode('list')}
+          >
+            <List className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Results */}
+      {sortedProducts.length === 0 ? (
+        <div className="text-center py-16">
+          <p className="text-gray-500 mb-4">No products found matching your criteria.</p>
+          <Button variant="outline" onClick={() => {
+            setSearchQuery('');
+            setSelectedCategory('all');
+          }}>
+            Clear Filters
+          </Button>
+        </div>
+      ) : (
+        <div className={`grid gap-6 ${
+          viewMode === 'grid' 
+            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+            : 'grid-cols-1'
+        }`}>
+          {sortedProducts.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
