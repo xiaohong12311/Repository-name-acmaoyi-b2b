@@ -17,8 +17,11 @@ import { ProductCard } from '@/components/product/product-card';
 import { SupplierCard } from '@/components/supplier/supplier-card';
 import { 
   Heart, ShoppingCart, MessageSquarePlus, Share2, 
-  Package, Clock, Shield, Truck, Check, ChevronRight
+  Package, Clock, Shield, Truck, Check, ChevronRight,
+  ExternalLink, CreditCard
 } from 'lucide-react';
+import { ShopifyLinkButton } from '@/components/shopify/buy-button';
+import { getShopifyProductHandle, shopifyConfig } from '@/lib/shopify/buy-button-config';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -258,7 +261,8 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <div className="flex gap-3">
+              {/* B2B Actions Row */}
+              <div className="flex gap-3 mb-4">
                 <Button
                   variant="outline"
                   size="lg"
@@ -283,7 +287,7 @@ export default function ProductDetailPage() {
                 
                 <Button 
                   size="lg" 
-                  className="gap-2 bg-blue-700 hover:bg-blue-800 flex-1"
+                  className="gap-2 bg-blue-700 hover:bg-blue-800"
                   onClick={handleAddToInquiry}
                 >
                   <MessageSquarePlus className="h-5 w-5" />
@@ -294,6 +298,43 @@ export default function ProductDetailPage() {
                   <Share2 className="h-5 w-5" />
                 </Button>
               </div>
+
+              {/* Direct Purchase via Shopify */}
+              {(() => {
+                const shopifyHandle = getShopifyProductHandle(product.id);
+                return shopifyHandle ? (
+                  <div className="border-t pt-4 mt-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <CreditCard className="h-4 w-4 text-green-600" />
+                      <span className="text-sm text-gray-600">
+                        Direct Purchase (PayPal & Credit Card supported)
+                      </span>
+                    </div>
+                    <div className="flex gap-3">
+                      <ShopifyLinkButton
+                        productHandle={shopifyHandle}
+                        buttonText="Buy Now"
+                        variant="default"
+                        size="lg"
+                        className="flex-1 bg-green-600 hover:bg-green-700"
+                      />
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="gap-2"
+                        onClick={() => window.open(`https://${shopifyConfig.shopDomain}`, '_blank')}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Visit Store
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Click "Buy Now" to purchase directly on our Shopify store. 
+                      Supports PayPal, VISA, MasterCard, and more.
+                    </p>
+                  </div>
+                ) : null;
+              })()}
             </CardContent>
           </Card>
         </div>
