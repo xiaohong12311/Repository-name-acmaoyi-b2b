@@ -12,7 +12,7 @@
 
 export const shopifyConfig = {
   // Your Shopify store domain (without https://)
-  shopDomain: process.env.NEXT_PUBLIC_SHOPIFY_SHOP_DOMAIN || 'acmaoyi.com',
+  shopDomain: process.env.NEXT_PUBLIC_SHOPIFY_SHOP_DOMAIN || 'btbvuh-7y.myshopify.com',
   
   // Storefront Access Token (from Buy Button generated code)
   // This is different from the API access token we were trying to get

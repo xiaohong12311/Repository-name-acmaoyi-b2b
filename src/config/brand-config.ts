@@ -46,7 +46,7 @@ export const brandConfig = {
 
   // ========== Shopify 配置 ==========
   shopify: {
-    shopDomain: 'acmaoyi.com',         // Shopify 商店域名
+    shopDomain: 'btbvuh-7y.myshopify.com',         // Shopify 商店域名
     // 产品 handle 映射（从 buy-button-config.ts 引用）
   },
 
