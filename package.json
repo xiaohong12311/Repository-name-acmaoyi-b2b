@@ -81,7 +81,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "only-allow": "^1.2.2",
-    "shadcn": "latest"
+    "shadcn": "latest",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2"
   },
