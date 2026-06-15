@@ -4,31 +4,24 @@ import './globals.css';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { B2BStoreProvider } from '@/hooks/use-b2b-store';
+import { AdsPixel } from '@/components/ads/ads-pixel';
+import { getSeoConfig } from '@/config/brand-config';
+
+const seoConfig = getSeoConfig();
 
 export const metadata: Metadata = {
   title: {
-    default: 'B2B批发采购平台',
-    template: '%s | B2B批发采购平台',
+    default: seoConfig.siteTitle,
+    template: `%s | Acmaoyi`,
   },
-  description:
-    '专业的B2B批发采购平台，连接优质供应商与采购商。提供询盘单、样品车、阶梯价格、定制批发等一站式批发解决方案。',
-  keywords: [
-    'B2B批发',
-    '批发采购',
-    '工厂直供',
-    '供应商入驻',
-    '阶梯价格',
-    '定制批发',
-    '样品申请',
-    '询盘单',
-  ],
-  authors: [{ name: 'B2B Platform Team' }],
+  description: seoConfig.siteDescription,
+  keywords: seoConfig.keywords.split(', '),
+  authors: [{ name: 'Acmaoyi' }],
   generator: 'Next.js',
   openGraph: {
-    title: 'B2B批发采购平台 | 专业批发采购解决方案',
-    description:
-      '连接优质供应商与采购商，提供询盘单、样品车、阶梯价格、定制批发等一站式批发解决方案。',
-    locale: 'zh_CN',
+    title: seoConfig.siteTitle,
+    description: seoConfig.siteDescription,
+    locale: 'en_US',
     type: 'website',
   },
   robots: {
@@ -45,8 +38,9 @@ export default function RootLayout({
   const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
 
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <body className={`antialiased min-h-screen flex flex-col bg-[#F8FAFC]`}>
+        <AdsPixel />
         <B2BStoreProvider>
           {isDev && <Inspector />}
           <Header />

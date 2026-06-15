@@ -7,6 +7,7 @@ import { useB2BStore } from '@/hooks/use-b2b-store';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Menu, ShoppingCart, Heart, MessageSquarePlus, Download, Building2, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getCompanyInfo } from '@/config/brand-config';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -18,6 +19,7 @@ const navLinks = [
 
 export function Header() {
   const { favorites, sampleCart, inquiryItems } = useB2BStore();
+  const companyInfo = getCompanyInfo();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
@@ -25,10 +27,10 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 text-white font-bold text-lg">
-            B2B
+            A
           </div>
           <span className="hidden sm:inline-block font-semibold text-lg text-gray-900">
-            Wholesale Platform
+            {companyInfo.name}
           </span>
         </Link>
 

@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { Mail, Phone, MapPin } from 'lucide-react';
+import { getCompanyInfo, getContactInfo, getSocialLinks } from '@/config/brand-config';
 
 export function Footer() {
+  const companyInfo = getCompanyInfo();
+  const contactInfo = getContactInfo();
+  const socialLinks = getSocialLinks();
+
   return (
     <footer className="border-t bg-gray-50">
       <div className="container mx-auto px-4 py-12">
@@ -10,25 +16,51 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 text-white font-bold text-lg">
-                B2B
+                A
               </div>
-              <span className="font-semibold text-lg">Wholesale Platform</span>
+              <span className="font-semibold text-lg">{companyInfo.name}</span>
             </div>
             <p className="text-sm text-gray-600 mb-4">
-              Professional B2B wholesale platform connecting quality suppliers with buyers, providing one-stop wholesale solutions.
+              {companyInfo.description}
             </p>
-            <div className="flex gap-3">
-              <Link href="#" className="text-gray-400 hover:text-blue-700">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm6.605 4.61a8.3 8.3 0 013.395 6.61c0 .963-.155 1.904-.44 2.79-.802-.193-1.648-.29-2.495-.29-2.65 0-5.26.93-7.28 2.63-.905-.578-1.91-.99-2.97-1.22.3-.94.49-1.94.49-2.99 0-2.72-1.23-5.17-3.15-6.79A8.3 8.3 0 0112 3.72c2.31 0 4.41.88 6.605 2.89zM5.395 17.39a8.3 8.3 0 01-3.395-6.61c0-.963.155-1.904.44-2.79.802.193 1.648.29 2.495.29 2.65 0 5.26-.93 7.28-2.63.905.578 1.91.99 2.97 1.22-.3.94-.49 1.94-.49 2.99 0 2.72 1.23 5.17 3.15 6.79A8.3 8.3 0 0112 20.28c-2.31 0-4.41-.88-6.605-2.89z"/>
-                </svg>
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-blue-700">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                </svg>
-              </Link>
+            {/* Contact Information */}
+            <div className="space-y-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                <span>{contactInfo.email}</span>
+              </div>
+              {contactInfo.phone && (
+                <div className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  <span>{contactInfo.phone}</span>
+                </div>
+              )}
+              {contactInfo.address && (
+                <div className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 mt-0.5" />
+                  <span className="text-xs">{contactInfo.address}</span>
+                </div>
+              )}
             </div>
+            {/* Social Links */}
+            {(socialLinks.facebook || socialLinks.tiktok) && (
+              <div className="flex gap-3 mt-4">
+                {socialLinks.facebook && (
+                  <Link href={socialLinks.facebook} className="text-gray-400 hover:text-blue-700" target="_blank">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                  </Link>
+                )}
+                {socialLinks.tiktok && (
+                  <Link href={socialLinks.tiktok} className="text-gray-400 hover:text-blue-700" target="_blank">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.72 2.93 2.93 0 01.88.14V5.28a7.82 7.82 0 00-7 7.47v2.83a7.82 7.82 0 007.73 7.73h.28a7.82 7.82 0 007.73-7.73v-2.83a7.82 7.82 0 00-.46-2.53z"/>
+                    </svg>
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Product Categories */}

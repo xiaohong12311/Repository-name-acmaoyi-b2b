@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ProductCard } from '@/components/product/product-card';
 import { SupplierCard } from '@/components/supplier/supplier-card';
 import { mockProducts, mockSuppliers, mockCategories } from '@/data/mock';
+import { getCompanyInfo } from '@/config/brand-config';
 import { 
   MessageSquarePlus, 
   ShoppingCart, 
@@ -19,10 +20,15 @@ import {
   ShieldCheck,
   Clock,
   Truck,
-  ArrowRight
+  ArrowRight,
+  CheckCircle,
+  Globe,
+  Users,
+  Star
 } from 'lucide-react';
 
 export default function HomePage() {
+  const companyInfo = getCompanyInfo();
   // Featured products (top 4)
   const featuredProducts = mockProducts.slice(0, 4);
   // Featured suppliers (top 3)
@@ -31,7 +37,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-12 md:py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <Image
             src="https://images.unsplash.com/photo-1581091226826-a8a4d5d88f16?w=1200"
@@ -43,20 +49,18 @@ export default function HomePage() {
         </div>
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
-            <Badge className="bg-white/20 text-white border-0 mb-6 px-4 py-2">
+            <Badge className="bg-white/20 text-white border-0 mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 text-sm">
               Professional B2B Wholesale Platform
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-              Connecting Quality Manufacturers with Buyers
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
+              {companyInfo.name} - Quality Wholesale Solutions
               <br />
-              <span className="text-blue-200">One-Stop Wholesale Solution</span>
+              <span className="text-blue-200">Connecting Global Buyers & Suppliers</span>
             </h1>
-            <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Tiered Pricing, Sample Requests, Inquiry Management, Custom Wholesale
-              <br />
-              Making wholesale procurement more efficient and transparent
+            <p className="text-base md:text-xl text-blue-100 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
+              {companyInfo.description}
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-3 md:gap-4 justify-center px-4">
               <Link href="/products">
                 <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 gap-2">
                   Browse Product Catalog
@@ -74,8 +78,44 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Trust Indicators - 品牌信任度展示 */}
+      <section className="py-8 md:py-12 bg-white border-b">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-100 text-green-600 mb-2">
+                <CheckCircle className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
+              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-100 text-blue-600 mb-2">
+                <Globe className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
+              <div className="text-xs md:text-sm text-gray-500">Countries Served</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-100 text-yellow-600 mb-2">
+                <Star className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">98%</div>
+              <div className="text-xs md:text-sm text-gray-500">Customer Satisfaction</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-100 text-purple-600 mb-2">
+                <Users className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">1000+</div>
+              <div className="text-xs md:text-sm text-gray-500">Active Buyers</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Core Features */}
-      <section className="py-16 bg-white border-b">
+      <section className="py-12 md:py-16 bg-gray-50 border-b">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
