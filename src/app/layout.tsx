@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inspector } from 'react-dev-inspector';
 import './globals.css';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
@@ -35,14 +34,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
-
   return (
     <html lang="en">
       <body className={`antialiased min-h-screen flex flex-col bg-[#F8FAFC]`}>
         <AdsPixel />
         <B2BStoreProvider>
-          {isDev && <Inspector />}
           <Header />
           <main className="flex-1">
             {children}
