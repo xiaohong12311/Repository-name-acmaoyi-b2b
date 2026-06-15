@@ -33,14 +33,13 @@ export const shopifyConfig = {
  * The 'handle' is the URL slug of the product in Shopify (e.g., /products/wireless-earbuds)
  */
 export const productMapping: Record<string, { handle: string; shopifyId?: string }> = {
-  // Example mappings - update with your actual products
-  '1': { handle: 'wireless-earbuds-bluetooth' },
-  '2': { handle: 'smart-watch-series-5' },
-  '3': { handle: 'bluetooth-speaker-portable' },
-  '4': { handle: 'led-desk-lamp-modern' },
-  '5': { handle: 'usb-c-hub-7-port' },
-  '6': { handle: 'mechanical-keyboard-gaming' },
-  // Add more mappings as needed
+  // 真实产品映射 - 从 acmaoyi.com 获取
+  '1': { handle: 'foxgoblin咔咔眼线水笔' },
+  '2': { handle: 'foxgoblin-燕窝胶原养肤持妆bb霜' },
+  '3': { handle: 'foxgoblin-水嫩修颜隔离霜' },
+  '4': { handle: 'foxgoblin-水嫩修颜隔离霜' },  // 默认使用已有产品
+  '5': { handle: 'foxgoblin-水嫩修颜隔离霜' },  // 默认使用已有产品
+  '6': { handle: 'foxgoblin-水嫩修颜隔离霜' },  // 默认使用已有产品
 };
 
 /**
