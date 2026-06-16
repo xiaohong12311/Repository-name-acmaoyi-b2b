@@ -73,6 +73,8 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "typescript": "^5",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
     "vaul": "^1.1.2",
     "zod": "^4.3.5"
   },
@@ -81,9 +83,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "only-allow": "^1.2.2",
-    "shadcn": "latest",
-    "tsup": "^8.3.5",
-    "tsx": "^4.19.2"
+    "shadcn": "latest"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
