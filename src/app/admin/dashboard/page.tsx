@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { InquiryList } from '@/components/admin/inquiry-list';
 import { SupplierApplicationList } from '@/components/admin/supplier-application-list';
+import Link from 'next/link';
 
 interface AdminInfo {
   isAdmin: boolean;
@@ -239,12 +240,19 @@ export default function AdminDashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle>网站设置</CardTitle>
-                <CardDescription>配置网站基本信息</CardDescription>
+                <CardDescription>配置网站基本信息、联系方式、广告追踪等</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>网站设置功能正在开发中...</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Link href="/admin/settings">
+                    <Card className="cursor-pointer hover:border-primary transition-colors">
+                      <CardContent className="pt-6 text-center">
+                        <Settings className="h-8 w-8 mx-auto mb-2 text-primary" />
+                        <h3 className="font-semibold">网站设置</h3>
+                        <p className="text-sm text-muted-foreground mt-1">Logo、名称、联系方式</p>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
