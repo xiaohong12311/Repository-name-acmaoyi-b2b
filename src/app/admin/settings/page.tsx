@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Loader2, Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { ImageUpload } from '@/components/admin/image-upload';
 
 interface SiteSettings {
   id: string | null;
@@ -196,26 +197,19 @@ export default function AdminSettingsPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="logo_url">Logo 图片 URL</Label>
-                  <Input
-                    id="logo_url"
-                    value={settings.logo_url}
-                    onChange={(e) => setSettings({ ...settings, logo_url: e.target.value })}
-                    placeholder="https://example.com/logo.png"
-                  />
-                  <p className="text-sm text-slate-500">输入 Logo 图片的完整 URL 地址</p>
-                </div>
+                <ImageUpload
+                  label="Logo 图片"
+                  value={settings.logo_url}
+                  onChange={(url) => setSettings({ ...settings, logo_url: url })}
+                  type="logo"
+                />
 
-                <div className="space-y-2">
-                  <Label htmlFor="favicon_url">Favicon URL</Label>
-                  <Input
-                    id="favicon_url"
-                    value={settings.favicon_url}
-                    onChange={(e) => setSettings({ ...settings, favicon_url: e.target.value })}
-                    placeholder="https://example.com/favicon.ico"
-                  />
-                </div>
+                <ImageUpload
+                  label="Favicon 图标"
+                  value={settings.favicon_url}
+                  onChange={(url) => setSettings({ ...settings, favicon_url: url })}
+                  type="favicon"
+                />
               </CardContent>
             </Card>
           </TabsContent>
