@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SUPABASE_URL = 'https://br-slim-vole-49953439.supabase2.aidap-global.cn-beijing.volces.com/auth/v1';
+const SUPABASE_URL = 'https://br-slim-vole-49953439.supabase2.aidap-global.cn-beijing.volces.com';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMzNjIxMzkyMjIsInJvbGUiOiJhbm9uIn0._H7hl6Ra5IjSaRI-XMwObfkJMcXAovvDS7lFwmiB-pI';
+const SUPABASE_SERVICE_KEY = process.env.COZE_SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
 
 // Check if user is admin using direct fetch API
 export async function GET(request: NextRequest) {
@@ -33,35 +34,36 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ isAdmin: false, error: 'User not found' }, { status: 401 });
     }
 
-    // 检查是否在 admin_users 表中
-    // 使用 service role key 来查询（绕过 RLS）
-    const { getSupabaseClient } = await import('@/storage/database/supabase-client');
-    const adminClient = getSupabaseClient(); // 无 token，使用 service role key
+    // 检查是否在 admin_users 表中（使用 service role key）
+    const adminRes = await fetch(`${SUPABASE_URL}/rest/v1/admin_users?user_id=eq.${user.id}&select=*`, {
+      headers: {
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
 
-    const { data: adminData, error: adminError } = await adminClient
-      .from('admin_users')
-      .select('*')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (adminError) {
-      console.error('Admin check error:', adminError);
+    if (!adminRes.ok) {
+      console.error('Admin check failed:', adminRes.status, adminRes.statusText);
       return NextResponse.json({ isAdmin: false, error: 'Database error' }, { status: 500 });
     }
 
-    if (adminData) {
+    const adminData = await adminRes.json();
+
+    if (adminData && adminData.length > 0) {
+      const admin = adminData[0];
       return NextResponse.json({ 
         isAdmin: true, 
-        role: adminData.role,
-        permissions: adminData.permissions,
+        role: admin.role,
+        permissions: admin.permissions,
         user: { id: user.id, email: user.email }
       });
     }
 
+    // 用户不在 admin_users 表中，不是管理员
     return NextResponse.json({ 
-      isAdmin: true, 
-      role: adminData.role,
-      permissions: adminData.permissions,
+      isAdmin: false, 
+      error: 'Not an admin user',
       user: { id: user.id, email: user.email }
     });
   } catch (error) {
