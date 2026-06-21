@@ -38,7 +38,15 @@ export default function AdminDashboardPage() {
   }, []);
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('admin_session');
+    // 从 cookie 获取 token
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return null;
+    };
+    const token = getCookie('admin_session');
+    
     if (!token) {
       router.push('/admin/login');
       return;
@@ -46,38 +54,46 @@ export default function AdminDashboardPage() {
 
     try {
       const response = await fetch('/api/admin/check-auth', {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: { 'x-session': token },
       });
       const result = await response.json();
 
       if (!result.isAdmin) {
-        localStorage.removeItem('admin_session');
+        document.cookie = 'admin_session=; path=/; max-age=0';
         router.push('/admin/login');
         return;
       }
 
       setAdminInfo(result);
     } catch {
-      localStorage.removeItem('admin_session');
+      document.cookie = 'admin_session=; path=/; max-age=0';
       router.push('/admin/login');
     }
     setLoading(false);
   };
 
+  // 从 cookie 获取 token 的辅助函数
+  const getCookieToken = () => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; admin_session=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+    return null;
+  };
+
   const fetchStats = async () => {
-    const token = localStorage.getItem('admin_session');
+    const token = getCookieToken();
     if (!token) return;
 
     try {
       // Fetch inquiry stats
       const inquiryRes = await fetch('/api/admin/inquiries?status=pending&limit=1', {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: { 'x-session': token },
       });
       const inquiryData = await inquiryRes.json();
       
       // Fetch application stats
       const appRes = await fetch('/api/admin/suppliers?status=pending&limit=1', {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: { 'x-session': token },
       });
       const appData = await appRes.json();
 
@@ -93,7 +109,7 @@ export default function AdminDashboardPage() {
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem('admin_session');
+    document.cookie = 'admin_session=; path=/; max-age=0';
     router.push('/admin/login');
   };
 
