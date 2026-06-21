@@ -4,8 +4,10 @@ import { getSupabaseClient } from '@/storage/database/supabase-client';
 // Check if user is admin
 export async function GET(request: NextRequest) {
   try {
+    // 支持两种 header 方式传递 token
     const authHeader = request.headers.get('Authorization');
-    const token = authHeader?.replace('Bearer ', '');
+    const sessionHeader = request.headers.get('x-session');
+    const token = authHeader?.replace('Bearer ', '') || sessionHeader;
 
     if (!token) {
       return NextResponse.json({ isAdmin: false, error: 'No token provided' }, { status: 401 });
