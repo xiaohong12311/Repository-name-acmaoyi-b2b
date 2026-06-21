@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseClient } from '@/storage/database/supabase-client';
 
-// Check if user is admin
+const SUPABASE_URL = 'https://br-slim-vole-49953439.supabase2.aidap-global.cn-beijing.volces.com/auth/v1';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMzNjIxMzkyMjIsInJvbGUiOiJhbm9uIn0._H7hl6Ra5IjSaRI-XMwObfkJMcXAovvDS7lFwmiB-pI';
+
+// Check if user is admin using direct fetch API
 export async function GET(request: NextRequest) {
   try {
     // 支持两种 header 方式传递 token
@@ -13,17 +15,30 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ isAdmin: false, error: 'No token provided' }, { status: 401 });
     }
 
-    const client = getSupabaseClient(token);
+    // 直接调用 Supabase API 获取用户信息
+    const userRes = await fetch(`${SUPABASE_URL}/user`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`,
+      },
+    });
 
-    // Get user info from token
-    const { data: { user }, error: userError } = await client.auth.getUser(token);
-    
-    if (userError || !user) {
+    if (!userRes.ok) {
       return NextResponse.json({ isAdmin: false, error: 'Invalid token' }, { status: 401 });
     }
 
-    // Check if user exists in admin_users table
-    const { data: adminData, error: adminError } = await client
+    const user = await userRes.json();
+
+    if (!user || !user.id) {
+      return NextResponse.json({ isAdmin: false, error: 'User not found' }, { status: 401 });
+    }
+
+    // 检查是否在 admin_users 表中
+    // 使用 service role key 来查询（绕过 RLS）
+    const { getSupabaseClient } = await import('@/storage/database/supabase-client');
+    const adminClient = getSupabaseClient(); // 无 token，使用 service role key
+
+    const { data: adminData, error: adminError } = await adminClient
       .from('admin_users')
       .select('*')
       .eq('user_id', user.id)
@@ -34,33 +49,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ isAdmin: false, error: 'Database error' }, { status: 500 });
     }
 
-    // If not in admin_users table, auto-create for first admin (email matches)
-    if (!adminData) {
-      // Check if this is the first admin (owner's email)
-      const ownerEmail = 'xiaohong12311@outlook.com';
-      if (user.email === ownerEmail) {
-        // Auto-add as super admin
-        const { error: insertError } = await client
-          .from('admin_users')
-          .insert({
-            user_id: user.id,
-            role: 'super_admin',
-            permissions: ['all'],
-          });
-
-        if (insertError) {
-          console.error('Auto-admin insert error:', insertError);
-          return NextResponse.json({ isAdmin: false, error: 'Failed to create admin' }, { status: 500 });
-        }
-
-        return NextResponse.json({ 
-          isAdmin: true, 
-          role: 'super_admin',
-          user: { id: user.id, email: user.email }
-        });
-      }
-
-      return NextResponse.json({ isAdmin: false, error: 'Not an admin user' }, { status: 403 });
+    if (adminData) {
+      return NextResponse.json({ 
+        isAdmin: true, 
+        role: adminData.role,
+        permissions: adminData.permissions,
+        user: { id: user.id, email: user.email }
+      });
     }
 
     return NextResponse.json({ 
