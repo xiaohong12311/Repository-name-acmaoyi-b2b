@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 直接调用 Supabase API 获取用户信息
-    const userRes = await fetch(`${SUPABASE_URL}/user`, {
+    const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${token}`,
