@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { B2BStoreProvider } from '@/hooks/use-b2b-store';
+import { LanguageProvider } from '@/hooks/use-language';
 import { AdsPixel } from '@/components/ads/ads-pixel';
 import { getSeoConfig } from '@/config/brand-config';
 
@@ -38,13 +39,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased min-h-screen flex flex-col bg-[#F8FAFC]`}>
         <AdsPixel />
-        <B2BStoreProvider>
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </B2BStoreProvider>
+        <LanguageProvider>
+          <B2BStoreProvider>
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </B2BStoreProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

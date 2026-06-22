@@ -8,18 +8,21 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/s
 import { Menu, ShoppingCart, Heart, MessageSquarePlus, Download, Building2, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getCompanyInfo } from '@/config/brand-config';
-
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/products', label: 'Products' },
-  { href: '/suppliers', label: 'Suppliers' },
-  { href: '/factory', label: 'Factory' },
-  { href: '/supplier-join', label: 'Join as Supplier' },
-];
+import { LanguageSelector } from '@/components/layout/language-selector';
+import { useLanguage } from '@/hooks/use-language';
 
 export function Header() {
   const { favorites, sampleCart, inquiryItems } = useB2BStore();
   const companyInfo = getCompanyInfo();
+  const { t } = useLanguage();
+
+  const navLinks = [
+    { href: '/', label: t.nav.home },
+    { href: '/products', label: t.nav.products },
+    { href: '/suppliers', label: t.nav.suppliers },
+    { href: '/factory', label: t.nav.factory },
+    { href: '/supplier-join', label: t.nav.joinSupplier },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
@@ -91,9 +94,12 @@ export function Header() {
           <Link href="/catalog" className="hidden sm:flex">
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
-              Get Catalog
+              {t.nav.getCatalog}
             </Button>
           </Link>
+
+          {/* Language Selector */}
+          <LanguageSelector />
 
           {/* Admin */}
           <Link href="/admin" className="hidden sm:flex">
