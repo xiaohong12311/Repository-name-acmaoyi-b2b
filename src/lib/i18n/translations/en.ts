@@ -3,7 +3,7 @@ export const en = {
   nav: {
     home: 'Home',
     products: 'Products',
-    suppliers: 'Agent',
+    suppliers: 'Suppliers',
     factory: 'Factory',
     inquiry: 'Inquiry',
     favorites: 'Favorites',

@@ -90,8 +90,24 @@ export function Header() {
             </Button>
           </Link>
 
+          {/* Get Catalog */}
+          <Link href="/catalog" className="hidden sm:flex">
+            <Button variant="outline" size="sm" className="gap-2">
+              <Download className="h-4 w-4" />
+              {t.nav.getCatalog}
+            </Button>
+          </Link>
+
           {/* Language Selector */}
           <LanguageSelector />
+
+          {/* Admin */}
+          <Link href="/admin" className="hidden sm:flex">
+            <Button variant="outline" size="sm" className="gap-2">
+              <FileText className="h-4 w-4" />
+              Admin
+            </Button>
+          </Link>
 
           {/* Mobile Menu */}
           <Sheet>
@@ -112,6 +128,16 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
+                <div className="border-t pt-4 mt-4">
+                  <Link href="/catalog" className="flex items-center gap-2 py-2 text-sm font-medium text-gray-600 hover:text-blue-700">
+                    <Download className="h-4 w-4" />
+                    Get Catalog
+                  </Link>
+                  <Link href="/admin" className="flex items-center gap-2 py-2 text-sm font-medium text-gray-600 hover:text-blue-700">
+                    <Building2 className="h-4 w-4" />
+                    Admin Panel
+                  </Link>
+                </div>
               </nav>
             </SheetContent>
           </Sheet>
