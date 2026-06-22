@@ -3,7 +3,7 @@ export const sw = {
   nav: {
     home: 'Nyumbani',
     products: 'Bidhaa',
-    suppliers: 'Wasambazaji',
+    suppliers: 'Agent',
     factory: 'Kiwanda',
     inquiry: 'Maombi',
     favorites: 'Vipendwa',
