@@ -20,9 +20,9 @@ export default function HomePage() {
 
   return (
     <LanguageProvider>
-      <div className="bg-gradient-to-b from-blue-900 via-blue-800 to-blue-700">
+      <div className="min-h-screen bg-gradient-to-b from-blue-900 via-blue-800 to-blue-700">
         {/* Hero Section with Search */}
-        <section className="flex flex-col items-center justify-center px-4 py-12">
+        <section className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16">
           {/* Logo/Brand */}
           <div className="text-center mb-8">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
