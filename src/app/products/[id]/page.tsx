@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/hooks/use-language';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -24,6 +25,7 @@ import { ShopifyLinkButton } from '@/components/shopify/buy-button';
 import { getShopifyProductHandle, shopifyConfig } from '@/lib/shopify/buy-button-config';
 
 export default function ProductDetailPage() {
+  const { t } = useLanguage();
   const params = useParams();
   const productId = params.id as string;
   
@@ -41,8 +43,8 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-        <p className="text-gray-500 mb-8">The product you&apos;re looking for doesn&apos;t exist.</p>
+        <h1 className="text-2xl font-bold mb-4">{t.productDetail.notFound}</h1>
+        <p className="text-gray-500 mb-8">{t.productDetail.notFoundDesc}</p>
         <Link href="/products">
           <Button>Browse All Products</Button>
         </Link>
@@ -83,9 +85,9 @@ export default function ProductDetailPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-blue-700">Home</Link>
+        <Link href="/" className="hover:text-blue-700">{t.nav.home}</Link>
         <ChevronRight className="h-4 w-4" />
-        <Link href="/products" className="hover:text-blue-700">Products</Link>
+        <Link href="/products" className="hover:text-blue-700">{t.nav.products}</Link>
         <ChevronRight className="h-4 w-4" />
         <span className="text-gray-900">{product.name}</span>
       </div>
@@ -148,7 +150,7 @@ export default function ProductDetailPage() {
               {supplier.verified && (
                 <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
                   <Check className="h-3 w-3 mr-1" />
-                  Verified
+                  {t.productDetail.verified}
                 </Badge>
               )}
             </Link>
@@ -161,7 +163,7 @@ export default function ProductDetailPage() {
           <div className="flex gap-2 mb-4">
             {product.sampleAvailable && (
               <Badge variant="secondary" className="bg-green-100 text-green-700">
-                Sample Available
+                {t.productDetail.sampleAvailable}
               </Badge>
             )}
             {product.customizationAvailable && (

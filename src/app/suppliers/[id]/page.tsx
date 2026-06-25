@@ -13,10 +13,12 @@ import {
   MapPin, Factory, Users, Calendar, Award, Globe, Phone, Mail,
   CheckCircle, Package, Shield, Truck, Clock, ChevronRight
 } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function SupplierDetailPage() {
   const params = useParams();
   const supplierId = params.id as string;
+  const { t } = useLanguage();
   
   const supplier = getSupplierById(supplierId);
   const supplierProducts = supplier ? getProductsBySupplier(supplierId) : [];
@@ -24,10 +26,10 @@ export default function SupplierDetailPage() {
   if (!supplier) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Supplier Not Found</h1>
-        <p className="text-gray-500 mb-8">The supplier you&apos;re looking for doesn&apos;t exist.</p>
+        <h1 className="text-2xl font-bold mb-4">{t.supplierDetail.notFound}</h1>
+        <p className="text-gray-500 mb-8">{t.supplierDetail.notFoundDesc}</p>
         <Link href="/suppliers">
-          <Button>Browse All Suppliers</Button>
+          <Button>{t.supplierDetail.browseAll}</Button>
         </Link>
       </div>
     );
@@ -37,9 +39,9 @@ export default function SupplierDetailPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-blue-700">Home</Link>
+        <Link href="/" className="hover:text-blue-700">{t.nav.home}</Link>
         <ChevronRight className="h-4 w-4" />
-        <Link href="/suppliers" className="hover:text-blue-700">Suppliers</Link>
+        <Link href="/suppliers" className="hover:text-blue-700">{t.nav.agent}</Link>
         <ChevronRight className="h-4 w-4" />
         <span className="text-gray-900">{supplier.name}</span>
       </div>
@@ -66,7 +68,7 @@ export default function SupplierDetailPage() {
             {supplier.verified && (
               <Badge variant="secondary" className="bg-green-100 text-green-700">
                 <CheckCircle className="h-3 w-3 mr-1" />
-                Verified Supplier
+                {t.supplierDetail.verified}
               </Badge>
             )}
             <Badge variant="outline">{supplier.businessType}</Badge>
@@ -80,28 +82,28 @@ export default function SupplierDetailPage() {
               <CardContent className="p-4 text-center">
                 <Users className="h-5 w-5 text-blue-700 mx-auto mb-2" />
                 <div className="font-semibold tabular-nums">{supplier.employees}</div>
-                <div className="text-xs text-gray-500">Employees</div>
+                <div className="text-xs text-gray-500">{t.supplierDetail.employees}</div>
               </CardContent>
             </Card>
             <Card className="bg-gray-50">
               <CardContent className="p-4 text-center">
                 <Calendar className="h-5 w-5 text-blue-700 mx-auto mb-2" />
                 <div className="font-semibold tabular-nums">{supplier.yearsInBusiness}</div>
-                <div className="text-xs text-gray-500">Years</div>
+                <div className="text-xs text-gray-500">{t.supplierDetail.years}</div>
               </CardContent>
             </Card>
             <Card className="bg-gray-50">
               <CardContent className="p-4 text-center">
                 <Package className="h-5 w-5 text-blue-700 mx-auto mb-2" />
                 <div className="font-semibold tabular-nums">{supplier.productCount}</div>
-                <div className="text-xs text-gray-500">Products</div>
+                <div className="text-xs text-gray-500">{t.supplierDetail.products}</div>
               </CardContent>
             </Card>
             <Card className="bg-gray-50">
               <CardContent className="p-4 text-center">
                 <Award className="h-5 w-5 text-blue-700 mx-auto mb-2" />
                 <div className="font-semibold tabular-nums">{supplier.certifications.length}</div>
-                <div className="text-xs text-gray-500">Certifications</div>
+                <div className="text-xs text-gray-500">{t.supplierDetail.certifications}</div>
               </CardContent>
             </Card>
           </div>
@@ -129,12 +131,12 @@ export default function SupplierDetailPage() {
           <div className="flex gap-3">
             <Link href="/inquiry">
               <Button size="lg" className="gap-2 bg-blue-700 hover:bg-blue-800">
-                Send Inquiry
+                {t.supplierDetail.sendInquiry}
               </Button>
             </Link>
             <Link href="/catalog">
               <Button variant="outline" size="lg" className="gap-2">
-                Download Catalog
+                {t.supplierDetail.downloadCatalog}
               </Button>
             </Link>
           </div>
@@ -144,10 +146,10 @@ export default function SupplierDetailPage() {
       {/* Tabs */}
       <Tabs defaultValue="products" className="mb-12">
         <TabsList className="grid grid-cols-4 w-full max-w-lg">
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="factory">Factory</TabsTrigger>
-          <TabsTrigger value="certifications">Certifications</TabsTrigger>
-          <TabsTrigger value="contact">Contact</TabsTrigger>
+          <TabsTrigger value="products">{t.supplierDetail.products}</TabsTrigger>
+          <TabsTrigger value="factory">{t.nav.factory}</TabsTrigger>
+          <TabsTrigger value="certifications">{t.supplierDetail.certifications}</TabsTrigger>
+          <TabsTrigger value="contact">{t.supplierDetail.contact}</TabsTrigger>
         </TabsList>
         
         <TabsContent value="products">
@@ -160,7 +162,7 @@ export default function SupplierDetailPage() {
               </div>
               {supplierProducts.length === 0 && (
                 <div className="text-center py-8 text-gray-500">
-                  No products available from this supplier.
+                  {t.supplierDetail.noProducts}
                 </div>
               )}
             </CardContent>
@@ -188,8 +190,8 @@ export default function SupplierDetailPage() {
               {/* Factory Info */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Production Capabilities</h3>
-                  {['Modern production lines', 'Quality control systems', 'Skilled workforce', 'Flexible scheduling'].map((item, i) => (
+                  <h3 className="font-semibold">{t.supplierDetail.productionCapabilities}</h3>
+                  {[t.supplierDetail.modernLines, t.supplierDetail.qualityControl, t.supplierDetail.skilledWorkforce, t.supplierDetail.flexibleScheduling].map((item, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       <span className="text-gray-600">{item}</span>
@@ -197,8 +199,8 @@ export default function SupplierDetailPage() {
                   ))}
                 </div>
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Quality Assurance</h3>
-                  {['Pre-production inspection', 'In-process quality checks', 'Final product testing', 'Documentation compliance'].map((item, i) => (
+                  <h3 className="font-semibold">{t.supplierDetail.qualityAssurance}</h3>
+                  {[t.supplierDetail.preInspection, t.supplierDetail.inProcessChecks, t.supplierDetail.finalTesting, t.supplierDetail.docCompliance].map((item, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <Shield className="h-4 w-4 text-blue-700" />
                       <span className="text-gray-600">{item}</span>
@@ -220,7 +222,7 @@ export default function SupplierDetailPage() {
                       <Award className="h-8 w-8 text-blue-700" />
                       <div>
                         <div className="font-medium">{cert}</div>
-                        <div className="text-xs text-gray-500">Verified Certification</div>
+                        <div className="text-xs text-gray-500">{t.supplierDetail.verifiedCertification}</div>
                       </div>
                     </CardContent>
                   </Card>
@@ -228,10 +230,9 @@ export default function SupplierDetailPage() {
               </div>
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium mb-2">Certification Verification</h4>
+                <h4 className="font-medium mb-2">{t.supplierDetail.certVerification}</h4>
                 <p className="text-sm text-gray-600">
-                  All certifications displayed have been verified by our platform. 
-                  Request detailed certification documents through inquiry.
+                  {t.supplierDetail.certVerificationDesc}
                 </p>
               </div>
             </CardContent>
@@ -243,18 +244,18 @@ export default function SupplierDetailPage() {
             <CardContent className="p-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h3 className="font-semibold mb-4">Contact Information</h3>
+                  <h3 className="font-semibold mb-4">{t.supplierDetail.contactInfo}</h3>
                   <div className="flex items-center gap-3">
                     <MapPin className="h-5 w-5 text-blue-700" />
                     <div>
-                      <div className="font-medium">Address</div>
+                      <div className="font-medium">{t.supplierDetail.address}</div>
                       <div className="text-gray-600">{supplier.location}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Globe className="h-5 w-5 text-blue-700" />
                     <div>
-                      <div className="font-medium">Website</div>
+                      <div className="font-medium">{t.supplierDetail.website}</div>
                       <a href={supplier.website} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">
                         {supplier.website}
                       </a>
@@ -263,19 +264,19 @@ export default function SupplierDetailPage() {
                 </div>
                 
                 <div className="space-y-4">
-                  <h3 className="font-semibold mb-4">Business Hours</h3>
+                  <h3 className="font-semibold mb-4">{t.supplierDetail.businessHours}</h3>
                   <div className="flex items-center gap-3">
                     <Clock className="h-5 w-5 text-blue-700" />
                     <div>
-                      <div className="font-medium">Working Hours</div>
-                      <div className="text-gray-600">Mon - Fri: 9:00 AM - 6:00 PM</div>
+                      <div className="font-medium">{t.supplierDetail.workingHours}</div>
+                      <div className="text-gray-600">{t.supplierDetail.workingHoursTime}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Truck className="h-5 w-5 text-blue-700" />
                     <div>
-                      <div className="font-medium">Response Time</div>
-                      <div className="text-gray-600">Within 24 hours</div>
+                      <div className="font-medium">{t.supplierDetail.responseTime}</div>
+                      <div className="text-gray-600">{t.supplierDetail.within24h}</div>
                     </div>
                   </div>
                 </div>
@@ -283,11 +284,11 @@ export default function SupplierDetailPage() {
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg text-center">
                 <p className="text-gray-600 mb-4">
-                  Send an inquiry to get detailed pricing and product information.
+                  {t.supplierDetail.inquiryPrompt}
                 </p>
                 <Link href="/inquiry">
                   <Button className="gap-2 bg-blue-700 hover:bg-blue-800">
-                    Send Inquiry Now
+                    {t.supplierDetail.sendInquiryNow}
                   </Button>
                 </Link>
               </div>

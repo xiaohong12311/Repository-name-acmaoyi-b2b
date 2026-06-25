@@ -16,9 +16,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Download, Search, FileDown, Eye, CheckCircle, Filter } from 'lucide-react';
+import { Download, Search, FileDown, Eye, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function CatalogPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDialog, setSelectedDialog] = useState<string | null>(null);
 
@@ -27,7 +29,6 @@ export default function CatalogPage() {
   );
 
   const handleDownload = (supplierId: string) => {
-    // In real implementation, this would download actual catalog
     setSelectedDialog(supplierId);
   };
 
@@ -37,14 +38,13 @@ export default function CatalogPage() {
       <div className="max-w-3xl mx-auto mb-12 text-center">
         <Badge variant="secondary" className="bg-green-100 text-green-700 mb-4">
           <FileDown className="h-3 w-3 mr-1" />
-          Product Catalogs
+          {t.catalog.badge}
         </Badge>
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Download Supplier Catalogs
+          {t.catalog.heroTitle}
         </h1>
         <p className="text-gray-500 text-lg">
-          Get detailed product catalogs from verified suppliers. 
-          Includes pricing, specifications, and ordering information.
+          {t.catalog.heroDesc}
         </p>
       </div>
 
@@ -53,7 +53,7 @@ export default function CatalogPage() {
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Search suppliers..."
+            placeholder={t.catalog.heroTitle + '...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -77,7 +77,7 @@ export default function CatalogPage() {
               {supplier.verified && (
                 <Badge variant="secondary" className="absolute top-2 right-2 bg-green-100 text-green-700">
                   <CheckCircle className="h-3 w-3 mr-1" />
-                  Verified
+                  {t.catalog.newBadge}
                 </Badge>
               )}
             </div>
@@ -92,12 +92,12 @@ export default function CatalogPage() {
               
               {/* Info */}
               <p className="text-sm text-gray-500 mb-1">{supplier.location}</p>
-              <p className="text-sm text-gray-500 mb-4">{supplier.productCount} products</p>
+              <p className="text-sm text-gray-500 mb-4">{supplier.productCount} {t.catalog.pages}</p>
 
               {/* Catalog Info */}
               <div className="flex items-center gap-2 mb-4 text-sm text-gray-600">
                 <FileDown className="h-4 w-4" />
-                <span>PDF Catalog Available</span>
+                <span>{t.catalog.downloadPdf}</span>
               </div>
 
               {/* Actions */}
@@ -110,7 +110,7 @@ export default function CatalogPage() {
                 >
                   <Link href={`/suppliers/${supplier.id}`}>
                     <Eye className="h-3 w-3" />
-                    View Products
+                    {t.nav.products}
                   </Link>
                 </Button>
                 <Button 
@@ -119,7 +119,7 @@ export default function CatalogPage() {
                   onClick={() => handleDownload(supplier.id)}
                 >
                   <Download className="h-3 w-3" />
-                  Download
+                  {t.catalog.downloadPdf}
                 </Button>
               </div>
             </CardContent>
@@ -131,24 +131,23 @@ export default function CatalogPage() {
       <Dialog open={selectedDialog !== null} onOpenChange={() => setSelectedDialog(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Catalog Download</DialogTitle>
+            <DialogTitle>{t.catalog.downloadPdf}</DialogTitle>
             <DialogDescription>
-              Your catalog download is ready.
+              {t.catalog.heroDesc}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
             <p className="text-gray-600">
-              In production, this would download the actual PDF catalog from the supplier.
-              For demo purposes, this shows the download dialog.
+              {t.catalog.requestDesc}
             </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setSelectedDialog(null)}>
-              Close
+              {t.common.cancel || 'Close'}
             </Button>
             <Button className="gap-2 bg-green-600 hover:bg-green-700">
               <Download className="h-4 w-4" />
-              Download PDF
+              {t.catalog.downloadPdf}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -157,13 +156,13 @@ export default function CatalogPage() {
       {/* All Catalogs */}
       <Card className="bg-gray-50">
         <CardContent className="p-8 text-center">
-          <h2 className="text-xl font-bold mb-4">Download All Catalogs</h2>
+          <h2 className="text-xl font-bold mb-4">{t.catalog.downloadAll}</h2>
           <p className="text-gray-500 mb-6">
-            Get a combined catalog package with all supplier product catalogs.
+            {t.catalog.heroDesc}
           </p>
           <Button size="lg" className="gap-2 bg-green-600 hover:bg-green-700">
             <Download className="h-4 w-4" />
-            Download Complete Package
+            {t.catalog.downloadAll}
           </Button>
         </CardContent>
       </Card>

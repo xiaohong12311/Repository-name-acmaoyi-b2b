@@ -11,8 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ProductCard } from '@/components/product/product-card';
 import { mockProducts, mockCategories } from '@/data/mock';
 import { Search, Filter, Grid, List, ChevronRight } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function ProductsPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
@@ -43,16 +45,16 @@ export default function ProductsPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-blue-700">Home</Link>
+        <Link href="/" className="hover:text-blue-700">{t.nav.home}</Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-gray-900">Products</span>
+        <span className="text-gray-900">{t.products.title}</span>
       </div>
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Product Catalog</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t.products.productCatalog}</h1>
         <p className="text-gray-500">
-          Browse {sortedProducts.length} wholesale products with tiered pricing
+          {t.products.browseProducts.replace('{count}', String(sortedProducts.length))}
         </p>
       </div>
 
@@ -89,7 +91,7 @@ export default function ProductsPage() {
         <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Search products..."
+            placeholder={t.products.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -100,10 +102,10 @@ export default function ProductsPage() {
         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
           <SelectTrigger className="w-[180px]">
             <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Category" />
+            <SelectValue placeholder={t.products.category} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="all">{t.products.allCategories}</SelectItem>
             {mockCategories.map(cat => (
               <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
             ))}
@@ -113,12 +115,12 @@ export default function ProductsPage() {
         {/* Sort */}
         <Select value={sortBy} onValueChange={setSortBy}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder={t.products.sortBy} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="default">Default</SelectItem>
-            <SelectItem value="price-low">Price: Low to High</SelectItem>
-            <SelectItem value="price-high">Price: High to Low</SelectItem>
+            <SelectItem value="default">{t.products.default}</SelectItem>
+            <SelectItem value="price-low">{t.products.priceLowHigh}</SelectItem>
+            <SelectItem value="price-high">{t.products.priceHighLow}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -144,12 +146,12 @@ export default function ProductsPage() {
       {/* Results */}
       {sortedProducts.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-500 mb-4">No products found matching your criteria.</p>
+          <p className="text-gray-500 mb-4">{t.products.noProductsMatching}</p>
           <Button variant="outline" onClick={() => {
             setSearchQuery('');
             setSelectedCategory('all');
           }}>
-            Clear Filters
+            {t.products.clearFilters}
           </Button>
         </div>
       ) : (

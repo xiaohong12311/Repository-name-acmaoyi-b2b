@@ -13,9 +13,11 @@ import { useInquiry } from '@/hooks/use-b2b-store';
 import type { InquiryItem } from '@/types';
 import { mockProducts, getProductById, getSupplierById } from '@/data/mock';
 import { Trash2, Plus, MessageSquarePlus, Send, Calendar, Package, DollarSign } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function InquiryPage() {
   const { inquiryItems, removeFromInquiry, updateQuantity, clearInquiry } = useInquiry();
+  const { t } = useLanguage();
   const [targetPrice, setTargetPrice] = useState('');
   const [requirements, setRequirements] = useState('');
   const [contactName, setContactName] = useState('');
@@ -24,8 +26,7 @@ export default function InquiryPage() {
   const [companyName, setCompanyName] = useState('');
 
   const handleSubmitInquiry = async () => {
-    // Submit inquiry logic
-    alert('Inquiry submitted successfully! We will contact you within 24 hours.');
+    alert(t.inquiry.submitSuccess);
     clearInquiry();
   };
 
@@ -34,14 +35,14 @@ export default function InquiryPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto text-center">
           <MessageSquarePlus className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-4">Your Inquiry List is Empty</h1>
+          <h1 className="text-2xl font-bold mb-4">{t.inquiry.emptyTitle}</h1>
           <p className="text-gray-500 mb-8">
-            Browse products and add them to your inquiry list to send bulk inquiries to suppliers.
+            {t.inquiry.emptyDesc}
           </p>
           <Link href="/products">
             <Button size="lg" className="gap-2">
               <Plus className="h-4 w-4" />
-              Browse Products
+              {t.inquiry.browseProducts}
             </Button>
           </Link>
         </div>
@@ -53,11 +54,11 @@ export default function InquiryPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Inquiry List</h1>
-          <p className="text-gray-500">Send bulk inquiries to suppliers with your requirements</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t.inquiry.title}</h1>
+          <p className="text-gray-500">{t.inquiry.subtitle}</p>
         </div>
         <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-          {inquiryItems.length} Items
+          {inquiryItems.length} {t.inquiry.items}
         </Badge>
       </div>
 
@@ -68,7 +69,7 @@ export default function InquiryPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
-                Product List
+                {t.inquiry.productList}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -113,7 +114,7 @@ export default function InquiryPage() {
 
                         {/* Quantity Input */}
                         <div className="flex items-center gap-2">
-                          <Label className="text-sm text-gray-500">Quantity:</Label>
+                          <Label className="text-sm text-gray-500">{t.inquiry.quantity}:</Label>
                           <Input
                             type="number"
                             value={item.quantity}
@@ -127,7 +128,7 @@ export default function InquiryPage() {
 
                       {/* Price Info */}
                       <div className="text-right shrink-0">
-                        <div className="text-sm text-gray-500 mb-1">Est. Price</div>
+                        <div className="text-sm text-gray-500 mb-1">{t.inquiry.estPrice}</div>
                         <div className="font-semibold text-blue-700 tabular-nums">
                           ${((product.tierPrices[product.tierPrices.length - 1]?.price || 0) * item.quantity).toFixed(2)}
                         </div>
@@ -156,32 +157,32 @@ export default function InquiryPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Send className="h-5 w-5" />
-                Inquiry Details
+                {t.inquiry.details}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="companyName">Company Name</Label>
+                <Label htmlFor="companyName">{t.inquiry.companyName}</Label>
                 <Input
                   id="companyName"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Your company name"
+                  placeholder={t.inquiry.companyNamePlaceholder}
                 />
               </div>
 
               <div>
-                <Label htmlFor="contactName">Contact Person</Label>
+                <Label htmlFor="contactName">{t.inquiry.contactPerson}</Label>
                 <Input
                   id="contactName"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
-                  placeholder="Your name"
+                  placeholder={t.inquiry.contactNamePlaceholder}
                 />
               </div>
 
               <div>
-                <Label htmlFor="contactEmail">Email Address</Label>
+                <Label htmlFor="contactEmail">{t.inquiry.email}</Label>
                 <Input
                   id="contactEmail"
                   type="email"
@@ -192,7 +193,7 @@ export default function InquiryPage() {
               </div>
 
               <div>
-                <Label htmlFor="contactPhone">Phone Number</Label>
+                <Label htmlFor="contactPhone">{t.inquiry.phone}</Label>
                 <Input
                   id="contactPhone"
                   value={contactPhone}
@@ -202,26 +203,26 @@ export default function InquiryPage() {
               </div>
 
               <div>
-                <Label htmlFor="targetPrice">Target Price (Optional)</Label>
+                <Label htmlFor="targetPrice">{t.inquiry.targetPrice}</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
                     id="targetPrice"
                     value={targetPrice}
                     onChange={(e) => setTargetPrice(e.target.value)}
-                    placeholder="Your expected price range"
+                    placeholder={t.inquiry.targetPricePlaceholder}
                     className="pl-9"
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="requirements">Additional Requirements</Label>
+                <Label htmlFor="requirements">{t.inquiry.requirements}</Label>
                 <Textarea
                   id="requirements"
                   value={requirements}
                   onChange={(e) => setRequirements(e.target.value)}
-                  placeholder="Customization needs, delivery timeline, quality requirements..."
+                  placeholder={t.inquiry.requirementsPlaceholder}
                   rows={4}
                 />
               </div>
@@ -232,11 +233,11 @@ export default function InquiryPage() {
                 onClick={handleSubmitInquiry}
               >
                 <Send className="h-4 w-4" />
-                Send Inquiry
+                {t.inquiry.sendInquiry}
               </Button>
 
               <p className="text-xs text-gray-500 text-center">
-                Suppliers will respond within 24 hours
+                {t.inquiry.responseTime}
               </p>
             </CardContent>
           </Card>

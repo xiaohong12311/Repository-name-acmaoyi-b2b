@@ -21,8 +21,10 @@ import {
   Palette, Package, Tag, Ruler, Boxes, FileText, 
   CheckCircle, Clock, Shield, ChevronRight, Sparkles
 } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function CustomizationPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     productName: '',
     category: '',
@@ -44,7 +46,6 @@ export default function CustomizationPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = () => {
-    // In real implementation, this would submit to API
     setSubmitted(true);
   };
 
@@ -53,13 +54,10 @@ export default function CustomizationPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto text-center">
           <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-4">Custom Request Submitted!</h1>
-          <p className="text-gray-500 mb-8">
-            Thank you for your customization request. 
-            Our team will analyze your requirements and provide a customized quote within 24-48 hours.
-          </p>
+          <h1 className="text-2xl font-bold mb-4">{t.customization.submittedTitle}</h1>
+          <p className="text-gray-500 mb-8">{t.customization.submittedDesc}</p>
           <Button onClick={() => setSubmitted(false)}>
-            Submit Another Request
+            {t.customization.submitAnother}
           </Button>
         </div>
       </div>
@@ -72,14 +70,13 @@ export default function CustomizationPage() {
       <div className="max-w-3xl mx-auto mb-12 text-center">
         <Badge variant="secondary" className="bg-purple-100 text-purple-700 mb-4">
           <Sparkles className="h-3 w-3 mr-1" />
-          Custom Wholesale
+          {t.customization.badge}
         </Badge>
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Custom Product Manufacturing
+          {t.customization.title}
         </h1>
         <p className="text-gray-500 text-lg">
-          Get products customized to your exact specifications. 
-          From logo printing to full OEM/ODM solutions.
+          {t.customization.subtitle}
         </p>
       </div>
 
@@ -88,50 +85,42 @@ export default function CustomizationPage() {
         <Card className="hover:shadow-md transition-all">
           <CardContent className="p-6 text-center">
             <Tag className="h-10 w-10 text-blue-700 mx-auto mb-4" />
-            <h3 className="font-semibold mb-2">Logo Printing</h3>
-            <p className="text-sm text-gray-500">
-              Print or engrave your brand logo
-            </p>
+            <h3 className="font-semibold mb-2">{t.customization.logoPrinting}</h3>
+            <p className="text-sm text-gray-500">{t.customization.logoPrintingDesc}</p>
           </CardContent>
         </Card>
         <Card className="hover:shadow-md transition-all">
           <CardContent className="p-6 text-center">
             <Package className="h-10 w-10 text-green-600 mx-auto mb-4" />
-            <h3 className="font-semibold mb-2">Custom Packaging</h3>
-            <p className="text-sm text-gray-500">
-              Design your own packaging
-            </p>
+            <h3 className="font-semibold mb-2">{t.customization.customPackaging}</h3>
+            <p className="text-sm text-gray-500">{t.customization.customPackagingDesc}</p>
           </CardContent>
         </Card>
         <Card className="hover:shadow-md transition-all">
           <CardContent className="p-6 text-center">
             <Ruler className="h-10 w-10 text-orange-500 mx-auto mb-4" />
-            <h3 className="font-semibold mb-2">Size Modification</h3>
-            <p className="text-sm text-gray-500">
-              Adjust product dimensions
-            </p>
+            <h3 className="font-semibold mb-2">{t.customization.sizeMod}</h3>
+            <p className="text-sm text-gray-500">{t.customization.sizeModDesc}</p>
           </CardContent>
         </Card>
         <Card className="hover:shadow-md transition-all">
           <CardContent className="p-6 text-center">
             <Palette className="h-10 w-10 text-purple-600 mx-auto mb-4" />
-            <h3 className="font-semibold mb-2">Color Customization</h3>
-            <p className="text-sm text-gray-500">
-              Choose custom colors
-            </p>
+            <h3 className="font-semibold mb-2">{t.customization.colorCustom}</h3>
+            <p className="text-sm text-gray-500">{t.customization.colorCustomDesc}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Process */}
       <div className="mb-12">
-        <h2 className="text-xl font-bold mb-6 text-center">Customization Process</h2>
+        <h2 className="text-xl font-bold mb-6 text-center">{t.customization.process}</h2>
         <div className="grid md:grid-cols-4 gap-4">
           {[
-            { step: 1, title: 'Submit Request', desc: 'Fill in your requirements' },
-            { step: 2, title: 'Quote Review', desc: 'Receive pricing within 48h' },
-            { step: 3, title: 'Sample Production', desc: 'Approve samples before bulk' },
-            { step: 4, title: 'Mass Production', desc: 'Production and delivery' },
+            { step: 1, title: t.customization.step1Title, desc: t.customization.step1Desc },
+            { step: 2, title: t.customization.step2Title, desc: t.customization.step2Desc },
+            { step: 3, title: t.customization.step3Title, desc: t.customization.step3Desc },
+            { step: 4, title: t.customization.step4Title, desc: t.customization.step4Desc },
           ].map((item) => (
             <Card key={item.step}>
               <CardContent className="p-4 text-center">
@@ -149,46 +138,44 @@ export default function CustomizationPage() {
       {/* Application Form */}
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>Custom Request Form</CardTitle>
-          <CardDescription>
-            Describe your customization requirements. Our team will provide a tailored solution.
-          </CardDescription>
+          <CardTitle>{t.customization.formTitle}</CardTitle>
+          <CardDescription>{t.customization.formDesc}</CardDescription>
         </CardHeader>
         <CardContent className="p-6 space-y-8">
           {/* Product Information */}
           <div>
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <Boxes className="h-5 w-5 text-blue-700" />
-              Product Information
+              {t.customization.productInfo}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="productName">Product Name *</Label>
+                <Label htmlFor="productName">{t.customization.productName} *</Label>
                 <Input
                   id="productName"
                   value={formData.productName}
                   onChange={(e) => setFormData({...formData, productName: e.target.value})}
-                  placeholder="What product do you want to customize?"
+                  placeholder={t.customization.productNamePlaceholder}
                 />
               </div>
               <div>
-                <Label htmlFor="category">Product Category *</Label>
+                <Label htmlFor="category">{t.customization.productCategory} *</Label>
                 <Select value={formData.category} onValueChange={(v) => setFormData({...formData, category: v})}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder={t.customization.selectCategory} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="packaging">Packaging & Shipping</SelectItem>
-                    <SelectItem value="electronics">Electronics</SelectItem>
-                    <SelectItem value="textiles">Textiles & Apparel</SelectItem>
-                    <SelectItem value="food">Food & Beverage</SelectItem>
-                    <SelectItem value="furniture">Furniture & Home</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="packaging">{t.customization.catPackaging}</SelectItem>
+                    <SelectItem value="electronics">{t.customization.catElectronics}</SelectItem>
+                    <SelectItem value="textiles">{t.customization.catTextiles}</SelectItem>
+                    <SelectItem value="food">{t.customization.catFood}</SelectItem>
+                    <SelectItem value="furniture">{t.customization.catFurniture}</SelectItem>
+                    <SelectItem value="other">{t.customization.catOther}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="quantity">Estimated Quantity *</Label>
+                <Label htmlFor="quantity">{t.customization.estQuantity} *</Label>
                 <Input
                   id="quantity"
                   type="number"
@@ -198,10 +185,10 @@ export default function CustomizationPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="budget">Budget Range (USD) *</Label>
+                <Label htmlFor="budget">{t.customization.budgetRange} *</Label>
                 <Select value={formData.budget} onValueChange={(v) => setFormData({...formData, budget: v})}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select budget" />
+                    <SelectValue placeholder={t.customization.selectBudget} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1-5k">$1,000 - $5,000</SelectItem>
@@ -218,25 +205,25 @@ export default function CustomizationPage() {
           <div>
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-blue-700" />
-              Customization Requirements
+              {t.customization.customReqs}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="customizationType">Customization Type *</Label>
+                <Label htmlFor="customizationType">{t.customization.customType} *</Label>
                 <Select value={formData.customizationType} onValueChange={(v) => setFormData({...formData, customizationType: v})}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
+                    <SelectValue placeholder={t.customization.selectType} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="logo">Logo Printing Only</SelectItem>
-                    <SelectItem value="packaging">Custom Packaging</SelectItem>
-                    <SelectItem value="partial">Partial OEM</SelectItem>
-                    <SelectItem value="full">Full OEM/ODM</SelectItem>
+                    <SelectItem value="logo">{t.customization.typeLogo}</SelectItem>
+                    <SelectItem value="packaging">{t.customization.typePackaging}</SelectItem>
+                    <SelectItem value="partial">{t.customization.typePartial}</SelectItem>
+                    <SelectItem value="full">{t.customization.typeFull}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="deadline">Expected Deadline</Label>
+                <Label htmlFor="deadline">{t.customization.expectedDeadline}</Label>
                 <Input
                   id="deadline"
                   type="date"
@@ -245,50 +232,50 @@ export default function CustomizationPage() {
                 />
               </div>
               <div className="md:col-span-2">
-                <Label htmlFor="logoRequirement">Logo Requirements</Label>
+                <Label htmlFor="logoRequirement">{t.customization.logoReqs}</Label>
                 <Textarea
                   id="logoRequirement"
                   value={formData.logoRequirement}
                   onChange={(e) => setFormData({...formData, logoRequirement: e.target.value})}
-                  placeholder="Describe your logo requirements (size, position, printing method...)"
+                  placeholder={t.customization.logoReqsPlaceholder}
                   rows={2}
                 />
               </div>
               <div className="md:col-span-2">
-                <Label htmlFor="packagingRequirement">Packaging Requirements</Label>
+                <Label htmlFor="packagingRequirement">{t.customization.packagingReqs}</Label>
                 <Textarea
                   id="packagingRequirement"
                   value={formData.packagingRequirement}
                   onChange={(e) => setFormData({...formData, packagingRequirement: e.target.value})}
-                  placeholder="Describe packaging needs (material, design, labels...)"
+                  placeholder={t.customization.packagingReqsPlaceholder}
                   rows={2}
                 />
               </div>
               <div>
-                <Label htmlFor="sizeRequirement">Size Requirements</Label>
+                <Label htmlFor="sizeRequirement">{t.customization.sizeReqs}</Label>
                 <Input
                   id="sizeRequirement"
                   value={formData.sizeRequirement}
                   onChange={(e) => setFormData({...formData, sizeRequirement: e.target.value})}
-                  placeholder="e.g., 10x15cm, custom dimensions"
+                  placeholder={t.customization.sizeReqsPlaceholder}
                 />
               </div>
               <div>
-                <Label htmlFor="materialRequirement">Material Requirements</Label>
+                <Label htmlFor="materialRequirement">{t.customization.materialReqs}</Label>
                 <Input
                   id="materialRequirement"
                   value={formData.materialRequirement}
                   onChange={(e) => setFormData({...formData, materialRequirement: e.target.value})}
-                  placeholder="e.g., PLA, recyclable paper"
+                  placeholder={t.customization.materialReqsPlaceholder}
                 />
               </div>
               <div>
-                <Label htmlFor="colorRequirement">Color Requirements</Label>
+                <Label htmlFor="colorRequirement">{t.customization.colorReqs}</Label>
                 <Input
                   id="colorRequirement"
                   value={formData.colorRequirement}
                   onChange={(e) => setFormData({...formData, colorRequirement: e.target.value})}
-                  placeholder="e.g., Navy blue, custom Pantone"
+                  placeholder={t.customization.colorReqsPlaceholder}
                 />
               </div>
             </div>
@@ -298,15 +285,15 @@ export default function CustomizationPage() {
           <div>
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <FileText className="h-5 w-5 text-blue-700" />
-              Additional Details
+              {t.customization.additionalDetails}
             </h3>
             <div>
-              <Label htmlFor="additionalRequirements">Other Requirements</Label>
+              <Label htmlFor="additionalRequirements">{t.customization.otherReqs}</Label>
               <Textarea
                 id="additionalRequirements"
                 value={formData.additionalRequirements}
                 onChange={(e) => setFormData({...formData, additionalRequirements: e.target.value})}
-                placeholder="Any other specific requirements, certifications needed, quality standards..."
+                placeholder={t.customization.otherReqsPlaceholder}
                 rows={4}
               />
             </div>
@@ -316,20 +303,20 @@ export default function CustomizationPage() {
           <div>
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <FileText className="h-5 w-5 text-blue-700" />
-              Contact Information
+              {t.customization.contactInfo}
             </h3>
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="contactName">Contact Name *</Label>
+                <Label htmlFor="contactName">{t.customization.contactName} *</Label>
                 <Input
                   id="contactName"
                   value={formData.contactName}
                   onChange={(e) => setFormData({...formData, contactName: e.target.value})}
-                  placeholder="Your name"
+                  placeholder={t.customization.contactNamePlaceholder}
                 />
               </div>
               <div>
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email">{t.customization.email} *</Label>
                 <Input
                   id="email"
                   type="email"
@@ -339,7 +326,7 @@ export default function CustomizationPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="phone">Phone *</Label>
+                <Label htmlFor="phone">{t.customization.phone} *</Label>
                 <Input
                   id="phone"
                   value={formData.phone}
@@ -354,7 +341,7 @@ export default function CustomizationPage() {
           <div className="flex items-center justify-between pt-6 border-t">
             <div className="text-sm text-gray-500 flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              Response within 24-48 hours
+              {t.customization.responseTime}
             </div>
             <Dialog>
               <DialogTrigger asChild>
@@ -362,27 +349,27 @@ export default function CustomizationPage() {
                   size="lg" 
                   className="gap-2 bg-purple-600 hover:bg-purple-700"
                 >
-                  Submit Custom Request
+                  {t.customization.submitRequest}
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Confirm Submission</DialogTitle>
+                  <DialogTitle>{t.customization.confirmTitle}</DialogTitle>
                   <DialogDescription>
-                    Please review your customization request.
+                    {t.customization.confirmDesc}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-2">
-                  <p><strong>Product:</strong> {formData.productName}</p>
-                  <p><strong>Category:</strong> {formData.category}</p>
-                  <p><strong>Quantity:</strong> {formData.quantity}</p>
-                  <p><strong>Customization:</strong> {formData.customizationType}</p>
-                  <p><strong>Budget:</strong> {formData.budget}</p>
+                  <p><strong>{t.customization.productName}:</strong> {formData.productName}</p>
+                  <p><strong>{t.customization.productCategory}:</strong> {formData.category}</p>
+                  <p><strong>{t.customization.estQuantity}:</strong> {formData.quantity}</p>
+                  <p><strong>{t.customization.customType}:</strong> {formData.customizationType}</p>
+                  <p><strong>{t.customization.budgetRange}:</strong> {formData.budget}</p>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline">Cancel</Button>
-                  <Button onClick={handleSubmit} className="bg-purple-600 hover:bg-purple-700">Submit Request</Button>
+                  <Button variant="outline">{t.common.cancel}</Button>
+                  <Button onClick={handleSubmit} className="bg-purple-600 hover:bg-purple-700">{t.customization.submitBtn}</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -392,17 +379,15 @@ export default function CustomizationPage() {
 
       {/* Benefits */}
       <div className="max-w-3xl mx-auto mt-12">
-        <h2 className="text-xl font-bold mb-6">Customization Benefits</h2>
+        <h2 className="text-xl font-bold mb-6">{t.customization.benefits}</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-start gap-3">
                 <Shield className="h-6 w-6 text-green-500 shrink-0" />
                 <div>
-                  <h4 className="font-medium mb-2">Quality Guarantee</h4>
-                  <p className="text-sm text-gray-600">
-                    All customized products undergo quality inspection before shipment.
-                  </p>
+                  <h4 className="font-medium mb-2">{t.customization.qualityGuarantee}</h4>
+                  <p className="text-sm text-gray-600">{t.customization.qualityGuaranteeDesc}</p>
                 </div>
               </div>
             </CardContent>
@@ -412,10 +397,8 @@ export default function CustomizationPage() {
               <div className="flex items-start gap-3">
                 <Clock className="h-6 w-6 text-blue-700 shrink-0" />
                 <div>
-                  <h4 className="font-medium mb-2">Fast Turnaround</h4>
-                  <p className="text-sm text-gray-600">
-                    Sample production within 7-10 days, bulk orders based on quantity.
-                  </p>
+                  <h4 className="font-medium mb-2">{t.customization.fastTurnaround}</h4>
+                  <p className="text-sm text-gray-600">{t.customization.fastTurnaroundDesc}</p>
                 </div>
               </div>
             </CardContent>

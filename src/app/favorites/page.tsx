@@ -8,11 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { useFavorites, useSampleCart, useInquiry } from '@/hooks/use-b2b-store';
 import { getProductById, getSupplierById } from '@/data/mock';
 import { Heart, Trash2, ShoppingCart, MessageSquarePlus, Plus } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function FavoritesPage() {
   const { favorites, removeFromFavorites } = useFavorites();
   const { addToSampleCart } = useSampleCart();
   const { addToInquiry } = useInquiry();
+  const { t } = useLanguage();
 
   const handleAddAllToInquiry = () => {
     favorites.forEach(item => {
@@ -28,14 +30,14 @@ export default function FavoritesPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto text-center">
           <Heart className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-4">Your Favorites List is Empty</h1>
+          <h1 className="text-2xl font-bold mb-4">{t.favorites.emptyTitle}</h1>
           <p className="text-gray-500 mb-8">
-            Browse products and save your favorites for easy access later.
+            {t.favorites.emptyDesc}
           </p>
           <Link href="/products">
             <Button size="lg" className="gap-2">
               <Plus className="h-4 w-4" />
-              Browse Products
+              {t.favorites.browseProducts}
             </Button>
           </Link>
         </div>
@@ -47,16 +49,16 @@ export default function FavoritesPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Favorites</h1>
-          <p className="text-gray-500">Products you&apos;ve saved for later</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t.favorites.title}</h1>
+          <p className="text-gray-500">{t.favorites.subtitle}</p>
         </div>
         <div className="flex gap-2">
           <Badge variant="secondary" className="bg-red-100 text-red-700">
-            {favorites.length} Items
+            {favorites.length} {t.favorites.items}
           </Badge>
           <Button variant="outline" className="gap-2" onClick={handleAddAllToInquiry}>
             <MessageSquarePlus className="h-4 w-4" />
-            Add All to Inquiry
+            {t.favorites.addAllToInquiry}
           </Button>
         </div>
       </div>
@@ -89,12 +91,12 @@ export default function FavoritesPage() {
                 <div className="absolute top-2 left-2 flex flex-col gap-1">
                   {product.sampleAvailable && (
                     <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
-                      Sample Available
+                      {t.favorites.sampleAvailable}
                     </Badge>
                   )}
                   {product.customizationAvailable && (
                     <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
-                      Customizable
+                      {t.favorites.customizable}
                     </Badge>
                   )}
                 </div>
@@ -135,14 +137,14 @@ export default function FavoritesPage() {
 
                 {/* Price */}
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm text-gray-600">Price</span>
+                  <span className="text-sm text-gray-600">{t.favorites.price}</span>
                   <div className="text-right">
                     <span className="font-semibold text-blue-700 tabular-nums">
                       ${lowestPrice.toFixed(2)}
                     </span>
                     {lowestPrice < highestPrice && (
                       <span className="text-xs text-gray-400 ml-1">
-                        from
+                        {t.favorites.from}
                       </span>
                     )}
                   </div>
@@ -164,7 +166,7 @@ export default function FavoritesPage() {
                       }}
                     >
                       <ShoppingCart className="h-3 w-3" />
-                      Add Sample
+                      {t.favorites.addSample}
                     </Button>
                   )}
                   <Button 
@@ -174,7 +176,7 @@ export default function FavoritesPage() {
                     onClick={() => addToInquiry(product, product.moq)}
                   >
                     <MessageSquarePlus className="h-3 w-3" />
-                    Add Inquiry
+                    {t.favorites.addInquiry}
                   </Button>
                 </div>
               </CardContent>

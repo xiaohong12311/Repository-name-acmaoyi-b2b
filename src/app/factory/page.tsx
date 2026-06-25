@@ -7,8 +7,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { mockSuppliers } from '@/data/mock';
 import { Factory, Award, Users, Globe, Shield, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function FactoryPage() {
+  const { t } = useLanguage();
   // Get featured suppliers for factory showcase
   const featuredSuppliers = mockSuppliers.filter(s => s.verified).slice(0, 4);
 
@@ -18,19 +20,18 @@ export default function FactoryPage() {
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-12 mb-12">
         <div className="max-w-2xl">
           <Badge variant="secondary" className="bg-blue-100 text-blue-700 mb-4">
-            Factory Showcase
+            {t.factory.badge}
           </Badge>
           <h1 className="text-3xl font-bold text-white mb-4">
-            Explore Verified Manufacturers
+            {t.factory.heroTitle}
           </h1>
           <p className="text-gray-300 text-lg mb-6">
-            Discover certified factories and manufacturers with quality assurance. 
-            Our verified suppliers undergo rigorous quality checks and certification verification.
+            {t.factory.heroDesc}
           </p>
           <Link href="/suppliers">
             <Button size="lg" className="gap-2">
               <Globe className="h-4 w-4" />
-              Browse All Suppliers
+              {t.factory.browseSuppliers}
             </Button>
           </Link>
         </div>
@@ -38,41 +39,41 @@ export default function FactoryPage() {
 
       {/* Why Choose Verified Suppliers */}
       <div className="mb-12">
-        <h2 className="text-xl font-bold mb-6">Why Choose Verified Suppliers?</h2>
+        <h2 className="text-xl font-bold mb-6">{t.factory.whyChooseTitle}</h2>
         <div className="grid md:grid-cols-4 gap-6">
           <Card className="bg-gray-50">
             <CardContent className="p-6 text-center">
               <Shield className="h-10 w-10 text-green-600 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Quality Guaranteed</h3>
+              <h3 className="font-semibold mb-2">{t.factory.qualityGuaranteed}</h3>
               <p className="text-sm text-gray-500">
-                Rigorous quality control and product inspection
+                {t.factory.qualityControlDesc}
               </p>
             </CardContent>
           </Card>
           <Card className="bg-gray-50">
             <CardContent className="p-6 text-center">
               <Award className="h-10 w-10 text-blue-700 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Certified Facilities</h3>
+              <h3 className="font-semibold mb-2">{t.factory.certifiedFacilities}</h3>
               <p className="text-sm text-gray-500">
-                ISO, CE, FDA and other certifications verified
+                {t.factory.certifiedDesc}
               </p>
             </CardContent>
           </Card>
           <Card className="bg-gray-50">
             <CardContent className="p-6 text-center">
               <Factory className="h-10 w-10 text-orange-500 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Direct Factory Access</h3>
+              <h3 className="font-semibold mb-2">{t.factory.directAccess}</h3>
               <p className="text-sm text-gray-500">
-                Source directly from manufacturers
+                {t.factory.directAccessDesc}
               </p>
             </CardContent>
           </Card>
           <Card className="bg-gray-50">
             <CardContent className="p-6 text-center">
               <Users className="h-10 w-10 text-purple-600 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Experienced Teams</h3>
+              <h3 className="font-semibold mb-2">{t.factory.experiencedTeams}</h3>
               <p className="text-sm text-gray-500">
-                Professional production and quality teams
+                {t.factory.experiencedTeamsDesc}
               </p>
             </CardContent>
           </Card>
@@ -81,7 +82,7 @@ export default function FactoryPage() {
 
       {/* Featured Factories */}
       <div className="mb-12">
-        <h2 className="text-xl font-bold mb-6">Featured Factories</h2>
+        <h2 className="text-xl font-bold mb-6">{t.factory.featuredTitle}</h2>
         <div className="grid md:grid-cols-2 gap-8">
           {featuredSuppliers.map(supplier => (
             <Link key={supplier.id} href={`/suppliers/${supplier.id}`}>
@@ -101,7 +102,7 @@ export default function FactoryPage() {
                       {supplier.verified && (
                         <Badge variant="secondary" className="bg-green-100 text-green-700">
                           <CheckCircle className="h-3 w-3 mr-1" />
-                          Verified
+                          {t.factory.verified}
                         </Badge>
                       )}
                       <Badge variant="secondary" className="bg-white/20 text-white">
@@ -122,19 +123,19 @@ export default function FactoryPage() {
                       <div className="text-2xl font-bold text-blue-700 tabular-nums">
                         {supplier.employees}
                       </div>
-                      <div className="text-xs text-gray-500">Employees</div>
+                      <div className="text-xs text-gray-500">{t.factory.employees}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-700 tabular-nums">
                         {supplier.yearsInBusiness}
                       </div>
-                      <div className="text-xs text-gray-500">Years</div>
+                      <div className="text-xs text-gray-500">{t.factory.years}</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-700 tabular-nums">
                         {supplier.productCount}
                       </div>
-                      <div className="text-xs text-gray-500">Products</div>
+                      <div className="text-xs text-gray-500">{t.factory.products}</div>
                     </div>
                   </div>
                   
@@ -155,13 +156,13 @@ export default function FactoryPage() {
 
       {/* Factory Features */}
       <div className="mb-12">
-        <h2 className="text-xl font-bold mb-6">Factory Capabilities</h2>
+        <h2 className="text-xl font-bold mb-6">{t.factory.capabilitiesTitle}</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <Card>
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Production Capacity</h3>
+              <h3 className="font-semibold mb-4">{t.factory.productionCapacity}</h3>
               <div className="space-y-3">
-                {['Large-scale production capability', 'Modern machinery and equipment', 'Flexible production scheduling', 'Quality control checkpoints'].map((item, i) => (
+                {t.factory.productionItems.map((item: string, i: number) => (
                   <div key={i} className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-500" />
                     <span className="text-gray-600">{item}</span>
@@ -172,9 +173,9 @@ export default function FactoryPage() {
           </Card>
           <Card>
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Quality Assurance</h3>
+              <h3 className="font-semibold mb-4">{t.factory.qualityAssurance}</h3>
               <div className="space-y-3">
-                {['ISO 9001 quality management', 'Product testing protocols', 'Defect detection systems', 'Compliance documentation'].map((item, i) => (
+                {t.factory.qualityItems.map((item: string, i: number) => (
                   <div key={i} className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-500" />
                     <span className="text-gray-600">{item}</span>
@@ -185,9 +186,9 @@ export default function FactoryPage() {
           </Card>
           <Card>
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Support Services</h3>
+              <h3 className="font-semibold mb-4">{t.factory.supportServices}</h3>
               <div className="space-y-3">
-                {['OEM/ODM services available', 'Custom packaging solutions', 'Technical documentation', 'After-sales support'].map((item, i) => (
+                {t.factory.supportItems.map((item: string, i: number) => (
                   <div key={i} className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-500" />
                     <span className="text-gray-600">{item}</span>
@@ -202,21 +203,21 @@ export default function FactoryPage() {
       {/* CTA */}
       <Card className="bg-blue-700 text-white">
         <CardContent className="p-8 text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to Source Directly from Factories?</h2>
+          <h2 className="text-2xl font-bold mb-4">{t.factory.ctaTitle}</h2>
           <p className="mb-6 text-blue-100">
-            Join our platform to connect with verified manufacturers and get the best wholesale prices.
+            {t.factory.ctaDesc}
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/suppliers">
               <Button variant="secondary" size="lg" className="gap-2">
                 <Globe className="h-4 w-4" />
-                Browse Suppliers
+                {t.factory.browseSuppliers}
               </Button>
             </Link>
             <Link href="/supplier-join">
               <Button variant="outline" size="lg" className="bg-white text-blue-700 hover:bg-blue-50 gap-2">
                 <Factory className="h-4 w-4" />
-                Become a Supplier
+                {t.factory.becomeSupplier}
               </Button>
             </Link>
           </div>

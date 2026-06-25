@@ -30,8 +30,10 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function HomePage() {
+  const { t } = useLanguage();
   const companyInfo = getCompanyInfo();
   // Featured products (top 4)
   const featuredProducts = mockProducts.slice(0, 4);
@@ -63,19 +65,19 @@ export default function HomePage() {
         <div className="container mx-auto px-4 relative">
           <div className="max-w-3xl mx-auto text-center">
             <Badge className="bg-white/20 text-white border-0 mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 text-sm">
-              Professional B2B Wholesale Platform
+              {t.home.heroBadge}
             </Badge>
             <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
-              {companyInfo.name} - Quality Wholesale Solutions
+              {companyInfo.name} - {t.home.heroTitle}
               <br />
-              <span className="text-blue-200">Connecting Global Buyers & Suppliers</span>
+              <span className="text-blue-200">{t.home.heroSubtitle}</span>
             </h1>
             {/* Search Bar - replaces description text and CTA buttons */}
             <form onSubmit={handleSearch} className="max-w-xl mx-auto mt-6 md:mt-8">
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Search products, suppliers, categories..."
+                  placeholder={t.home.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full h-12 md:h-14 pl-12 pr-4 rounded-full text-gray-900 bg-white/95 backdrop-blur border-0 focus:ring-2 focus:ring-blue-300 text-base"
@@ -92,10 +94,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { icon: TrendingUp, title: 'Tiered Pricing', desc: 'Bulk discounts available', link: '/products' },
-              { icon: ShoppingCart, title: 'Sample Cart', desc: 'Request samples first', link: '/sample-cart' },
-              { icon: MessageSquarePlus, title: 'Inquiry', desc: 'Send inquiries easily', link: '/inquiry' },
-              { icon: Factory, title: 'Factory Direct', desc: 'Quality guaranteed', link: '/factory' },
+              { icon: TrendingUp, title: t.home.tieredPricing, desc: t.home.tieredPricingDesc, link: '/products' },
+              { icon: ShoppingCart, title: t.home.sampleCart, desc: t.home.sampleCartDesc, link: '/sample-cart' },
+              { icon: MessageSquarePlus, title: t.home.inquiry, desc: t.home.inquiryDesc, link: '/inquiry' },
+              { icon: Factory, title: t.home.factoryDirect, desc: t.home.factoryDirectDesc, link: '/factory' },
             ].map((feature, index) => (
               <Link 
                 key={index}
@@ -122,12 +124,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Categories</h2>
-              <p className="text-gray-500">Find products by industry quickly</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.home.categories}</h2>
+              <p className="text-gray-500">{t.home.categoriesDesc}</p>
             </div>
             <Link href="/products">
               <Button variant="outline" className="gap-2">
-                View All
+                {t.home.viewAll}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -164,12 +166,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Featured Wholesale Products</h2>
-              <p className="text-gray-500">Clear tiered pricing, better bulk discounts</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.home.featuredProducts}</h2>
+              <p className="text-gray-500">{t.home.featuredProductsDesc}</p>
             </div>
             <Link href="/products">
               <Button variant="outline" className="gap-2">
-                View All Products
+                {t.home.viewAllProducts}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -188,12 +190,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Verified Suppliers</h2>
-              <p className="text-gray-500">Rigorously vetted quality suppliers</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.home.verifiedSuppliers}</h2>
+              <p className="text-gray-500">{t.home.verifiedSuppliersDesc}</p>
             </div>
             <Link href="/suppliers">
               <Button variant="outline" className="gap-2">
-                View All Suppliers
+                {t.home.viewAllSuppliers}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -210,35 +212,35 @@ export default function HomePage() {
       {/* Additional Features */}
       <section className="py-16 bg-blue-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">More Core Features</h2>
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">{t.home.moreCoreFeatures}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: Heart,
-                title: 'Favorites',
-                desc: 'Save products for later inquiries',
+                title: t.home.favorites,
+                desc: t.home.favoritesDesc,
                 link: '/favorites',
                 color: 'text-red-500 bg-red-100',
               },
               {
                 icon: Building2,
-                title: 'Supplier Portal',
-                desc: 'Manufacturers showcase products',
+                title: t.home.supplierPortal,
+                desc: t.home.supplierPortalDesc,
                 link: '/supplier-join',
                 color: 'text-green-600 bg-green-100',
               },
               {
                 icon: Download,
-                title: 'Get Catalog',
-                desc: 'Download product catalog PDF',
+                title: t.home.getCatalog,
+                desc: t.home.getCatalogDesc,
                 link: '/catalog',
                 color: 'text-blue-600 bg-blue-100',
               },
               {
                 icon: Factory,
-                title: 'Custom Wholesale',
-                desc: 'Logo, packaging & specs customization',
+                title: t.home.customWholesale,
+                desc: t.home.customWholesaleDesc,
                 link: '/customization',
                 color: 'text-purple-600 bg-purple-100',
               },
@@ -268,28 +270,28 @@ export default function HomePage() {
                 <CheckCircle className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
-              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.verifiedSuppliers}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-100 text-blue-600 mb-2">
                 <Globe className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
-              <div className="text-xs md:text-sm text-gray-500">Countries Served</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.countriesServed}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-100 text-yellow-600 mb-2">
                 <Star className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">98%</div>
-              <div className="text-xs md:text-sm text-gray-500">Customer Satisfaction</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.customerSatisfaction}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-100 text-purple-600 mb-2">
                 <Users className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">1000+</div>
-              <div className="text-xs md:text-sm text-gray-500">Active Buyers</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.activeBuyers}</div>
             </div>
           </div>
         </div>
@@ -304,28 +306,28 @@ export default function HomePage() {
                 <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
-              <div className="text-xs md:text-sm text-gray-500">Verified Agents</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.verifiedAgents}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
                 <TrendingUp className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">5,000+</div>
-              <div className="text-xs md:text-sm text-gray-500">Wholesale Products</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.wholesaleProducts}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
                 <Clock className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">24h</div>
-              <div className="text-xs md:text-sm text-gray-500">Quick Response</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.quickResponse}</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
                 <Truck className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">Global</div>
-              <div className="text-xs md:text-sm text-gray-500">Shipping Coverage</div>
+              <div className="text-xs md:text-sm text-gray-500">{t.home.shippingCoverage}</div>
             </div>
           </div>
         </div>
@@ -334,19 +336,19 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-r from-blue-700 to-blue-900 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Start Wholesale Procurement?</h2>
+          <h2 className="text-3xl font-bold mb-4">{t.home.ctaTitle}</h2>
           <p className="text-blue-100 mb-8 max-w-xl mx-auto">
-            Register as a buyer to enjoy tiered pricing, sample requests, custom wholesale and exclusive services
+            {t.home.ctaDescription}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/products">
               <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
-                Start Shopping
+                {t.home.startShopping}
               </Button>
             </Link>
             <Link href="/supplier-join">
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                Become a Supplier
+                {t.home.becomeSupplier}
               </Button>
             </Link>
           </div>
