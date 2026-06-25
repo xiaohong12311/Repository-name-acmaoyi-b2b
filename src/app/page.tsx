@@ -23,7 +23,10 @@ import {
   Globe,
   Users,
   Star,
-  Search
+  Search,
+  ShieldCheck,
+  Clock,
+  Truck
 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -287,6 +290,42 @@ export default function HomePage() {
               </div>
               <div className="text-xl md:text-2xl font-bold text-gray-900">1000+</div>
               <div className="text-xs md:text-sm text-gray-500">Active Buyers</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Stats */}
+      <section className="py-8 md:py-12 bg-blue-50 border-t border-b">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
+                <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
+              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
+                <TrendingUp className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">5,000+</div>
+              <div className="text-xs md:text-sm text-gray-500">Wholesale Products</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
+                <Clock className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">24h</div>
+              <div className="text-xs md:text-sm text-gray-500">Quick Response</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
+                <Truck className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">Global</div>
+              <div className="text-xs md:text-sm text-gray-500">Shipping Coverage</div>
             </div>
           </div>
         </div>
