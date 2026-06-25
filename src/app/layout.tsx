@@ -12,7 +12,7 @@ const seoConfig = getSeoConfig();
 export const metadata: Metadata = {
   title: {
     default: seoConfig.siteTitle,
-    template: `%s | Acmaoyi`,
+    template: `%s | 专业BtoB批发平台`,
   },
   description: seoConfig.siteDescription,
   keywords: seoConfig.keywords.split(', '),

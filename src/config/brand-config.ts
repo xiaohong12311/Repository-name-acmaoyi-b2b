@@ -52,7 +52,7 @@ export const brandConfig = {
 
   // ========== SEO 配置 ==========
   seo: {
-    siteTitle: 'Acmaoyi - B2B Beauty Wholesale Platform',
+    siteTitle: 'Acmaoyi - 专业BtoB批发平台',
     siteDescription: 'Professional B2B wholesale platform for beauty products. Connect with verified suppliers, get competitive wholesale prices, and enjoy global shipping.',
     keywords: 'B2B wholesale, beauty products, cosmetics wholesale, skincare wholesale, beauty supplier, wholesale platform',
   },
