@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useB2BStore } from '@/hooks/use-b2b-store';
@@ -29,9 +30,14 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 text-white font-bold text-lg">
-            A
-          </div>
+          <Image
+            src="/logo.jpg"
+            alt={companyInfo.name}
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-lg object-contain"
+            priority
+          />
           <span className="hidden sm:inline-block font-bold text-lg text-gray-900">
             {companyInfo.name}
           </span>
