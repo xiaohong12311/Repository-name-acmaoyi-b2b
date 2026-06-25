@@ -267,8 +267,8 @@ export default function HomePage() {
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-100 text-green-600 mb-2">
                 <CheckCircle className="h-5 w-5 md:h-6 md:w-6" />
               </div>
-              <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
-              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
+              <div className="text-xs md:text-sm text-gray-500">Verified Agents</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-100 text-blue-600 mb-2">
@@ -303,8 +303,8 @@ export default function HomePage() {
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
                 <ShieldCheck className="h-5 w-5 md:h-6 md:w-6" />
               </div>
-              <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
-              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
+              <div className="text-xs md:text-sm text-gray-500">Verified Agents</div>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-blue-600 mb-2 shadow-sm">
