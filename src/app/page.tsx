@@ -18,9 +18,6 @@ import {
   Building2, 
   Factory,
   TrendingUp,
-  ShieldCheck,
-  Clock,
-  Truck,
   ArrowRight,
   CheckCircle,
   Globe,
@@ -83,42 +80,6 @@ export default function HomePage() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
               </div>
             </form>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Indicators - 品牌信任度展示 */}
-      <section className="py-8 md:py-12 bg-white border-b">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
-            <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-100 text-green-600 mb-2">
-                <CheckCircle className="h-5 w-5 md:h-6 md:w-6" />
-              </div>
-              <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
-              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-100 text-blue-600 mb-2">
-                <Globe className="h-5 w-5 md:h-6 md:w-6" />
-              </div>
-              <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
-              <div className="text-xs md:text-sm text-gray-500">Countries Served</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-100 text-yellow-600 mb-2">
-                <Star className="h-5 w-5 md:h-6 md:w-6" />
-              </div>
-              <div className="text-xl md:text-2xl font-bold text-gray-900">98%</div>
-              <div className="text-xs md:text-sm text-gray-500">Customer Satisfaction</div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-100 text-purple-600 mb-2">
-                <Users className="h-5 w-5 md:h-6 md:w-6" />
-              </div>
-              <div className="text-xl md:text-2xl font-bold text-gray-900">1000+</div>
-              <div className="text-xs md:text-sm text-gray-500">Active Buyers</div>
-            </div>
           </div>
         </div>
       </section>
@@ -296,21 +257,37 @@ export default function HomePage() {
       </section>
 
       {/* Trust Section */}
-      <section className="py-16 bg-white border-t">
+      <section className="py-8 md:py-12 bg-white border-t border-b">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { icon: ShieldCheck, value: '100+', label: 'Verified Suppliers' },
-              { icon: TrendingUp, value: '5,000+', label: 'Wholesale Products' },
-              { icon: Clock, value: '24h', label: 'Quick Response' },
-              { icon: Truck, value: 'Global', label: 'Shipping Coverage' },
-            ].map((stat, index) => (
-              <div key={index}>
-                <stat.icon className="h-8 w-8 text-blue-700 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-500">{stat.label}</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-100 text-green-600 mb-2">
+                <CheckCircle className="h-5 w-5 md:h-6 md:w-6" />
               </div>
-            ))}
+              <div className="text-xl md:text-2xl font-bold text-gray-900">100+</div>
+              <div className="text-xs md:text-sm text-gray-500">Verified Suppliers</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-100 text-blue-600 mb-2">
+                <Globe className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">50+</div>
+              <div className="text-xs md:text-sm text-gray-500">Countries Served</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-100 text-yellow-600 mb-2">
+                <Star className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">98%</div>
+              <div className="text-xs md:text-sm text-gray-500">Customer Satisfaction</div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-100 text-purple-600 mb-2">
+                <Users className="h-5 w-5 md:h-6 md:w-6" />
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-gray-900">1000+</div>
+              <div className="text-xs md:text-sm text-gray-500">Active Buyers</div>
+            </div>
           </div>
         </div>
       </section>
