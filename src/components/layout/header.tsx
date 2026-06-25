@@ -25,14 +25,14 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+    <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 text-white font-bold text-lg">
             A
           </div>
-          <span className="hidden sm:inline-block font-semibold text-lg text-gray-900">
+          <span className="hidden sm:inline-block font-bold text-lg text-gray-900">
             {companyInfo.name}
           </span>
         </Link>
@@ -44,7 +44,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                'text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors'
+                'text-sm font-bold text-gray-900 hover:text-blue-700 transition-colors'
               )}
             >
               {link.label}
@@ -57,7 +57,7 @@ export function Header() {
           {/* Favorites */}
           <Link href="/favorites">
             <Button variant="ghost" size="icon" className="relative">
-              <Heart className="h-5 w-5" />
+              <Heart className="h-5 w-5 text-gray-900" />
               {favorites.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-700 text-white">
                   {favorites.length}
@@ -69,7 +69,7 @@ export function Header() {
           {/* Sample Cart */}
           <Link href="/sample-cart">
             <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="h-5 w-5 text-gray-900" />
               {sampleCart.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-green-600 text-white">
                   {sampleCart.length}
@@ -81,7 +81,7 @@ export function Header() {
           {/* Inquiry */}
           <Link href="/inquiry">
             <Button variant="ghost" size="icon" className="relative">
-              <MessageSquarePlus className="h-5 w-5" />
+              <MessageSquarePlus className="h-5 w-5 text-gray-900" />
               {inquiryItems.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-amber-500 text-white">
                   {inquiryItems.length}
@@ -97,7 +97,7 @@ export function Header() {
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5 text-gray-900" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-300px p-4">
@@ -107,7 +107,7 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors py-2"
+                    className="text-sm font-bold text-gray-900 hover:text-blue-700 transition-colors py-2"
                   >
                     {link.label}
                   </Link>
