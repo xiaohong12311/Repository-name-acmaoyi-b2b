@@ -65,7 +65,7 @@ export default function HomePage() {
             <Badge className="bg-white/20 text-white border-0 mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 text-sm">
               Professional B2B Wholesale Platform
             </Badge>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight text-orange-600">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
               {companyInfo.name} - Quality Wholesale Solutions
               <br />
               <span className="text-blue-200">Connecting Global Buyers & Suppliers</span>
