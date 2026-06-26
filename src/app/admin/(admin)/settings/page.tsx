@@ -132,23 +132,17 @@ export default function AdminSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div>
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6 flex items-center gap-4">
-          <Link href="/admin/dashboard">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              返回后台
-            </Button>
-          </Link>
-          <h1 className="text-2xl font-bold">网站设置</h1>
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground">网站设置</h1>
         </div>
 
         {error && (
