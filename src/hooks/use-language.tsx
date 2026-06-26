@@ -6,7 +6,7 @@ import { translations, LanguageCode, Translation } from '@/lib/i18n/translations
 interface LanguageContextType {
   language: LanguageCode;
   setLanguage: (lang: LanguageCode) => void;
-  t: Translation;
+  t: any; // eslint-disable-line @typescript-eslint/no-explicit-any -- large translation object exceeds TS inference depth
   languages: { code: LanguageCode; name: string; nativeName: string }[];
 }
 

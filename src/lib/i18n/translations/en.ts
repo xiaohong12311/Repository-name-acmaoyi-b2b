@@ -203,8 +203,11 @@ export const en = {
     flexibleScheduling: 'Flexible scheduling',
     qualityAssurance: 'Quality Assurance',
     preInspection: 'Pre-production inspection',
+    preInspectionDesc: 'Raw material and component inspection before production begins',
     inProcessChecks: 'In-process checks',
+    inProcessChecksDesc: 'Continuous monitoring and testing during manufacturing',
     finalTesting: 'Final testing',
+    finalTestingDesc: 'Complete product testing and certification before shipment',
     docCompliance: 'Documentation compliance',
     verifiedCertification: 'Verified Certification',
     certVerification: 'Certification Verification',
@@ -629,6 +632,8 @@ export const en = {
     optional: 'Optional',
     currency: 'USD',
     language: 'Language',
+    search: 'Search',
+    verified: 'Verified',
   },
   
   // Footer

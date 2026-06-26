@@ -202,8 +202,11 @@ export const fr = {
     flexibleScheduling: 'Planification Flexible',
     qualityAssurance: 'Assurance Qualité',
     preInspection: 'Inspection Préalable',
+    preInspectionDesc: 'Inspection des matières premières et composants avant le début de la production',
     inProcessChecks: 'Contrôles en Cours',
+    inProcessChecksDesc: 'Surveillance et tests continus pendant la fabrication',
     finalTesting: 'Tests Finaux',
+    finalTestingDesc: 'Tests complets et certification des produits avant expédition',
     docCompliance: 'Conformité Documentaire',
     verifiedCertification: 'Certification Vérifiée',
     certVerification: 'Vérification des Certificats',
@@ -628,6 +631,8 @@ export const fr = {
     optional: 'Optionnel',
     currency: 'USD',
     language: 'Langue',
+    search: 'Rechercher',
+    verified: 'Vérifié',
   },
   
   // Footer

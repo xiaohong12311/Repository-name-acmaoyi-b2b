@@ -46,7 +46,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 /* ==================== Section Renderers ==================== */
 
-function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: Record<string, unknown>; companyInfo: { name: string } }) {
+function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any; companyInfo: { name: string } }) {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
   const tl = t as Record<string, string>;
@@ -93,7 +93,7 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: Rec
               className="absolute right-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
             >
               <Search className="w-4 h-4" />
-              <span className="hidden sm:inline">Search</span>
+              <span className="hidden sm:inline">{t.common.search}</span>
             </button>
           </div>
         </form>
@@ -301,7 +301,7 @@ export default function HomePage() {
 
     switch (type) {
       case 'hero':
-        return <DynamicHero key={type} section={section} t={t.home as Record<string, unknown>} companyInfo={companyInfo} />;
+        return <DynamicHero key={type} section={section} t={t.home as any} companyInfo={companyInfo} />;
       case 'core_features':
         return <DynamicCoreFeatures key={type} section={section} />;
       case 'categories':

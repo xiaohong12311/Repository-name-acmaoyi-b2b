@@ -150,9 +150,9 @@ export default function SupplierDetailPage() {
           <h2 className="text-xl font-bold text-foreground mb-4">{t.supplierDetail.qualityAssurance}</h2>
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { icon: CheckCircle, title: t.supplierDetail.preInspection, desc: 'Raw material and component inspection before production begins' },
-              { icon: Shield, title: t.supplierDetail.inProcessChecks, desc: 'Continuous monitoring and testing during manufacturing' },
-              { icon: Award, title: t.supplierDetail.finalTesting, desc: 'Complete product testing and certification before shipment' },
+              { icon: CheckCircle, title: t.supplierDetail.preInspection, desc: t.supplierDetail.preInspectionDesc },
+              { icon: Shield, title: t.supplierDetail.inProcessChecks, desc: t.supplierDetail.inProcessChecksDesc },
+              { icon: Award, title: t.supplierDetail.finalTesting, desc: t.supplierDetail.finalTestingDesc },
             ].map((item, i) => (
               <Card key={i} className="bg-card shadow-card border-0">
                 <CardContent className="p-5">
