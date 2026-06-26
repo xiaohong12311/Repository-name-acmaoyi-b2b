@@ -11,11 +11,13 @@ import { cn } from '@/lib/utils';
 import { getCompanyInfo } from '@/config/brand-config';
 import { LanguageSelector } from '@/components/layout/language-selector';
 import { useLanguage } from '@/hooks/use-language';
+import { usePathname } from 'next/navigation';
 
 export function Header() {
   const { favorites, sampleCart, inquiryItems } = useB2BStore();
   const companyInfo = getCompanyInfo();
   const { t } = useLanguage();
+  const pathname = usePathname();
 
   const navLinks = [
     { href: '/', label: t.nav.home },
@@ -25,32 +27,40 @@ export function Header() {
     { href: '/supplier-join', label: t.nav.joinSupplier },
   ];
 
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur-sm">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-md border-b border-border/50">
+      <div className="container mx-auto flex h-16 items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2.5">
           <Image
             src="/logo.jpg"
             alt={companyInfo.name}
-            width={40}
-            height={40}
-            className="h-10 w-10 rounded-lg object-contain"
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-lg object-contain"
             priority
           />
-          <span className="hidden sm:inline-block font-bold text-lg text-gray-900">
+          <span className="hidden sm:inline-block font-bold text-lg text-foreground">
             {companyInfo.name}
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-1">
           {navLinks.map(link => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                'text-sm font-bold text-gray-900 hover:text-blue-700 transition-colors'
+                'text-sm font-medium px-3 py-2 rounded-lg transition-colors',
+                isActive(link.href)
+                  ? 'text-primary bg-primary/10'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               )}
             >
               {link.label}
@@ -59,13 +69,13 @@ export function Header() {
         </nav>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           {/* Favorites */}
           <Link href="/favorites">
-            <Button variant="ghost" size="icon" className="relative">
-              <Heart className="h-5 w-5 text-gray-900" />
+            <Button variant="ghost" size="icon" className="relative h-9 w-9">
+              <Heart className="h-[18px] w-[18px] text-muted-foreground" />
               {favorites.length > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-700 text-white">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-primary text-primary-foreground">
                   {favorites.length}
                 </Badge>
               )}
@@ -74,10 +84,10 @@ export function Header() {
 
           {/* Sample Cart */}
           <Link href="/sample-cart">
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5 text-gray-900" />
+            <Button variant="ghost" size="icon" className="relative h-9 w-9">
+              <ShoppingCart className="h-[18px] w-[18px] text-muted-foreground" />
               {sampleCart.length > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-green-600 text-white">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-success text-success-foreground">
                   {sampleCart.length}
                 </Badge>
               )}
@@ -86,10 +96,10 @@ export function Header() {
 
           {/* Inquiry */}
           <Link href="/inquiry">
-            <Button variant="ghost" size="icon" className="relative">
-              <MessageSquarePlus className="h-5 w-5 text-gray-900" />
+            <Button variant="ghost" size="icon" className="relative h-9 w-9">
+              <MessageSquarePlus className="h-[18px] w-[18px] text-muted-foreground" />
               {inquiryItems.length > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-amber-500 text-white">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-warning text-white">
                   {inquiryItems.length}
                 </Badge>
               )}
@@ -102,23 +112,27 @@ export function Header() {
           {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
-                <Menu className="h-5 w-5 text-gray-900" />
+              <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-300px p-4">
-              <SheetTitle className="text-left">Menu</SheetTitle>
-              <nav className="flex flex-col gap-4 mt-6">
+            <SheetContent side="right" className="w-72">
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <nav className="flex flex-col gap-1 mt-6">
                 {navLinks.map(link => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm font-bold text-gray-900 hover:text-blue-700 transition-colors py-2"
+                    className={cn(
+                      'text-sm font-medium px-3 py-2.5 rounded-lg transition-colors',
+                      isActive(link.href)
+                        ? 'text-primary bg-primary/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    )}
                   >
                     {link.label}
                   </Link>
                 ))}
-
               </nav>
             </SheetContent>
           </Sheet>

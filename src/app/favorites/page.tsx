@@ -29,11 +29,11 @@ export default function FavoritesPage() {
     return (
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-2xl mx-auto text-center">
-          <Heart className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold mb-4">{t.favorites.emptyTitle}</h1>
-          <p className="text-gray-500 mb-8">
-            {t.favorites.emptyDesc}
-          </p>
+          <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+            <Heart className="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t.favorites.emptyTitle}</h1>
+          <p className="text-muted-foreground mb-6">{t.favorites.emptyDesc}</p>
           <Link href="/products">
             <Button size="lg" className="gap-2">
               <Plus className="h-4 w-4" />

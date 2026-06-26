@@ -2,10 +2,14 @@
 export interface Product {
   id: string;
   name: string;
+  nameEn?: string;
+  sku?: string;
   slug?: string; // URL-friendly identifier
   description: string;
   images: string[];
+  mainImage?: string;
   categoryId: string;
+  category?: string;
   supplierId: string;
   moq: number; // Minimum Order Quantity
   unit: string; // Unit: pcs, box, set, etc.

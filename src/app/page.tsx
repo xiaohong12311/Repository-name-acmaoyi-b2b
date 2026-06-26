@@ -2,20 +2,19 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product/product-card';
 import { SupplierCard } from '@/components/supplier/supplier-card';
 import { mockProducts, mockSuppliers, mockCategories } from '@/data/mock';
 import { getCompanyInfo } from '@/config/brand-config';
-import { 
-  MessageSquarePlus, 
-  ShoppingCart, 
-  Heart, 
-  Download, 
-  Building2, 
+import {
+  MessageSquarePlus,
+  ShoppingCart,
+  Heart,
+  Download,
+  Building2,
   Factory,
   TrendingUp,
   ArrowRight,
@@ -26,7 +25,13 @@ import {
   Search,
   ShieldCheck,
   Clock,
-  Truck
+  Truck,
+  ChevronRight,
+  ShoppingBag,
+  Boxes,
+  BadgeCheck,
+  Ship,
+  MapPin,
 } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
@@ -38,6 +43,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Heart, Building2, Download, CheckCircle, Globe,
   Users, Star, ShieldCheck, Clock, Truck,
 };
+
+/* ==================== Section Renderers ==================== */
 
 function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: Record<string, unknown>; companyInfo: { name: string } }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,37 +60,43 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: Rec
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-12 md:py-20 overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
-        {section.image_url ? (
-          <Image src={section.image_url} alt="Hero background" fill className="object-cover" priority />
-        ) : (
-          <Image src="https://images.unsplash.com/photo-1581091226826-a8a4d5d88f16?w=1200" alt="Factory background" fill className="object-cover" priority />
-        )}
-      </div>
-      <div className="container mx-auto px-4 relative">
-        <div className="max-w-3xl mx-auto text-center">
-          <Badge className="bg-white/20 text-white border-0 mb-4 md:mb-6 px-3 md:px-4 py-1.5 md:py-2 text-sm">
-            {content.badge || tl.heroBadge}
-          </Badge>
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">
-            {section.title || `${companyInfo.name} - ${tl.heroTitle}`}
-            <br />
-            <span className="text-blue-200">{section.subtitle || tl.heroSubtitle}</span>
-          </h1>
-          <form onSubmit={handleSearch} className="max-w-xl mx-auto mt-6 md:mt-8">
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder={content.search_placeholder || tl.searchPlaceholder}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-12 md:h-14 pl-12 pr-4 rounded-full text-gray-900 bg-white/95 backdrop-blur border-0 focus:ring-2 focus:ring-blue-300 text-base"
-              />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-            </div>
-          </form>
-        </div>
+    <section className="relative overflow-hidden py-16 md:py-24" style={{ background: 'linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #2563EB 100%)' }}>
+      {/* Decorative circles */}
+      <div className="absolute top-10 left-10 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3" />
+      <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-white/5 rounded-full" />
+
+      <div className="container mx-auto px-6 relative text-center">
+        <Badge className="bg-white/15 text-white border-0 mb-6 px-4 py-2 text-sm backdrop-blur-sm">
+          {content.badge || tl.heroBadge}
+        </Badge>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          {section.title || `${companyInfo.name} - ${tl.heroTitle}`}
+        </h1>
+        <p className="text-lg md:text-xl text-blue-200 mb-8 md:mb-10 max-w-2xl mx-auto">
+          {section.subtitle || tl.heroSubtitle}
+        </p>
+
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+          <div className="relative flex items-center">
+            <Search className="absolute left-5 h-5 w-5 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              placeholder={content.search_placeholder || tl.searchPlaceholder}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-14 md:h-16 pl-14 pr-32 rounded-2xl text-foreground bg-white shadow-float border-0 focus:outline-none focus:ring-2 focus:ring-primary/30 text-base"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
+            >
+              <Search className="w-4 h-4" />
+              <span className="hidden sm:inline">Search</span>
+            </button>
+          </div>
+        </form>
       </div>
     </section>
   );
@@ -94,20 +107,23 @@ function DynamicCoreFeatures({ section }: { section: PageSection }) {
   const items = (content.items as Array<Record<string, string>>) || [];
 
   return (
-    <section className="py-12 md:py-16 bg-gray-50 border-b">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <section className="py-12 md:py-16">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {items.map((feature, index) => {
             const Icon = iconMap[feature.icon] || TrendingUp;
             return (
               <Link key={index} href={feature.link || '#'} className="group">
-                <Card className="hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer">
+                <Card className="bg-card shadow-card hover:shadow-float transition-all hover:-translate-y-1 cursor-pointer border-0">
                   <CardContent className="p-6 text-center">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 text-blue-700 mb-4 group-hover:bg-blue-700 group-hover:text-white transition-colors">
-                      <Icon className="h-6 w-6" />
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <Icon className="h-7 w-7" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                    <p className="text-sm text-gray-500">{feature.desc}</p>
+                    <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
+                    <p className="text-sm text-muted-foreground">{feature.desc}</p>
+                    <div className="mt-3 inline-flex items-center gap-1 text-primary text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                      Learn more <ArrowRight className="w-3 h-3" />
+                    </div>
                   </CardContent>
                 </Card>
               </Link>
@@ -124,21 +140,21 @@ function DynamicMoreFeatures({ section }: { section: PageSection }) {
   const items = (content.items as Array<Record<string, string>>) || [];
 
   return (
-    <section className="py-16 bg-blue-50">
-      <div className="container mx-auto px-4">
-        {section.title && <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">{section.title}</h2>}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="py-14 bg-muted/50">
+      <div className="container mx-auto px-6">
+        {section.title && <h2 className="text-2xl font-bold text-foreground text-center mb-10">{section.title}</h2>}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {items.map((item, index) => {
             const Icon = iconMap[item.icon] || TrendingUp;
             return (
               <Link key={index} href={item.link || '#'}>
-                <Card className="hover:shadow-lg transition-all hover:-translate-y-2 cursor-pointer group">
+                <Card className="bg-card shadow-card hover:shadow-float transition-all hover:-translate-y-1 cursor-pointer group border-0">
                   <CardContent className="p-6">
-                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg ${item.color || 'bg-blue-100 text-blue-600'} mb-4`}>
+                    <div className={`inline-flex items-center justify-center w-11 h-11 rounded-xl ${item.color || 'bg-primary/10 text-primary'} mb-4`}>
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-700">{item.title}</h3>
-                    <p className="text-sm text-gray-500">{item.desc}</p>
+                    <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </CardContent>
                 </Card>
               </Link>
@@ -155,18 +171,18 @@ function DynamicTrustIndicators({ section }: { section: PageSection }) {
   const items = (content.items as Array<Record<string, string>>) || [];
 
   return (
-    <section className="py-8 md:py-12 bg-white border-t border-b">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
+    <section className="px-6 pb-14">
+      <div className="bg-card rounded-2xl shadow-card p-8 md:p-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {items.map((item, index) => {
             const Icon = iconMap[item.icon] || CheckCircle;
             return (
-              <div key={index} className="flex flex-col items-center">
-                <div className={`flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full ${item.color || 'bg-green-100 text-green-600'} mb-2`}>
-                  <Icon className="h-5 w-5 md:h-6 md:w-6" />
+              <div key={index} className="flex flex-col items-center text-center">
+                <div className={`w-20 h-20 rounded-full ${item.color || 'bg-success/10 text-success'} flex items-center justify-center mb-3`}>
+                  <Icon className="w-8 h-8" />
                 </div>
-                <div className="text-xl md:text-2xl font-bold text-gray-900">{item.value}</div>
-                <div className="text-xs md:text-sm text-gray-500">{item.label}</div>
+                <span className="text-2xl font-bold text-foreground">{item.value}</span>
+                <span className="mt-1 text-sm text-muted-foreground">{item.label}</span>
               </div>
             );
           })}
@@ -181,18 +197,18 @@ function DynamicTrustStats({ section }: { section: PageSection }) {
   const items = (content.items as Array<Record<string, string>>) || [];
 
   return (
-    <section className="py-8 md:py-12 bg-blue-50 border-t border-b">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
+    <section className="px-6 pb-14">
+      <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #2563EB 100%)' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 p-8 md:p-10">
           {items.map((item, index) => {
             const Icon = iconMap[item.icon] || ShieldCheck;
             return (
-              <div key={index} className="flex flex-col items-center">
-                <div className={`flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full ${item.color || 'bg-white text-blue-600'} mb-2 shadow-sm`}>
-                  <Icon className="h-5 w-5 md:h-6 md:w-6" />
+              <div key={index} className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <Icon className="w-6 h-6 text-blue-300" />
                 </div>
-                <div className="text-xl md:text-2xl font-bold text-gray-900">{item.value}</div>
-                <div className="text-xs md:text-sm text-gray-500">{item.label}</div>
+                <span className="text-3xl font-bold text-white">{item.value}</span>
+                <p className="mt-1 text-sm text-blue-200">{item.label}</p>
               </div>
             );
           })}
@@ -206,20 +222,22 @@ function DynamicCTA({ section }: { section: PageSection }) {
   const content = section.content as Record<string, string>;
 
   return (
-    <section className="py-16 bg-gradient-to-r from-blue-700 to-blue-900 text-white">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-4">{section.title}</h2>
-        <p className="text-blue-100 mb-8 max-w-xl mx-auto">{section.subtitle}</p>
-        <div className="flex flex-wrap gap-4 justify-center">
+    <section className="px-6 pb-16">
+      <div className="bg-primary/5 rounded-2xl p-10 md:p-14 text-center border border-primary/10">
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground">{section.title}</h2>
+        <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">{section.subtitle}</p>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link href={content.button1_link || '/products'}>
-            <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50">
+            <button className="bg-primary text-primary-foreground px-8 py-3 rounded-xl text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4" />
               {content.button1_text || 'Start Shopping'}
-            </Button>
+            </button>
           </Link>
           <Link href={content.button2_link || '/supplier-join'}>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <button className="bg-card text-foreground px-8 py-3 rounded-xl text-sm font-semibold hover:bg-muted active:scale-[0.98] transition-all border border-border inline-flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
               {content.button2_text || 'Become a Supplier'}
-            </Button>
+            </button>
           </Link>
         </div>
       </div>
@@ -227,21 +245,13 @@ function DynamicCTA({ section }: { section: PageSection }) {
   );
 }
 
+/* ==================== Main Page ==================== */
+
 export default function HomePage() {
   const { t } = useLanguage();
   const tl = t.home as Record<string, string>;
   const companyInfo = getCompanyInfo();
   const { sections, loading: sectionsLoading } = usePageSections('home');
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const router = useRouter();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
 
   // Build section map for quick lookup
   const sectionMap = useMemo(() => {
@@ -284,10 +294,10 @@ export default function HomePage() {
     return mockSuppliers.slice(0, 3);
   }, [sectionMap]);
 
-  // Render each section type - DB version if available, else fallback
+  // Render each section type
   const renderSection = (type: string) => {
     const section = sectionMap.get(type);
-    if (!section) return null; // Section deleted or hidden
+    if (!section) return null;
 
     switch (type) {
       case 'hero':
@@ -296,30 +306,27 @@ export default function HomePage() {
         return <DynamicCoreFeatures key={type} section={section} />;
       case 'categories':
         return (
-          <section key={type} className="py-16">
-            <div className="container mx-auto px-4">
+          <section key={type} className="py-14 px-6">
+            <div className="container mx-auto">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{section.title || tl.categories}</h2>
-                  <p className="text-gray-500">{section.subtitle || tl.categoriesDesc}</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-1">{section.title || tl.categories}</h2>
+                  <p className="text-muted-foreground text-sm">{section.subtitle || tl.categoriesDesc}</p>
                 </div>
-                <Link href="/products">
-                  <Button variant="outline" className="gap-2">
-                    {tl.viewAll}
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
+                <Link href="/products" className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+                  {tl.viewAll} <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {mockCategories.map(category => (
-                  <Link key={category.id} href={`/products?category=${category.slug}`}>
-                    <Card className="group hover:shadow-md transition-all overflow-hidden">
+                  <Link key={category.id} href={`/products?category=${category.slug}`} className="group">
+                    <Card className="bg-card shadow-card overflow-hidden hover:shadow-float transition-all border-0">
                       <CardContent className="p-0">
-                        <div className="relative aspect-[4/3] overflow-hidden">
+                        <div className="relative aspect-square overflow-hidden rounded-t-xl">
                           <Image src={category.image} alt={category.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 768px) 50vw, 16vw" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                            <h3 className="font-medium">{category.name}</h3>
+                            <h3 className="font-medium text-sm">{category.name}</h3>
                           </div>
                         </div>
                       </CardContent>
@@ -332,22 +339,19 @@ export default function HomePage() {
         );
       case 'featured_products':
         return (
-          <section key={type} className="py-16 bg-white">
-            <div className="container mx-auto px-4">
+          <section key={type} className="py-14 px-6">
+            <div className="container mx-auto">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{section.title || tl.featuredProducts}</h2>
-                  <p className="text-gray-500">{section.subtitle || tl.featuredProductsDesc}</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-1">{section.title || tl.featuredProducts}</h2>
+                  <p className="text-muted-foreground text-sm">{section.subtitle || tl.featuredProductsDesc}</p>
                 </div>
-                <Link href="/products">
-                  <Button variant="outline" className="gap-2">
-                    {tl.viewAllProducts}
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
+                <Link href="/products" className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+                  {tl.viewAllProducts} <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {featuredProducts.map(product => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {featuredProducts.slice(0, 3).map(product => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
@@ -356,23 +360,40 @@ export default function HomePage() {
         );
       case 'featured_suppliers':
         return (
-          <section key={type} className="py-16">
-            <div className="container mx-auto px-4">
+          <section key={type} className="py-14 px-6">
+            <div className="container mx-auto">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{section.title || tl.verifiedSuppliers}</h2>
-                  <p className="text-gray-500">{section.subtitle || tl.verifiedSuppliersDesc}</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-1">{section.title || tl.verifiedSuppliers}</h2>
+                  <p className="text-muted-foreground text-sm">{section.subtitle || tl.verifiedSuppliersDesc}</p>
                 </div>
-                <Link href="/suppliers">
-                  <Button variant="outline" className="gap-2">
-                    {tl.viewAllSuppliers}
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
+                <Link href="/suppliers" className="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+                  {tl.viewAllSuppliers} <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {featuredSuppliers.map(supplier => (
-                  <SupplierCard key={supplier.id} supplier={supplier} />
+                  <Card key={supplier.id} className="bg-card shadow-card p-5 border-0 hover:shadow-float transition-shadow">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-base font-semibold text-foreground">{supplier.name}</h3>
+                        <p className="mt-0.5 text-sm text-muted-foreground flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5" />{supplier.country || 'China'}
+                        </p>
+                      </div>
+                      <span className="inline-flex items-center gap-1 bg-success/10 text-success text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <ShieldCheck className="w-3.5 h-3.5" />Verified
+                      </span>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {(supplier.categories || []).slice(0, 3).map((cat: string, idx: number) => (
+                        <span key={idx} className="bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded font-medium">{cat}</span>
+                      ))}
+                    </div>
+                    <Link href={`/suppliers/${supplier.id}`} className="mt-4 inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+                      View Profile <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </Card>
                 ))}
               </div>
             </div>
@@ -387,35 +408,35 @@ export default function HomePage() {
       case 'cta':
         return <DynamicCTA key={type} section={section} />;
       default:
-        // Generic section renderer for custom sections added by admin
+        // Generic section renderer for custom sections
         return (
-          <section key={section.id} className="py-16" style={section.background_color ? { backgroundColor: section.background_color } : undefined}>
-            <div className="container mx-auto px-4">
+          <section key={section.id} className="py-14 px-6" style={section.background_color ? { backgroundColor: section.background_color } : undefined}>
+            <div className="container mx-auto">
               {section.image_url && (
                 <div className="mb-8">
-                  <Image src={section.image_url} alt={section.title || 'Section image'} width={1200} height={400} className="w-full h-auto rounded-lg object-cover" />
+                  <Image src={section.image_url} alt={section.title || 'Section image'} width={1200} height={400} className="w-full h-auto rounded-2xl object-cover" />
                 </div>
               )}
-              {section.title && <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">{section.title}</h2>}
-              {section.subtitle && <p className="text-gray-500 text-center mb-8">{section.subtitle}</p>}
+              {section.title && <h2 className="text-2xl font-bold text-foreground text-center mb-4">{section.title}</h2>}
+              {section.subtitle && <p className="text-muted-foreground text-center mb-8">{section.subtitle}</p>}
               {section.items && section.items.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                   {section.items.filter(i => i.is_visible).map(item => {
                     const Icon = iconMap[item.icon_name || ''] || TrendingUp;
                     return (
                       <Link key={item.id} href={item.link_url || '#'}>
-                        <Card className="hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer group">
+                        <Card className="bg-card shadow-card hover:shadow-float transition-all hover:-translate-y-1 cursor-pointer group border-0">
                           <CardContent className="p-6 text-center">
                             {item.image_url && (
                               <div className="mb-4">
-                                <Image src={item.image_url} alt={item.title || ''} width={200} height={150} className="w-full h-auto rounded-lg object-cover" />
+                                <Image src={item.image_url} alt={item.title || ''} width={200} height={150} className="w-full h-auto rounded-xl object-cover" />
                               </div>
                             )}
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 text-blue-700 mb-4 group-hover:bg-blue-700 group-hover:text-white transition-colors">
-                              <Icon className="h-6 w-6" />
+                            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                              <Icon className="h-7 w-7" />
                             </div>
-                            {item.title && <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>}
-                            {item.description && <p className="text-sm text-gray-500">{item.description}</p>}
+                            {item.title && <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>}
+                            {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
                           </CardContent>
                         </Card>
                       </Link>
@@ -435,7 +456,7 @@ export default function HomePage() {
     : sections.filter(s => s.is_visible).map(s => s.section_type);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       {sectionOrder.map(type => renderSection(type))}
     </div>
   );
