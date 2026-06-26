@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet"/>
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 === */
+      --color-primary:              #1E40AF;
+      --color-primary-container:    #DBEAFE;
+      --color-on-primary:           #ffffff;
+      /* === 背景 / 表面 === */
+      --color-background:                 #F8FAFC;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #F1F5F9;
+      --color-surface-container-high:     #E2E8F0;
+      --color-surface-container-highest:  #CBD5E1;
+      /* === 文字 === */
+      --color-on-surface:           #1E293B;
+      --color-on-surface-variant:   #64748B;
+      /* === 功能色 === */
+      --color-success:  #059669;
+      --color-error:    #DC2626;
+      --color-warning:  #F59E0B;
+      /* === 边框 === */
+      --color-outline:          #CBD5E1;
+      --color-outline-variant:  #E2E8F0;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 2px 8px rgba(0,0,0,0.08);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.1);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.15);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+  <!-- 侧边栏 -->
+  <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-60 bg-surface-container z-30 flex flex-col border-r border-outline-variant/20">
+    <!-- Logo -->
+    <div class="h-16 flex items-center gap-2.5 px-5 border-b border-outline-variant/20 shrink-0">
+      <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+        <i data-lucide="package" class="w-4 h-4 text-on-primary"></i>
+      </div>
+      <span class="font-bold text-lg text-on-surface">ACMAOYI</span>
+    </div>
+    <!-- 导航菜单 -->
+    <nav class="flex-1 overflow-y-auto p-3 space-y-0.5">
+      <a href="admin-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-medium text-sm transition-colors">
+        <i data-lucide="gauge" class="w-4 h-4"></i>Dashboard
+      </a>
+      <a href="admin-sections.html" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-medium text-sm transition-colors">
+        <i data-lucide="layers" class="w-4 h-4"></i>Sections
+      </a>
+      <a href="admin-products.html" class="flex items-center gap-3 px-3 py-2.5 rounded-md bg-primary/10 text-primary font-medium text-sm" aria-current="page">
+        <i data-lucide="box" class="w-4 h-4"></i>Products
+      </a>
+      <a href="admin-suppliers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-medium text-sm transition-colors">
+        <i data-lucide="building-2" class="w-4 h-4"></i>Suppliers
+      </a>
+    </nav>
+    <!-- 用户信息 -->
+    <div class="p-3 border-t border-outline-variant/20">
+      <div class="flex items-center gap-3 px-3 py-2">
+        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary text-sm font-bold">初</div>
+        <div class="min-w-0">
+          <div class="text-sm font-medium text-on-surface truncate">小初</div>
+          <div class="text-xs text-on-surface-variant truncate">Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 主内容区 -->
+  <div class="ml-60 min-h-screen flex flex-col">
+    <!-- 顶部栏 -->
+    <header class="h-16 bg-surface border-b border-outline-variant/20 flex items-center justify-between px-6 shrink-0 sticky top-0 z-20">
+      <h1 class="text-xl font-bold text-on-surface">Product Management</h1>
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-on-surface-variant absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input id="search-input" type="text" placeholder="Search products..." class="bg-surface-container border-none rounded-md pl-9 pr-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors w-64" />
+        </div>
+        <button id="btn-add-product" class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>Add Product
+        </button>
+      </div>
+    </header>
+
+    <!-- @main-content:start -->
+    <main class="flex-1 min-w-0 overflow-y-auto bg-background p-6">
+
+      <!-- 筛选栏 -->
+      <div id="filter-bar" class="bg-surface rounded-lg shadow-card p-4 mb-4 flex items-center gap-3 flex-wrap">
+        <select id="filter-category" class="bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+          <option value="all">All Categories</option>
+          <option value="kitchen">Kitchen</option>
+          <option value="lighting">Lighting</option>
+          <option value="hardware">Hardware</option>
+          <option value="electronics">Electronics</option>
+          <option value="textile">Textile</option>
+        </select>
+        <select id="filter-supplier" class="bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+          <option value="all">All Suppliers</option>
+          <option value="shenzhen-tech">Shenzhen Tech Co.</option>
+          <option value="guangzhou-light">Guangzhou Light Mfg.</option>
+          <option value="ningbo-hardware">Ningbo Hardware Ltd.</option>
+          <option value="yiwu-general">Yiwu General Trading</option>
+        </select>
+        <select id="filter-status" class="bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <button id="btn-reset-filters" class="text-sm text-on-surface-variant hover:text-primary transition-colors ml-auto">Reset</button>
+      </div>
+
+      <!-- 批量操作栏 -->
+      <div id="bulk-actions" class="bg-primary/5 border border-primary/20 rounded-lg px-4 py-3 mb-4 flex items-center gap-4 hidden">
+        <span id="bulk-count" class="text-sm font-medium text-primary">2 items selected</span>
+        <button id="btn-bulk-delete" class="bg-error/10 text-error px-3 py-1.5 rounded-md text-sm font-medium hover:bg-error/20 transition-colors inline-flex items-center gap-1.5">
+          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>Bulk Delete
+        </button>
+        <button id="btn-bulk-status" class="bg-surface-container text-on-surface px-3 py-1.5 rounded-md text-sm font-medium hover:bg-surface-container-high transition-colors inline-flex items-center gap-1.5">
+          <i data-lucide="toggle-right" class="w-3.5 h-3.5"></i>Change Status
+        </button>
+      </div>
+
+      <!-- 产品数据表 -->
+      <div class="bg-surface rounded-lg shadow-card overflow-hidden">
+        <!-- 表头 -->
+        <div class="grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 bg-surface-container text-xs font-semibold text-on-surface-variant uppercase tracking-wide items-center">
+          <span>
+            <input id="select-all" type="checkbox" class="w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+          </span>
+          <span></span>
+          <span>Product</span>
+          <span>Category</span>
+          <span>Supplier</span>
+          <span>Tier Prices</span>
+          <span>MOQ</span>
+          <span>Status</span>
+          <span>Actions</span>
+        </div>
+        <!-- 表格内容 -->
+        <div id="product-table-body" class="divide-y divide-outline-variant/50">
+
+          <!-- 列表-产品1 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="1">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=80&h=80&fit=crop" alt="Stainless steel kitchen knife set" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Stainless Steel Knife Set</div>
+              <div class="text-xs text-on-surface-variant">SKU: KTC-SS001</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Kitchen</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Shenzhen Tech Co.</div>
+              <span class="inline-flex items-center gap-1 text-xs text-success"><i data-lucide="badge-check" class="w-3 h-3"></i>Verified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$12.50–$15.80</span>
+            <span class="text-sm text-on-surface-variant">50</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success w-fit">Active</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="1"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品2 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="2">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=80&h=80&fit=crop" alt="LED pendant ceiling light" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">LED Pendant Ceiling Light</div>
+              <div class="text-xs text-on-surface-variant">SKU: LTG-LED042</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Lighting</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Guangzhou Light Mfg.</div>
+              <span class="inline-flex items-center gap-1 text-xs text-success"><i data-lucide="badge-check" class="w-3 h-3"></i>Verified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$8.30–$11.00</span>
+            <span class="text-sm text-on-surface-variant">100</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success w-fit">Active</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="2"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品3 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="3">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=80&h=80&fit=crop" alt="Brass cabinet door handle" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Brass Cabinet Door Handle</div>
+              <div class="text-xs text-on-surface-variant">SKU: HDW-BR019</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Hardware</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Ningbo Hardware Ltd.</div>
+              <span class="inline-flex items-center gap-1 text-xs text-success"><i data-lucide="badge-check" class="w-3 h-3"></i>Verified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$3.20–$4.50</span>
+            <span class="text-sm text-on-surface-variant">200</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success w-fit">Active</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="3"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="3"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品4 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="4">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1585515320310-259814833e62?w=80&h=80&fit=crop" alt="Smart home WiFi control switch" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Smart Home WiFi Switch</div>
+              <div class="text-xs text-on-surface-variant">SKU: ELC-SM077</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Electronics</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Shenzhen Tech Co.</div>
+              <span class="inline-flex items-center gap-1 text-xs text-on-surface-variant"><i data-lucide="circle-dot" class="w-3 h-3"></i>Unverified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$18.00–$22.50</span>
+            <span class="text-sm text-on-surface-variant">30</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-error/15 text-error w-fit">Inactive</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="4"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="4"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品5 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="5">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1616627577385-5c0c2d8a3e97?w=80&h=80&fit=crop" alt="Cotton woven table runner" data-category="服饰时尚" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Cotton Woven Table Runner</div>
+              <div class="text-xs text-on-surface-variant">SKU: TXT-CT033</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Textile</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Yiwu General Trading</div>
+              <span class="inline-flex items-center gap-1 text-xs text-success"><i data-lucide="badge-check" class="w-3 h-3"></i>Verified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$5.60–$7.20</span>
+            <span class="text-sm text-on-surface-variant">500</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success w-fit">Active</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="5"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="5"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品6 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="6">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=80&h=80&fit=crop" alt="Commercial blender food processor" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Commercial Blender Processor</div>
+              <div class="text-xs text-on-surface-variant">SKU: KTC-CB056</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Kitchen</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Guangzhou Light Mfg.</div>
+              <span class="inline-flex items-center gap-1 text-xs text-on-surface-variant"><i data-lucide="circle-dot" class="w-3 h-3"></i>Unverified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$45.00–$58.00</span>
+            <span class="text-sm text-on-surface-variant">20</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success w-fit">Active</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="6"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="6"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品7 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="7">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=80&h=80&fit=crop" alt="Modern floor standing lamp" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Modern Floor Standing Lamp</div>
+              <div class="text-xs text-on-surface-variant">SKU: LTG-FL088</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Lighting</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Ningbo Hardware Ltd.</div>
+              <span class="inline-flex items-center gap-1 text-xs text-success"><i data-lucide="badge-check" class="w-3 h-3"></i>Verified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$28.50–$35.00</span>
+            <span class="text-sm text-on-surface-variant">50</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-error/15 text-error w-fit">Inactive</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="7"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="7"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <!-- 列表-产品8 -->
+          <div class="product-row grid grid-cols-[2rem_3rem_1fr_7rem_9rem_8rem_5rem_6rem_5.5rem] gap-2 px-4 py-3 hover:bg-surface-container/50 transition-colors items-center" data-id="8">
+            <input type="checkbox" class="row-checkbox w-4 h-4 rounded border-on-surface-variant/30 text-primary focus:ring-primary/30 cursor-pointer" />
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=80&h=80&fit=crop" alt="Stainless steel door hinge set" data-category="商业科技" class="w-8 h-8 rounded object-cover" />
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-on-surface truncate">Stainless Steel Door Hinge Set</div>
+              <div class="text-xs text-on-surface-variant">SKU: HDW-SH102</div>
+            </div>
+            <span class="text-sm text-on-surface-variant">Hardware</span>
+            <div class="min-w-0">
+              <div class="text-sm text-on-surface truncate">Yiwu General Trading</div>
+              <span class="inline-flex items-center gap-1 text-xs text-success"><i data-lucide="badge-check" class="w-3 h-3"></i>Verified</span>
+            </div>
+            <span class="text-sm font-medium text-on-surface">$1.80–$2.60</span>
+            <span class="text-sm text-on-surface-variant">1000</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success w-fit">Active</span>
+            <div class="flex items-center gap-1.5">
+              <button class="btn-edit p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors" data-id="8"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+              <button class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/5 rounded transition-colors" data-id="8"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div id="pagination" class="flex items-center justify-between mt-4">
+        <span class="text-sm text-on-surface-variant">Showing 1–8 of 56 products</span>
+        <div class="flex items-center gap-1">
+          <button id="page-prev" class="p-2 rounded-md text-on-surface-variant hover:bg-surface-container transition-colors disabled:opacity-40" disabled>
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          </button>
+          <button class="page-btn w-8 h-8 rounded-md text-sm font-medium bg-primary text-on-primary">1</button>
+          <button class="page-btn w-8 h-8 rounded-md text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors">2</button>
+          <button class="page-btn w-8 h-8 rounded-md text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors">3</button>
+          <span class="text-on-surface-variant px-1">...</span>
+          <button class="page-btn w-8 h-8 rounded-md text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors">7</button>
+          <button id="page-next" class="p-2 rounded-md text-on-surface-variant hover:bg-surface-container transition-colors">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+    </main>
+    <!-- @main-content:end -->
+  </div>
+
+  <!-- 添加/编辑产品弹窗（展示已打开状态） -->
+  <div id="product-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div class="bg-surface rounded-xl shadow-dialog w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <!-- 弹窗头部 -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-outline-variant/20 sticky top-0 bg-surface z-10">
+        <h2 id="modal-title" class="text-lg font-bold text-on-surface">Add Product</h2>
+        <button id="btn-modal-close" class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-md transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <!-- 弹窗内容 -->
+      <div class="px-6 py-5 space-y-5">
+        <!-- 产品名 + SKU -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-on-surface mb-1.5">Product Name</label>
+            <input id="field-name" type="text" value="Stainless Steel Knife Set" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Enter product name" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-on-surface mb-1.5">SKU</label>
+            <input id="field-sku" type="text" value="KTC-SS001" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Enter SKU" />
+          </div>
+        </div>
+        <!-- 分类 + 供应商 -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-on-surface mb-1.5">Category</label>
+            <select id="field-category" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+              <option value="">Select category</option>
+              <option value="kitchen" selected>Kitchen</option>
+              <option value="lighting">Lighting</option>
+              <option value="hardware">Hardware</option>
+              <option value="electronics">Electronics</option>
+              <option value="textile">Textile</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-on-surface mb-1.5">Supplier</label>
+            <select id="field-supplier" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+              <option value="">Select supplier</option>
+              <option value="shenzhen-tech" selected>Shenzhen Tech Co.</option>
+              <option value="guangzhou-light">Guangzhou Light Mfg.</option>
+              <option value="ningbo-hardware">Ningbo Hardware Ltd.</option>
+              <option value="yiwu-general">Yiwu General Trading</option>
+            </select>
+          </div>
+        </div>
+        <!-- 描述 -->
+        <div>
+          <label class="block text-sm font-medium text-on-surface mb-1.5">Description</label>
+          <textarea id="field-description" rows="3" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors resize-none" placeholder="Enter product description">High-quality stainless steel knife set with ergonomic handles. Includes chef knife, bread knife, utility knife, and paring knife. Dishwasher safe.</textarea>
+        </div>
+        <!-- 图片上传区 -->
+        <div>
+          <label class="block text-sm font-medium text-on-surface mb-1.5">Product Images</label>
+          <div id="image-upload-area" class="border-2 border-dashed border-outline-variant/40 rounded-lg p-4 flex items-center gap-3 flex-wrap">
+            <!-- 已上传图片 -->
+            <div class="relative w-20 h-20 rounded-md overflow-hidden group">
+              <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=160&h=160&fit=crop" alt="Knife set product photo" data-category="商业科技" class="w-full h-full object-cover" />
+              <button class="absolute top-1 right-1 w-5 h-5 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity btn-remove-image">
+                <i data-lucide="x" class="w-3 h-3"></i>
+              </button>
+            </div>
+            <div class="relative w-20 h-20 rounded-md overflow-hidden group">
+              <img src="https://images.unsplash.com/photo-1593618998160-e34014e67546?w=160&h=160&fit=crop" alt="Knife set detail view" data-category="商业科技" class="w-full h-full object-cover" />
+              <button class="absolute top-1 right-1 w-5 h-5 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity btn-remove-image">
+                <i data-lucide="x" class="w-3 h-3"></i>
+              </button>
+            </div>
+            <!-- 上传按钮 -->
+            <button id="btn-upload-image" class="w-20 h-20 border-2 border-dashed border-outline-variant/40 rounded-md flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:border-primary/30 hover:text-primary transition-colors">
+              <i data-lucide="upload" class="w-5 h-5"></i>
+              <span class="text-[10px]">Upload</span>
+            </button>
+          </div>
+        </div>
+        <!-- 阶梯价格编辑区 -->
+        <div>
+          <label class="block text-sm font-medium text-on-surface mb-1.5">Tier Pricing</label>
+          <div id="tier-price-list" class="space-y-2">
+            <!-- 阶梯-第1档 -->
+            <div class="tier-price-row flex items-center gap-3">
+              <span class="text-sm text-on-surface-variant w-12 shrink-0">Tier 1</span>
+              <input type="number" value="1" class="w-20 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Min" />
+              <span class="text-on-surface-variant">–</span>
+              <input type="number" value="99" class="w-20 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Max" />
+              <span class="text-on-surface-variant text-sm">pcs</span>
+              <input type="text" value="$15.80" class="w-24 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Price" />
+            </div>
+            <!-- 阶梯-第2档 -->
+            <div class="tier-price-row flex items-center gap-3">
+              <span class="text-sm text-on-surface-variant w-12 shrink-0">Tier 2</span>
+              <input type="number" value="100" class="w-20 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Min" />
+              <span class="text-on-surface-variant">–</span>
+              <input type="number" value="499" class="w-20 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Max" />
+              <span class="text-on-surface-variant text-sm">pcs</span>
+              <input type="text" value="$13.50" class="w-24 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Price" />
+            </div>
+            <!-- 阶梯-第3档 -->
+            <div class="tier-price-row flex items-center gap-3">
+              <span class="text-sm text-on-surface-variant w-12 shrink-0">Tier 3</span>
+              <input type="number" value="500" class="w-20 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Min" />
+              <span class="text-on-surface-variant">–</span>
+              <input type="number" value="" class="w-20 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="∞" />
+              <span class="text-on-surface-variant text-sm">pcs</span>
+              <input type="text" value="$12.50" class="w-24 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Price" />
+            </div>
+          </div>
+        </div>
+        <!-- MOQ -->
+        <div>
+          <label class="block text-sm font-medium text-on-surface mb-1.5">Minimum Order Quantity (MOQ)</label>
+          <input id="field-moq" type="number" value="50" class="w-40 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Enter MOQ" />
+        </div>
+        <!-- 规格参数 -->
+        <div>
+          <label class="block text-sm font-medium text-on-surface mb-1.5">Specifications</label>
+          <div id="spec-list" class="space-y-2">
+            <!-- 规格-参数1 -->
+            <div class="spec-row flex items-center gap-2">
+              <input type="text" value="Material" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Key" />
+              <input type="text" value="Stainless Steel 304" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Value" />
+              <button class="btn-remove-spec p-1.5 text-on-surface-variant hover:text-error transition-colors"><i data-lucide="minus-circle" class="w-4 h-4"></i></button>
+            </div>
+            <!-- 规格-参数2 -->
+            <div class="spec-row flex items-center gap-2">
+              <input type="text" value="Blade Length" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Key" />
+              <input type="text" value="20cm / 25cm / 30cm" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Value" />
+              <button class="btn-remove-spec p-1.5 text-on-surface-variant hover:text-error transition-colors"><i data-lucide="minus-circle" class="w-4 h-4"></i></button>
+            </div>
+            <!-- 规格-参数3 -->
+            <div class="spec-row flex items-center gap-2">
+              <input type="text" value="Weight" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Key" />
+              <input type="text" value="1.2kg (set)" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Value" />
+              <button class="btn-remove-spec p-1.5 text-on-surface-variant hover:text-error transition-colors"><i data-lucide="minus-circle" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+          <button id="btn-add-spec" class="mt-2 text-sm text-primary font-medium hover:underline inline-flex items-center gap-1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>Add Specification
+          </button>
+        </div>
+        <!-- 状态开关 -->
+        <div class="flex items-center justify-between">
+          <div>
+            <label class="text-sm font-medium text-on-surface">Status</label>
+            <p class="text-xs text-on-surface-variant mt-0.5">Inactive products will not be shown to buyers</p>
+          </div>
+          <button id="field-status-toggle" class="relative w-11 h-6 bg-primary rounded-full transition-colors" data-active="true">
+            <span class="absolute top-0.5 left-[22px] w-5 h-5 bg-white rounded-full shadow transition-all"></span>
+          </button>
+        </div>
+      </div>
+      <!-- 弹窗底部 -->
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-outline-variant/20 sticky bottom-0 bg-surface">
+        <button id="btn-modal-cancel" class="bg-surface-container text-on-surface border-none px-4 py-2 rounded-md text-sm font-medium hover:bg-surface-container-high active:scale-[0.98] transition-all">Cancel</button>
+        <button id="btn-modal-save" class="bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(function () {
+
+      // === 复选框 & 批量操作栏 ===
+      // 更新批量操作栏的显示状态和选中计数
+      function updateBulkBar() {
+        var checked = $('#product-table-body .row-checkbox:checked').length;
+        if (checked > 0) {
+          $('#bulk-actions').removeClass('hidden');
+          $('#bulk-count').text(checked + ' item' + (checked > 1 ? 's' : '') + ' selected');
+        } else {
+          $('#bulk-actions').addClass('hidden');
+        }
+      }
+
+      // 全选/取消全选
+      $('#select-all').on('change', function () {
+        var isChecked = $(this).prop('checked');
+        $('#product-table-body .row-checkbox').prop('checked', isChecked);
+        updateBulkBar();
+      });
+
+      // 单行复选框变化
+      $('#product-table-body').on('change', '.row-checkbox', function () {
+        var total = $('#product-table-body .row-checkbox').length;
+        var checked = $('#product-table-body .row-checkbox:checked').length;
+        $('#select-all').prop('checked', total === checked);
+        updateBulkBar();
+      });
+
+      // === 批量操作 ===
+      // 批量删除 - 应实现：
+      // 1. 弹出确认对话框，列出所有选中产品名
+      // 2. 确认后删除选中行 DOM 节点
+      // 3. 更新分页计数
+      $('#btn-bulk-delete').on('click', function () {
+        var ids = [];
+        $('#product-table-body .row-checkbox:checked').each(function () {
+          ids.push($(this).closest('.product-row').data('id'));
+        });
+        console.log('Bulk delete products:', ids);
+        // 删除选中行
+        $('#product-table-body .row-checkbox:checked').closest('.product-row').remove();
+        $('#select-all').prop('checked', false);
+        updateBulkBar();
+      });
+
+      // 批量修改状态 - 应实现：
+      // 1. 弹出状态选择弹窗（Active/Inactive）
+      // 2. 确认后批量更新选中行的状态标签和样式
+      $('#btn-bulk-status').on('click', function () {
+        var ids = [];
+        $('#product-table-body .row-checkbox:checked').each(function () {
+          ids.push($(this).closest('.product-row').data('id'));
+        });
+        console.log('Bulk change status for products:', ids);
+        // 切换选中行的状态
+        $('#product-table-body .row-checkbox:checked').closest('.product-row').each(function () {
+          var statusEl = $(this).find('span.inline-flex');
+          if (statusEl.hasClass('text-success')) {
+            statusEl.removeClass('bg-success/15 text-success').addClass('bg-error/15 text-error').text('Inactive');
+          } else {
+            statusEl.removeClass('bg-error/15 text-error').addClass('bg-success/15 text-success').text('Active');
+          }
+        });
+        $('#product-table-body .row-checkbox').prop('checked', false);
+        $('#select-all').prop('checked', false);
+        updateBulkBar();
+      });
+
+      // === 行操作 ===
+      // 编辑按钮 - 应实现：
+      // 1. 读取当前行的产品数据
+      // 2. 打开弹窗并填充数据到各表单字段
+      // 3. 修改弹窗标题为 "Edit Product"
+      $('#product-table-body').on('click', '.btn-edit', function () {
+        var id = $(this).data('id');
+        console.log('Edit product:', id);
+        // 打开弹窗并切换为编辑模式
+        $('#modal-title').text('Edit Product');
+        $('#product-modal').show();
+      });
+
+      // 删除按钮 - 应实现：
+      // 1. 弹出确认对话框
+      // 2. 确认后删除该行 DOM 节点
+      // 3. 更新分页计数
+      $('#product-table-body').on('click', '.btn-delete', function () {
+        var id = $(this).data('id');
+        console.log('Delete product:', id);
+        $(this).closest('.product-row').remove();
+        updateBulkBar();
+      });
+
+      // === 弹窗交互 ===
+      // 关闭弹窗
+      $('#btn-modal-close, #btn-modal-cancel').on('click', function () {
+        $('#product-modal').hide();
+      });
+
+      // 保存产品 - 应实现：
+      // 1. 收集所有表单字段数据
+      // 2. 前端校验必填项（产品名、SKU、分类、供应商）
+      // 3. 调用后端 API 保存
+      // 4. 成功后关闭弹窗，刷新列表
+      $('#btn-modal-save').on('click', function () {
+        console.log('Save product');
+        $('#product-modal').hide();
+      });
+
+      // 点击遮罩关闭弹窗
+      $('#product-modal').on('click', function (e) {
+        if ($(e.target).is('#product-modal')) {
+          $('#product-modal').hide();
+        }
+      });
+
+      // 状态开关切换
+      $('#field-status-toggle').on('click', function () {
+        var isActive = $(this).data('active') === true;
+        if (isActive) {
+          $(this).data('active', false);
+          $(this).removeClass('bg-primary').addClass('bg-surface-container-high');
+          $(this).find('span').css('left', '2px');
+        } else {
+          $(this).data('active', true);
+          $(this).removeClass('bg-surface-container-high').addClass('bg-primary');
+          $(this).find('span').css('left', '22px');
+        }
+      });
+
+      // === 添加规格参数 ===
+      // 添加规格 - 应实现：
+      // 1. 在 spec-list 末尾追加一组空的 key-value 输入框
+      // 2. 新增行与现有行样式一致
+      $('#btn-add-spec').on('click', function () {
+        console.log('Add specification row');
+        // 动态追加一行空规格输入框
+        var row = $('<div class="spec-row flex items-center gap-2">' +
+          '<input type="text" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Key" />' +
+          '<input type="text" class="flex-1 bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" placeholder="Value" />' +
+          '<button class="btn-remove-spec p-1.5 text-on-surface-variant hover:text-error transition-colors"><i data-lucide="minus-circle" class="w-4 h-4"></i></button>' +
+          '</div>');
+        $('#spec-list').append(row);
+        lucide.createIcons();
+      });
+
+      // 删除规格行
+      $('#spec-list').on('click', '.btn-remove-spec', function () {
+        $(this).closest('.spec-row').remove();
+      });
+
+      // === 添加产品按钮 ===
+      $('#btn-add-product').on('click', function () {
+        $('#modal-title').text('Add Product');
+        // 清空表单字段
+        $('#field-name').val('');
+        $('#field-sku').val('');
+        $('#field-category').val('');
+        $('#field-supplier').val('');
+        $('#field-description').val('');
+        $('#field-moq').val('');
+        $('#product-modal').show();
+      });
+
+      // === 删除已上传图片 ===
+      // 移除图片 - 应实现：
+      // 1. 从已上传列表中移除该图片 DOM
+      // 2. 更新上传区域的布局
+      $('#image-upload-area').on('click', '.btn-remove-image', function () {
+        $(this).closest('.relative').remove();
+      });
+
+      // 上传图片按钮 - 应实现：
+      // 1. 触发文件选择器（<input type="file">）
+      // 2. 选择文件后在图片区域显示缩略图预览
+      // 3. 支持拖拽上传
+      $('#btn-upload-image').on('click', function () {
+        console.log('Upload image: should open file picker');
+      });
+
+      // === 筛选交互 ===
+      // 重置筛选
+      $('#btn-reset-filters').on('click', function () {
+        $('#filter-category').val('all');
+        $('#filter-supplier').val('all');
+        $('#filter-status').val('all');
+      });
+
+      // 筛选下拉变化 - 应实现：
+      // 1. 根据选中的分类/供应商/状态筛选表格行
+      // 2. 隐藏不匹配的行，显示匹配的行
+      // 3. 更新分页计数
+      $('#filter-category, #filter-supplier, #filter-status').on('change', function () {
+        console.log('Filter changed');
+      });
+
+      // === 搜索交互 ===
+      // 搜索 - 应实现：
+      // 1. 根据输入关键词实时过滤产品列表
+      // 2. 匹配产品名称或 SKU
+      // 3. 无匹配时显示空状态提示
+      $('#search-input').on('input', function () {
+        console.log('Search:', $(this).val());
+      });
+
+    });
+  </script>
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>

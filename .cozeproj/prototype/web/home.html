@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet"/>
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 === */
+      --color-primary:              #1E40AF;
+      --color-primary-container:    #DBEAFE;
+      --color-on-primary:           #ffffff;
+      /* === 背景 / 表面 === */
+      --color-background:                 #F8FAFC;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #F1F5F9;
+      --color-surface-container-high:     #E2E8F0;
+      --color-surface-container-highest:  #CBD5E1;
+      /* === 文字 === */
+      --color-on-surface:           #1E293B;
+      --color-on-surface-variant:   #64748B;
+      /* === 功能色 === */
+      --color-success:  #059669;
+      --color-error:    #DC2626;
+      --color-warning:  #F59E0B;
+      /* === 边框 === */
+      --color-outline:          #CBD5E1;
+      --color-outline-variant:  #E2E8F0;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 2px 8px rgba(0,0,0,0.08);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.1);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.15);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+  <!-- @nav:start 客户端顶部导航 -->
+  <header class="bg-surface/95 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/20">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
+      <div class="flex items-center gap-8">
+        <a href="home.html" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+            <i data-lucide="package" class="w-4 h-4 text-on-primary"></i>
+          </div>
+          <span class="font-bold text-lg text-on-surface">ACMAOYI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="home.html" class="px-3 py-1.5 text-sm font-semibold text-primary bg-primary/10 rounded-md" aria-current="page">Home</a>
+          <a href="products.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Products</a>
+          <a href="suppliers.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Agents</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="inquiry.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+        </a>
+        <a href="sample-cart.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+        </a>
+        <a href="favorites.html" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </a>
+        <a href="admin-dashboard.html" class="ml-2 bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">Admin</a>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end 客户端顶部导航 -->
+
+  <main class="max-w-7xl mx-auto">
+    <!-- @main-content:start -->
+
+    <!-- ==================== 1. Hero 区 ==================== -->
+    <section id="hero-section" class="relative overflow-hidden rounded-b-2xl" style="background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #2563EB 100%);">
+      <div class="px-6 py-20 md:py-28 text-center relative z-10">
+        <h1 class="text-3xl md:text-5xl font-bold text-white leading-tight max-w-3xl mx-auto">
+          Source Direct from Verified Factories
+        </h1>
+        <p class="mt-4 text-base md:text-lg text-blue-200 font-medium tracking-wide">
+          Tiered Pricing · Sample Orders · Global Shipping
+        </p>
+        <div class="mt-8 max-w-2xl mx-auto">
+          <div class="relative flex items-center bg-white rounded-xl shadow-float overflow-hidden">
+            <div class="pl-4 flex items-center text-on-surface-variant">
+              <i data-lucide="search" class="w-5 h-5"></i>
+            </div>
+            <input id="hero-search-input" type="text" placeholder="Search products, suppliers..." class="flex-1 bg-transparent border-none px-3 py-4 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none" />
+            <button id="hero-search-btn" class="shrink-0 m-1.5 bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center gap-2">
+              <i data-lucide="search" class="w-4 h-4"></i>Search
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- 装饰性半透明圆 -->
+      <div class="absolute -top-20 -right-20 w-72 h-72 bg-blue-400/10 rounded-full"></div>
+      <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-blue-300/10 rounded-full"></div>
+    </section>
+
+    <!-- ==================== 2. 核心功能区 ==================== -->
+    <section id="features-section" class="px-6 py-14">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- 功能卡片-1 阶梯价格 -->
+        <div id="feature-tiered-pricing" class="bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer group">
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="trending-down" class="w-5 h-5 text-primary"></i>
+          </div>
+          <h3 class="text-base font-semibold text-on-surface">Tiered Pricing</h3>
+          <p class="mt-1 text-sm text-on-surface-variant leading-relaxed">Volume discounts that scale with your order quantity</p>
+          <div class="mt-4 flex items-center gap-1 text-primary text-sm font-medium">
+            Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+        <!-- 功能卡片-2 样品车 -->
+        <div id="feature-sample-cart" class="bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer group">
+          <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="package-check" class="w-5 h-5 text-success"></i>
+          </div>
+          <h3 class="text-base font-semibold text-on-surface">Sample Cart</h3>
+          <p class="mt-1 text-sm text-on-surface-variant leading-relaxed">Order samples before committing to bulk purchases</p>
+          <div class="mt-4 flex items-center gap-1 text-success text-sm font-medium">
+            Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+        <!-- 功能卡片-3 询盘 -->
+        <div id="feature-inquiry" class="bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer group">
+          <div class="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="message-square-text" class="w-5 h-5 text-warning"></i>
+          </div>
+          <h3 class="text-base font-semibold text-on-surface">Inquiry</h3>
+          <p class="mt-1 text-sm text-on-surface-variant leading-relaxed">Send RFQs and negotiate directly with suppliers</p>
+          <div class="mt-4 flex items-center gap-1 text-warning text-sm font-medium">
+            Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+        <!-- 功能卡片-4 工厂直供 -->
+        <div id="feature-factory-direct" class="bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow cursor-pointer group">
+          <div class="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="factory" class="w-5 h-5 text-error"></i>
+          </div>
+          <h3 class="text-base font-semibold text-on-surface">Factory Direct</h3>
+          <p class="mt-1 text-sm text-on-surface-variant leading-relaxed">No middlemen — connect with verified manufacturers</p>
+          <div class="mt-4 flex items-center gap-1 text-error text-sm font-medium">
+            Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. 产品分类 ==================== -->
+    <section id="categories-section" class="px-6 pb-14">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-on-surface">Shop by Category</h2>
+        <a href="products.html" class="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+          View all <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <!-- 分类-1 厨房 -->
+        <a href="products.html?category=kitchen" id="cat-kitchen" class="bg-surface rounded-lg shadow-card p-5 flex flex-col items-center text-center hover:shadow-float transition-shadow group">
+          <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center mb-3">
+            <i data-lucide="chef-hat" class="w-6 h-6 text-orange-500"></i>
+          </div>
+          <span class="text-sm font-semibold text-on-surface">Kitchen</span>
+          <span class="mt-1 text-xs text-on-surface-variant">2,450 Products</span>
+        </a>
+        <!-- 分类-2 照明 -->
+        <a href="products.html?category=lighting" id="cat-lighting" class="bg-surface rounded-lg shadow-card p-5 flex flex-col items-center text-center hover:shadow-float transition-shadow group">
+          <div class="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center mb-3">
+            <i data-lucide="lightbulb" class="w-6 h-6 text-yellow-500"></i>
+          </div>
+          <span class="text-sm font-semibold text-on-surface">Lighting</span>
+          <span class="mt-1 text-xs text-on-surface-variant">1,830 Products</span>
+        </a>
+        <!-- 分类-3 五金 -->
+        <a href="products.html?category=hardware" id="cat-hardware" class="bg-surface rounded-lg shadow-card p-5 flex flex-col items-center text-center hover:shadow-float transition-shadow group">
+          <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-3">
+            <i data-lucide="wrench" class="w-6 h-6 text-slate-600"></i>
+          </div>
+          <span class="text-sm font-semibold text-on-surface">Hardware</span>
+          <span class="mt-1 text-xs text-on-surface-variant">3,120 Products</span>
+        </a>
+        <!-- 分类-4 家居 -->
+        <a href="products.html?category=home-garden" id="cat-home-garden" class="bg-surface rounded-lg shadow-card p-5 flex flex-col items-center text-center hover:shadow-float transition-shadow group">
+          <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-3">
+            <i data-lucide="home" class="w-6 h-6 text-green-600"></i>
+          </div>
+          <span class="text-sm font-semibold text-on-surface">Home & Garden</span>
+          <span class="mt-1 text-xs text-on-surface-variant">1,960 Products</span>
+        </a>
+        <!-- 分类-5 电子 -->
+        <a href="products.html?category=electronics" id="cat-electronics" class="bg-surface rounded-lg shadow-card p-5 flex flex-col items-center text-center hover:shadow-float transition-shadow group">
+          <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-3">
+            <i data-lucide="cpu" class="w-6 h-6 text-blue-600"></i>
+          </div>
+          <span class="text-sm font-semibold text-on-surface">Electronics</span>
+          <span class="mt-1 text-xs text-on-surface-variant">4,280 Products</span>
+        </a>
+        <!-- 分类-6 纺织 -->
+        <a href="products.html?category=textiles" id="cat-textiles" class="bg-surface rounded-lg shadow-card p-5 flex flex-col items-center text-center hover:shadow-float transition-shadow group">
+          <div class="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center mb-3">
+            <i data-lucide="shirt" class="w-6 h-6 text-pink-500"></i>
+          </div>
+          <span class="text-sm font-semibold text-on-surface">Textiles</span>
+          <span class="mt-1 text-xs text-on-surface-variant">2,740 Products</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== 4. 热门批发产品 ==================== -->
+    <section id="hot-products-section" class="px-6 pb-14">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-on-surface">Hot Wholesale Products</h2>
+        <a href="products.html" class="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+          View all <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- 产品卡片-1 -->
+        <a href="product-detail.html?id=1" id="product-card-1" class="bg-surface rounded-lg shadow-card overflow-hidden hover:shadow-float transition-shadow group">
+          <div class="relative h-48 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1556909114-44e3e70034e2?w=600&h=400&fit=crop" alt="Stainless Steel Cookware Set" data-category="商业科技" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <span class="absolute top-3 left-3 bg-success/90 text-white text-xs font-bold px-2.5 py-1 rounded-md">Save 25%</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-base font-semibold text-on-surface group-hover:text-primary transition-colors">Stainless Steel Cookware Set</h3>
+            <p class="mt-1 text-lg font-bold text-primary">$10.50 - $12.50</p>
+            <div class="mt-2 flex items-center gap-3">
+              <span class="text-xs text-on-surface-variant">MOQ: 100 pcs</span>
+              <span class="text-xs text-on-surface-variant">·</span>
+              <span class="text-xs text-success font-medium">In Stock</span>
+            </div>
+          </div>
+        </a>
+        <!-- 产品卡片-2 -->
+        <a href="product-detail.html?id=2" id="product-card-2" class="bg-surface rounded-lg shadow-card overflow-hidden hover:shadow-float transition-shadow group">
+          <div class="relative h-48 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=600&h=400&fit=crop" alt="LED Pendant Light Fixture" data-category="商业科技" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <span class="absolute top-3 left-3 bg-success/90 text-white text-xs font-bold px-2.5 py-1 rounded-md">Save 30%</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-base font-semibold text-on-surface group-hover:text-primary transition-colors">LED Pendant Light Fixture</h3>
+            <p class="mt-1 text-lg font-bold text-primary">$8.20 - $11.00</p>
+            <div class="mt-2 flex items-center gap-3">
+              <span class="text-xs text-on-surface-variant">MOQ: 200 pcs</span>
+              <span class="text-xs text-on-surface-variant">·</span>
+              <span class="text-xs text-success font-medium">In Stock</span>
+            </div>
+          </div>
+        </a>
+        <!-- 产品卡片-3 -->
+        <a href="product-detail.html?id=3" id="product-card-3" class="bg-surface rounded-lg shadow-card overflow-hidden hover:shadow-float transition-shadow group">
+          <div class="relative h-48 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=400&fit=crop" alt="Brass Door Handle Set" data-category="商业科技" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <span class="absolute top-3 left-3 bg-warning/90 text-white text-xs font-bold px-2.5 py-1 rounded-md">Save 15%</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-base font-semibold text-on-surface group-hover:text-primary transition-colors">Brass Door Handle Set</h3>
+            <p class="mt-1 text-lg font-bold text-primary">$4.50 - $6.80</p>
+            <div class="mt-2 flex items-center gap-3">
+              <span class="text-xs text-on-surface-variant">MOQ: 500 pcs</span>
+              <span class="text-xs text-on-surface-variant">·</span>
+              <span class="text-xs text-success font-medium">In Stock</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== 5. 推荐供应商 ==================== -->
+    <section id="suppliers-section" class="px-6 pb-14">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-on-surface">Featured Suppliers</h2>
+        <a href="suppliers.html" class="text-primary text-sm font-medium hover:underline flex items-center gap-1">
+          View all <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- 供应商卡片-1 -->
+        <div id="supplier-card-1" class="bg-surface rounded-lg shadow-card p-5">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-on-surface">Shenzhen Bright Lighting Co.</h3>
+              <p class="mt-0.5 text-sm text-on-surface-variant flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>China
+              </p>
+            </div>
+            <span class="inline-flex items-center gap-1 bg-success/10 text-success text-xs font-semibold px-2.5 py-1 rounded-full">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>Verified
+            </span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Lighting</span>
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">LED</span>
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Smart Home</span>
+          </div>
+          <a href="supplier-detail.html?id=1" class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+            View Profile <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+        <!-- 供应商卡片-2 -->
+        <div id="supplier-card-2" class="bg-surface rounded-lg shadow-card p-5">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-on-surface">Guangzhou HomeCraft Ltd.</h3>
+              <p class="mt-0.5 text-sm text-on-surface-variant flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>China
+              </p>
+            </div>
+            <span class="inline-flex items-center gap-1 bg-success/10 text-success text-xs font-semibold px-2.5 py-1 rounded-full">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>Verified
+            </span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Kitchen</span>
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Home & Garden</span>
+          </div>
+          <a href="supplier-detail.html?id=2" class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+            View Profile <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+        <!-- 供应商卡片-3 -->
+        <div id="supplier-card-3" class="bg-surface rounded-lg shadow-card p-5">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="text-base font-semibold text-on-surface">Istanbul Metal Works</h3>
+              <p class="mt-0.5 text-sm text-on-surface-variant flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>Turkey
+              </p>
+            </div>
+            <span class="inline-flex items-center gap-1 bg-success/10 text-success text-xs font-semibold px-2.5 py-1 rounded-full">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>Verified
+            </span>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Hardware</span>
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Brass</span>
+            <span class="bg-surface-container text-on-surface-variant text-xs px-2 py-0.5 rounded-sm font-medium">Door Fittings</span>
+          </div>
+          <a href="supplier-detail.html?id=3" class="mt-4 inline-flex items-center gap-1 text-primary text-sm font-medium hover:underline">
+            View Profile <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. 信任指标 ==================== -->
+    <section id="trust-section" class="px-6 pb-14">
+      <div class="bg-surface rounded-xl shadow-card p-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- 指标-1 -->
+          <div class="flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mb-3">
+              <i data-lucide="shield-check" class="w-8 h-8 text-success"></i>
+            </div>
+            <span class="text-2xl font-bold text-on-surface">100+</span>
+            <span class="mt-1 text-sm text-on-surface-variant">Verified Suppliers</span>
+          </div>
+          <!-- 指标-2 -->
+          <div class="flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+              <i data-lucide="globe" class="w-8 h-8 text-primary"></i>
+            </div>
+            <span class="text-2xl font-bold text-on-surface">50+</span>
+            <span class="mt-1 text-sm text-on-surface-variant">Countries Served</span>
+          </div>
+          <!-- 指标-3 -->
+          <div class="flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full bg-warning/10 flex items-center justify-center mb-3">
+              <i data-lucide="star" class="w-8 h-8 text-warning"></i>
+            </div>
+            <span class="text-2xl font-bold text-on-surface">98%</span>
+            <span class="mt-1 text-sm text-on-surface-variant">Satisfaction</span>
+          </div>
+          <!-- 指标-4 -->
+          <div class="flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full bg-purple-500/10 flex items-center justify-center mb-3">
+              <i data-lucide="users" class="w-8 h-8 text-purple-600"></i>
+            </div>
+            <span class="text-2xl font-bold text-on-surface">1000+</span>
+            <span class="mt-1 text-sm text-on-surface-variant">Active Buyers</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. 统计数据区 ==================== -->
+    <section id="stats-section" class="px-6 pb-14">
+      <div class="rounded-xl overflow-hidden" style="background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #2563EB 100%);">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 p-8 md:p-10">
+          <!-- 统计-1 -->
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-2">
+              <i data-lucide="badge-check" class="w-6 h-6 text-blue-300"></i>
+            </div>
+            <span class="text-3xl font-bold text-white">50+</span>
+            <p class="mt-1 text-sm text-blue-200">Verified Agents</p>
+          </div>
+          <!-- 统计-2 -->
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-2">
+              <i data-lucide="boxes" class="w-6 h-6 text-blue-300"></i>
+            </div>
+            <span class="text-3xl font-bold text-white">5,000+</span>
+            <p class="mt-1 text-sm text-blue-200">Wholesale Products</p>
+          </div>
+          <!-- 统计-3 -->
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-2">
+              <i data-lucide="clock" class="w-6 h-6 text-blue-300"></i>
+            </div>
+            <span class="text-3xl font-bold text-white">24h</span>
+            <p class="mt-1 text-sm text-blue-200">Quick Response</p>
+          </div>
+          <!-- 统计-4 -->
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-2">
+              <i data-lucide="ship" class="w-6 h-6 text-blue-300"></i>
+            </div>
+            <span class="text-3xl font-bold text-white">Global</span>
+            <p class="mt-1 text-sm text-blue-200">Shipping Coverage</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8. CTA 区 ==================== -->
+    <section id="cta-section" class="px-6 pb-16">
+      <div class="bg-primary-container rounded-xl p-10 md:p-14 text-center">
+        <h2 class="text-2xl md:text-3xl font-bold text-on-surface">Start Your Wholesale Journey</h2>
+        <p class="mt-3 text-sm text-on-surface-variant max-w-lg mx-auto">Join thousands of buyers sourcing directly from verified factories with tiered pricing and global shipping.</p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="products.html" id="cta-shop-btn" class="bg-primary text-on-primary px-8 py-3 rounded-lg text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>Start Shopping
+          </a>
+          <a href="suppliers.html" id="cta-supplier-btn" class="bg-surface text-on-surface px-8 py-3 rounded-lg text-sm font-semibold hover:bg-surface-container-high active:scale-[0.98] transition-all border border-outline-variant/20 inline-flex items-center gap-2">
+            <i data-lucide="building-2" class="w-4 h-4"></i>Become a Supplier
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- @main-content:end -->
+  </main>
+
+  <script>
+    $(function () {
+      // 搜索按钮 - 跳转到产品列表页并传递搜索关键词
+      $('#hero-search-btn').on('click', function () {
+        var keyword = $('#hero-search-input').val().trim();
+        if (keyword) {
+          window.location.href = 'products.html?search=' + encodeURIComponent(keyword);
+        } else {
+          window.location.href = 'products.html';
+        }
+      });
+
+      // 搜索输入框回车触发搜索
+      $('#hero-search-input').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+          $('#hero-search-btn').trigger('click');
+        }
+      });
+
+      // 功能卡片点击 - Tiered Pricing 跳转到产品页
+      $('#feature-tiered-pricing').on('click', function () {
+        window.location.href = 'products.html';
+      });
+
+      // 功能卡片点击 - Sample Cart 跳转到样品车页
+      $('#feature-sample-cart').on('click', function () {
+        window.location.href = 'sample-cart.html';
+      });
+
+      // 功能卡片点击 - Inquiry 跳转到询盘页
+      $('#feature-inquiry').on('click', function () {
+        window.location.href = 'inquiry.html';
+      });
+
+      // 功能卡片点击 - Factory Direct 跳转到供应商页
+      $('#feature-factory-direct').on('click', function () {
+        window.location.href = 'suppliers.html';
+      });
+    });
+  </script>
+
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>

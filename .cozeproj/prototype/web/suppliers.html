@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet"/>
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 === */
+      --color-primary:              #1E40AF;
+      --color-primary-container:    #DBEAFE;
+      --color-on-primary:           #ffffff;
+      /* === 背景 / 表面 === */
+      --color-background:                 #F8FAFC;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #F1F5F9;
+      --color-surface-container-high:     #E2E8F0;
+      --color-surface-container-highest:  #CBD5E1;
+      /* === 文字 === */
+      --color-on-surface:           #1E293B;
+      --color-on-surface-variant:   #64748B;
+      /* === 功能色 === */
+      --color-success:  #059669;
+      --color-error:    #DC2626;
+      --color-warning:  #F59E0B;
+      /* === 边框 === */
+      --color-outline:          #CBD5E1;
+      --color-outline-variant:  #E2E8F0;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 2px 8px rgba(0,0,0,0.08);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.1);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.15);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+  <!-- @nav:start 客户端顶部导航 -->
+  <header class="bg-surface/95 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/20">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
+      <div class="flex items-center gap-8">
+        <a href="home.html" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+            <i data-lucide="package" class="w-4 h-4 text-on-primary"></i>
+          </div>
+          <span class="font-bold text-lg text-on-surface">ACMAOYI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="home.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Home</a>
+          <a href="products.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Products</a>
+          <a href="suppliers.html" class="px-3 py-1.5 text-sm font-semibold text-primary bg-primary/10 rounded-md" aria-current="page">Agents</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="inquiry.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+        </a>
+        <a href="sample-cart.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+        </a>
+        <a href="favorites.html" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </a>
+        <a href="admin-dashboard.html" class="ml-2 bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">Admin</a>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end 客户端顶部导航 -->
+
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <!-- @main-content:start -->
+
+    <!-- 页面标题区 -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-on-surface">Agent Directory</h1>
+      <p class="text-sm text-on-surface-variant mt-1">Find verified factory-direct suppliers and agents</p>
+    </div>
+
+    <!-- 筛选区 -->
+    <div id="filter-bar" class="bg-surface rounded-lg shadow-card p-4 mb-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- 地区筛选 -->
+        <select id="filter-region" class="bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+          <option value="">All Regions</option>
+          <option value="china">China</option>
+          <option value="india">India</option>
+          <option value="vietnam">Vietnam</option>
+          <option value="turkey">Turkey</option>
+          <option value="indonesia">Indonesia</option>
+        </select>
+
+        <!-- 产品分类筛选 -->
+        <select id="filter-category" class="bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+          <option value="">All Categories</option>
+          <option value="kitchen">Kitchen</option>
+          <option value="lighting">Lighting</option>
+          <option value="textile">Textile</option>
+          <option value="electronics">Electronics</option>
+          <option value="furniture">Furniture</option>
+        </select>
+
+        <!-- Verified Only 开关 -->
+        <label id="filter-verified-label" class="flex items-center gap-2 cursor-pointer select-none">
+          <span class="text-sm font-medium text-on-surface">Verified Only</span>
+          <div class="relative">
+            <input type="checkbox" id="filter-verified" class="sr-only peer" />
+            <div class="w-9 h-5 bg-surface-container-high rounded-full peer-checked:bg-primary transition-colors"></div>
+            <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-4"></div>
+          </div>
+        </label>
+
+        <!-- 分隔 -->
+        <div class="flex-1"></div>
+
+        <!-- Clear Filters -->
+        <a href="#" id="filter-clear" class="text-sm font-medium text-primary hover:underline">Clear Filters</a>
+      </div>
+    </div>
+
+    <!-- 结果计数 -->
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-sm text-on-surface-variant"><span id="result-count" class="font-semibold text-on-surface">6</span> agents found</p>
+      <select id="sort-select" class="bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors">
+        <option value="relevance">Sort by: Relevance</option>
+        <option value="years">Years of Experience</option>
+        <option value="employees">Number of Employees</option>
+      </select>
+    </div>
+
+    <!-- 供应商卡片列表 -->
+    <div id="supplier-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+
+      <!-- 列表-供应商1 -->
+      <div class="supplier-card bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow" data-region="china" data-category="kitchen lighting" data-verified="true">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <h3 class="text-base font-semibold text-on-surface">Shenzhen Bright Home Co., Ltd.</h3>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary">China</span>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-semibold bg-success/15 text-success">
+            <i data-lucide="shield-check" class="w-3 h-3"></i>Verified
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Kitchen</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Lighting</span>
+        </div>
+        <div class="flex items-center gap-4 mb-3 text-xs text-on-surface-variant">
+          <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>15 Years</span>
+          <span class="flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i>200 Employees</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">ISO 9001</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">CE</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">RoHS</span>
+        </div>
+        <a href="supplier-detail.html?id=1" id="btn-view-profile-1" class="w-full bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+          <i data-lucide="eye" class="w-3.5 h-3.5"></i>View Profile
+        </a>
+      </div>
+
+      <!-- 列表-供应商2 -->
+      <div class="supplier-card bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow" data-region="india" data-category="textile kitchen" data-verified="true">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <h3 class="text-base font-semibold text-on-surface">Mumbai Textile Exports Pvt.</h3>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary">India</span>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-semibold bg-success/15 text-success">
+            <i data-lucide="shield-check" class="w-3 h-3"></i>Verified
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Textile</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Kitchen</span>
+        </div>
+        <div class="flex items-center gap-4 mb-3 text-xs text-on-surface-variant">
+          <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>22 Years</span>
+          <span class="flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i>450 Employees</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">ISO 9001</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">OEKO-TEX</span>
+        </div>
+        <a href="supplier-detail.html?id=2" id="btn-view-profile-2" class="w-full bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+          <i data-lucide="eye" class="w-3.5 h-3.5"></i>View Profile
+        </a>
+      </div>
+
+      <!-- 列表-供应商3 -->
+      <div class="supplier-card bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow" data-region="vietnam" data-category="furniture lighting" data-verified="false">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <h3 class="text-base font-semibold text-on-surface">Hanoi Craft Furnishings JSC</h3>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary">Vietnam</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Furniture</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Lighting</span>
+        </div>
+        <div class="flex items-center gap-4 mb-3 text-xs text-on-surface-variant">
+          <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>8 Years</span>
+          <span class="flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i>120 Employees</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">ISO 9001</span>
+        </div>
+        <a href="supplier-detail.html?id=3" id="btn-view-profile-3" class="w-full bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+          <i data-lucide="eye" class="w-3.5 h-3.5"></i>View Profile
+        </a>
+      </div>
+
+      <!-- 列表-供应商4 -->
+      <div class="supplier-card bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow" data-region="china" data-category="electronics kitchen" data-verified="true">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <h3 class="text-base font-semibold text-on-surface">Guangzhou Smart Electronics Ltd.</h3>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary">China</span>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-semibold bg-success/15 text-success">
+            <i data-lucide="shield-check" class="w-3 h-3"></i>Verified
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Electronics</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Kitchen</span>
+        </div>
+        <div class="flex items-center gap-4 mb-3 text-xs text-on-surface-variant">
+          <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>18 Years</span>
+          <span class="flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i>350 Employees</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">ISO 9001</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">CE</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">FCC</span>
+        </div>
+        <a href="supplier-detail.html?id=4" id="btn-view-profile-4" class="w-full bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+          <i data-lucide="eye" class="w-3.5 h-3.5"></i>View Profile
+        </a>
+      </div>
+
+      <!-- 列表-供应商5 -->
+      <div class="supplier-card bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow" data-region="turkey" data-category="textile furniture" data-verified="true">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <h3 class="text-base font-semibold text-on-surface">Istanbul Home Textile Group</h3>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary">Turkey</span>
+            </div>
+          </div>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-semibold bg-success/15 text-success">
+            <i data-lucide="shield-check" class="w-3 h-3"></i>Verified
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Textile</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Furniture</span>
+        </div>
+        <div class="flex items-center gap-4 mb-3 text-xs text-on-surface-variant">
+          <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>30 Years</span>
+          <span class="flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i>800 Employees</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">ISO 9001</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">CE</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">OEKO-TEX</span>
+        </div>
+        <a href="supplier-detail.html?id=5" id="btn-view-profile-5" class="w-full bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+          <i data-lucide="eye" class="w-3.5 h-3.5"></i>View Profile
+        </a>
+      </div>
+
+      <!-- 列表-供应商6 -->
+      <div class="supplier-card bg-surface rounded-lg shadow-card p-5 hover:shadow-float transition-shadow" data-region="indonesia" data-category="furniture lighting" data-verified="false">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <h3 class="text-base font-semibold text-on-surface">Bali Natural Craft Co.</h3>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-primary/10 text-primary">Indonesia</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Furniture</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Lighting</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-surface-container text-on-surface-variant">Kitchen</span>
+        </div>
+        <div class="flex items-center gap-4 mb-3 text-xs text-on-surface-variant">
+          <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>12 Years</span>
+          <span class="flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5"></i>85 Employees</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">FSC</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-success/10 text-success">CE</span>
+        </div>
+        <a href="supplier-detail.html?id=6" id="btn-view-profile-6" class="w-full bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+          <i data-lucide="eye" class="w-3.5 h-3.5"></i>View Profile
+        </a>
+      </div>
+
+    </div>
+
+    <!-- 分页器 -->
+    <nav id="pagination" class="flex items-center justify-center gap-1 mt-8 mb-4" aria-label="Pagination">
+      <button id="btn-prev-page" class="inline-flex items-center justify-center w-9 h-9 rounded-md text-sm text-on-surface-variant hover:bg-surface-container transition-colors" disabled>
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+      </button>
+      <button id="btn-page-1" class="inline-flex items-center justify-center w-9 h-9 rounded-md text-sm font-semibold bg-primary text-on-primary" aria-current="page">1</button>
+      <button id="btn-page-2" class="inline-flex items-center justify-center w-9 h-9 rounded-md text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors">2</button>
+      <button id="btn-page-3" class="inline-flex items-center justify-center w-9 h-9 rounded-md text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors">3</button>
+      <span class="w-9 h-9 flex items-center justify-center text-sm text-on-surface-variant">...</span>
+      <button id="btn-page-8" class="inline-flex items-center justify-center w-9 h-9 rounded-md text-sm font-medium text-on-surface-variant hover:bg-surface-container transition-colors">8</button>
+      <button id="btn-next-page" class="inline-flex items-center justify-center w-9 h-9 rounded-md text-sm text-on-surface-variant hover:bg-surface-container transition-colors">
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </nav>
+
+    <!-- @main-content:end -->
+  </main>
+
+  <script>
+    $(function () {
+
+      // 筛选交互 - 根据条件显示/隐藏卡片
+      function applyFilters() {
+        var regionVal = $('#filter-region').val();
+        var categoryVal = $('#filter-category').val();
+        var verifiedOnly = $('#filter-verified').is(':checked');
+        var visibleCount = 0;
+
+        $('#supplier-list .supplier-card').each(function () {
+          var $card = $(this);
+          var cardRegion = $card.data('region');
+          var cardCategory = $card.data('category');
+          var cardVerified = $card.data('verified');
+
+          var regionMatch = !regionVal || cardRegion === regionVal;
+          var categoryMatch = !categoryVal || (cardCategory && cardCategory.indexOf(categoryVal) !== -1);
+          var verifiedMatch = !verifiedOnly || cardVerified === true;
+
+          if (regionMatch && categoryMatch && verifiedMatch) {
+            $card.show();
+            visibleCount++;
+          } else {
+            $card.hide();
+          }
+        });
+
+        $('#result-count').text(visibleCount);
+      }
+
+      // 地区筛选
+      $('#filter-region').on('change', function () {
+        applyFilters();
+      });
+
+      // 分类筛选
+      $('#filter-category').on('change', function () {
+        applyFilters();
+      });
+
+      // Verified Only 开关
+      $('#filter-verified').on('change', function () {
+        applyFilters();
+      });
+
+      // Clear Filters - 重置所有筛选条件
+      $('#filter-clear').on('click', function (e) {
+        e.preventDefault();
+        $('#filter-region').val('');
+        $('#filter-category').val('');
+        $('#filter-verified').prop('checked', false);
+        applyFilters();
+      });
+
+      // 分页按钮点击 - 切换激活态
+      // 后续应实现完整分页逻辑：
+      // 1. 点击页码按钮后，将当前按钮设为激活态（bg-primary text-on-primary），移除其他按钮激活态
+      // 2. 根据当前页码，通过 AJAX 请求或从 mock 数据中筛选对应页的数据
+      // 3. 更新供应商卡片列表区域内容
+      // 4. 根据当前页码更新上一页/下一页按钮的 disabled 状态
+      // 5. 页面滚动到顶部
+      $('#pagination').on('click', 'button[id^="btn-page-"]', function () {
+        $('#pagination').find('button[id^="btn-page-"]').removeClass('bg-primary text-on-primary font-semibold').addClass('text-on-surface-variant font-medium');
+        $(this).removeClass('text-on-surface-variant font-medium').addClass('bg-primary text-on-primary font-semibold').attr('aria-current', 'page');
+        $('#pagination').find('button[id^="btn-page-"]').not(this).removeAttr('aria-current');
+        console.log('切换到页码:', $(this).text());
+      });
+
+      // 上一页按钮
+      $('#btn-prev-page').on('click', function () {
+        var $active = $('#pagination').find('button[aria-current="page"]');
+        var $prev = $active.prev('button[id^="btn-page-"]');
+        if ($prev.length) {
+          $prev.trigger('click');
+        }
+      });
+
+      // 下一页按钮
+      $('#btn-next-page').on('click', function () {
+        var $active = $('#pagination').find('button[aria-current="page"]');
+        var $next = $active.next('button[id^="btn-page-"]');
+        if ($next.length) {
+          $next.trigger('click');
+        }
+      });
+
+      // 排序选择
+      // 后续应实现完整排序逻辑：
+      // 1. 读取当前排序方式（years/employees/relevance）
+      // 2. 对供应商卡片列表按对应字段重新排序
+      // 3. 将排序后的卡片重新插入 #supplier-list
+      $('#sort-select').on('change', function () {
+        console.log('排序方式:', $(this).val());
+      });
+
+    });
+  </script>
+
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>

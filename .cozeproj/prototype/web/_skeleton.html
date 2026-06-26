@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet"/>
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 === */
+      --color-primary:              #1E40AF;
+      --color-primary-container:    #DBEAFE;
+      --color-on-primary:           #ffffff;
+      /* === 背景 / 表面 === */
+      --color-background:                 #F8FAFC;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #F1F5F9;
+      --color-surface-container-high:     #E2E8F0;
+      --color-surface-container-highest:  #CBD5E1;
+      /* === 文字 === */
+      --color-on-surface:           #1E293B;
+      --color-on-surface-variant:   #64748B;
+      /* === 功能色 === */
+      --color-success:  #059669;
+      --color-error:    #DC2626;
+      --color-warning:  #F59E0B;
+      /* === 边框 === */
+      --color-outline:          #CBD5E1;
+      --color-outline-variant:  #E2E8F0;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 2px 8px rgba(0,0,0,0.08);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.1);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.15);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+  <!-- @nav:start 客户端顶部导航 -->
+  <header class="bg-surface/95 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/20">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
+      <div class="flex items-center gap-8">
+        <a href="home.html" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+            <i data-lucide="package" class="w-4 h-4 text-on-primary"></i>
+          </div>
+          <span class="font-bold text-lg text-on-surface">ACMAOYI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="home.html" class="px-3 py-1.5 text-sm font-semibold text-on-surface hover:text-primary transition-colors rounded-md">Home</a>
+          <a href="products.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Products</a>
+          <a href="suppliers.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Agents</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="inquiry.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+        </a>
+        <a href="sample-cart.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+        </a>
+        <a href="favorites.html" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </a>
+        <a href="admin-dashboard.html" class="ml-2 bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">Admin</a>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end 客户端顶部导航 -->
+
+  <!--
+    ⚠️ <main> 的 class 由主 Agent 根据步骤 4.5 的布局决策与实际设计需要填写，约束如下：
+      - 有侧边栏布局：必须用 flex-1（可加 min-w-0 / overflow-y-auto 等），禁止使用 max-w
+      - 无侧边栏布局：必须用 max-w-4xl ~ max-w-7xl 之一 + mx-auto
+      - 其他样式按实际设计需要自由组合
+    如无特殊需求，禁止使用 小于 max-w-4xl 的设置（过窄，桌面端会大量留白）。
+  -->
+  <main class="max-w-7xl mx-auto">
+    <!-- @main-content:start -->
+    <!-- @main-content:end -->
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+
+</html>

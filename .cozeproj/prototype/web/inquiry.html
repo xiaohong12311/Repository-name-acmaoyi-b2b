@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet"/>
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 === */
+      --color-primary:              #1E40AF;
+      --color-primary-container:    #DBEAFE;
+      --color-on-primary:           #ffffff;
+      /* === 背景 / 表面 === */
+      --color-background:                 #F8FAFC;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #F1F5F9;
+      --color-surface-container-high:     #E2E8F0;
+      --color-surface-container-highest:  #CBD5E1;
+      /* === 文字 === */
+      --color-on-surface:           #1E293B;
+      --color-on-surface-variant:   #64748B;
+      /* === 功能色 === */
+      --color-success:  #059669;
+      --color-error:    #DC2626;
+      --color-warning:  #F59E0B;
+      /* === 边框 === */
+      --color-outline:          #CBD5E1;
+      --color-outline-variant:  #E2E8F0;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 2px 8px rgba(0,0,0,0.08);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.1);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.15);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+  <!-- @nav:start 客户端顶部导航 -->
+  <header class="bg-surface/95 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/20">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
+      <div class="flex items-center gap-8">
+        <a href="home.html" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+            <i data-lucide="package" class="w-4 h-4 text-on-primary"></i>
+          </div>
+          <span class="font-bold text-lg text-on-surface">ACMAOYI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="home.html" class="px-3 py-1.5 text-sm font-semibold text-on-surface hover:text-primary transition-colors rounded-md">Home</a>
+          <a href="products.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Products</a>
+          <a href="suppliers.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Agents</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="inquiry.html" class="relative p-2 text-primary transition-colors" aria-current="page">
+          <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+        </a>
+        <a href="sample-cart.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+        </a>
+        <a href="favorites.html" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </a>
+        <a href="admin-dashboard.html" class="ml-2 bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">Admin</a>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end 客户端顶部导航 -->
+
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <!-- @main-content:start -->
+
+    <!-- 页面标题区 -->
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-1.5">
+        <i data-lucide="message-square-plus" class="w-6 h-6 text-primary"></i>
+        <h1 class="text-2xl font-bold text-on-surface">Inquiry List</h1>
+      </div>
+      <p class="text-sm text-on-surface-variant ml-9">Send RFQ to multiple suppliers at once</p>
+    </div>
+
+    <!-- 询盘产品表 -->
+    <div id="inquiry-table-card" class="bg-surface rounded-lg shadow-card overflow-hidden mb-8">
+      <!-- 表头 -->
+      <div class="grid grid-cols-12 gap-4 px-5 py-3 bg-surface-container text-xs font-semibold text-on-surface-variant uppercase tracking-wide">
+        <span class="col-span-4">Product</span>
+        <span class="col-span-1">SKU</span>
+        <span class="col-span-2">Quantity</span>
+        <span class="col-span-2">Target Price</span>
+        <span class="col-span-2">Specs / Notes</span>
+        <span class="col-span-1 text-right">Action</span>
+      </div>
+
+      <div id="inquiry-table-body" class="divide-y divide-outline-variant/50">
+        <!-- 列表-询盘产品1 -->
+        <div class="inquiry-row grid grid-cols-12 gap-4 px-5 py-4 items-center hover:bg-surface-container/50 transition-colors" data-id="1">
+          <div class="col-span-4 flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=80&h=80&fit=crop" alt="纯棉圆领T恤" data-category="服饰时尚" class="w-12 h-12 rounded-md object-cover shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-on-surface truncate">Premium Cotton T-Shirt</p>
+              <p class="text-xs text-on-surface-variant mt-0.5">100% combed cotton, 180gsm</p>
+            </div>
+          </div>
+          <span class="col-span-1 text-sm text-on-surface-variant font-mono">TS-2401</span>
+          <div class="col-span-2">
+            <input id="qty-1" type="number" value="500" min="1" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-2">
+            <input id="price-1" type="text" value="$3.50" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-2">
+            <input id="specs-1" type="text" value="S-3XL, navy & white" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-1 flex justify-end">
+            <button id="btn-delete-1" class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-md transition-colors" title="Remove">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 列表-询盘产品2 -->
+        <div class="inquiry-row grid grid-cols-12 gap-4 px-5 py-4 items-center hover:bg-surface-container/50 transition-colors" data-id="2">
+          <div class="col-span-4 flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&h=80&fit=crop" alt="涤纶polo衫" data-category="服饰时尚" class="w-12 h-12 rounded-md object-cover shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-on-surface truncate">Quick-Dry Polo Shirt</p>
+              <p class="text-xs text-on-surface-variant mt-0.5">Polyester blend, moisture-wicking</p>
+            </div>
+          </div>
+          <span class="col-span-1 text-sm text-on-surface-variant font-mono">PL-0897</span>
+          <div class="col-span-2">
+            <input id="qty-2" type="number" value="1000" min="1" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-2">
+            <input id="price-2" type="text" value="$5.80" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-2">
+            <input id="specs-2" type="text" value="M-2XL, custom embroidery" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-1 flex justify-end">
+            <button id="btn-delete-2" class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-md transition-colors" title="Remove">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 列表-询盘产品3 -->
+        <div class="inquiry-row grid grid-cols-12 gap-4 px-5 py-4 items-center hover:bg-surface-container/50 transition-colors" data-id="3">
+          <div class="col-span-4 flex items-center gap-3">
+            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=80&h=80&fit=crop" alt="运动冲锋衣" data-category="服饰时尚" class="w-12 h-12 rounded-md object-cover shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-on-surface truncate">Waterproof Windbreaker</p>
+              <p class="text-xs text-on-surface-variant mt-0.5">Nylon shell, 5000mm waterproof</p>
+            </div>
+          </div>
+          <span class="col-span-1 text-sm text-on-surface-variant font-mono">WB-3310</span>
+          <div class="col-span-2">
+            <input id="qty-3" type="number" value="300" min="1" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-2">
+            <input id="price-3" type="text" value="$12.00" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-2">
+            <input id="specs-3" type="text" value="L-4XL, reflective strips" class="w-full bg-surface-container border-none rounded-md px-3 py-1.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="col-span-1 flex justify-end">
+            <button id="btn-delete-3" class="btn-delete p-1.5 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-md transition-colors" title="Remove">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 空状态（默认隐藏，当表格数据清空后显示） -->
+    <div id="empty-state" class="hidden bg-surface rounded-lg shadow-card py-16 px-6 text-center mb-8">
+      <div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-4">
+        <i data-lucide="inbox" class="w-8 h-8 text-on-surface-variant"></i>
+      </div>
+      <h2 class="text-lg font-semibold text-on-surface mb-1.5">Your inquiry list is empty</h2>
+      <p class="text-sm text-on-surface-variant mb-5">Add products to your inquiry list to send RFQs to suppliers.</p>
+      <a href="products.html" id="btn-browse-products" class="inline-flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all">
+        <i data-lucide="search" class="w-4 h-4"></i>
+        Browse Products
+      </a>
+    </div>
+
+    <!-- 需求补充区 + 联系信息区 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- 需求补充区 -->
+      <div class="bg-surface rounded-lg shadow-card p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="file-text" class="w-4 h-4 text-primary"></i>
+          <h2 class="text-base font-semibold text-on-surface">Additional Requirements</h2>
+        </div>
+        <textarea id="additional-requirements" rows="6" placeholder="Enter any additional requirements such as delivery timeline, packaging preferences, quality certifications, payment terms, etc." class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors resize-none"></textarea>
+        <div class="flex items-center gap-4 mt-3">
+          <button id="btn-preset-delivery" class="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary bg-surface-container px-2.5 py-1 rounded-md transition-colors">
+            <i data-lucide="clock" class="w-3 h-3"></i>Delivery Terms
+          </button>
+          <button id="btn-preset-packaging" class="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary bg-surface-container px-2.5 py-1 rounded-md transition-colors">
+            <i data-lucide="box" class="w-3 h-3"></i>Packaging
+          </button>
+          <button id="btn-preset-quality" class="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary bg-surface-container px-2.5 py-1 rounded-md transition-colors">
+            <i data-lucide="shield-check" class="w-3 h-3"></i>Quality Cert.
+          </button>
+        </div>
+      </div>
+
+      <!-- 联系信息区 -->
+      <div class="bg-surface rounded-lg shadow-card p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="user" class="w-4 h-4 text-primary"></i>
+          <h2 class="text-base font-semibold text-on-surface">Contact Information</h2>
+        </div>
+        <div class="space-y-3.5">
+          <div>
+            <label for="contact-name" class="block text-xs font-medium text-on-surface-variant mb-1.5">Full Name</label>
+            <input id="contact-name" type="text" placeholder="Your full name" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div>
+            <label for="contact-company" class="block text-xs font-medium text-on-surface-variant mb-1.5">Company Name</label>
+            <input id="contact-company" type="text" placeholder="Your company name" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="contact-email" class="block text-xs font-medium text-on-surface-variant mb-1.5">Email</label>
+              <input id="contact-email" type="email" placeholder="you@company.com" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+            </div>
+            <div>
+              <label for="contact-phone" class="block text-xs font-medium text-on-surface-variant mb-1.5">Phone</label>
+              <input id="contact-phone" type="tel" placeholder="+1 (555) 000-0000" class="w-full bg-surface-container border-none rounded-md px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 操作按钮区 -->
+    <div class="flex items-center justify-between">
+      <p id="item-count" class="text-sm text-on-surface-variant"><span class="font-semibold text-on-surface">3</span> items in your inquiry list</p>
+      <div class="flex items-center gap-3">
+        <button id="btn-cancel" class="bg-surface-container text-on-surface px-6 py-2.5 rounded-md text-sm font-medium hover:bg-surface-container-high active:scale-[0.98] transition-all">Cancel</button>
+        <button id="btn-send-inquiry" class="bg-primary text-on-primary px-8 py-2.5 rounded-md text-sm font-medium hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          Send Inquiry
+        </button>
+      </div>
+    </div>
+
+    <!-- 发送成功提示（默认隐藏） -->
+    <div id="success-toast" class="hidden fixed top-20 right-6 z-50 bg-surface rounded-lg shadow-float p-4 flex items-center gap-3 max-w-sm">
+      <div class="w-8 h-8 bg-success/15 rounded-full flex items-center justify-center shrink-0">
+        <i data-lucide="check" class="w-4 h-4 text-success"></i>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-on-surface">Inquiry sent successfully!</p>
+        <p class="text-xs text-on-surface-variant mt-0.5">Your RFQ has been sent to matched suppliers.</p>
+      </div>
+    </div>
+
+    <!-- @main-content:end -->
+  </main>
+
+  <script>lucide.createIcons();</script>
+
+  <script>
+    $(function () {
+      // 删除询盘产品行
+      $('#inquiry-table-body').on('click', '.btn-delete', function () {
+        var $row = $(this).closest('.inquiry-row');
+        $row.fadeOut(200, function () {
+          $(this).remove();
+          updateItemCount();
+        });
+      });
+
+      // 更新产品数量显示，空时切换为空状态
+      function updateItemCount() {
+        var count = $('#inquiry-table-body .inquiry-row').length;
+        $('#item-count').find('.font-semibold').text(count);
+        if (count === 0) {
+          $('#inquiry-table-card').addClass('hidden');
+          $('#empty-state').removeClass('hidden');
+          lucide.createIcons();
+        }
+      }
+
+      // 发送询盘按钮
+      $('#btn-send-inquiry').on('click', function () {
+        // 简单交互：显示成功提示
+        $('#success-toast').removeClass('hidden').hide().fadeIn(300);
+        // 3秒后自动隐藏
+        setTimeout(function () {
+          $('#success-toast').fadeOut(300, function () {
+            $(this).addClass('hidden');
+          });
+        }, 3000);
+      });
+
+      // 取消按钮 - 返回上一页
+      $('#btn-cancel').on('click', function () {
+        window.location.href = 'home.html';
+      });
+
+      // 需求预设按钮 - 快速插入常用需求文本
+      $('#btn-preset-delivery').on('click', function () {
+        var current = $('#additional-requirements').val();
+        var text = 'Delivery: Within 30 days after order confirmation.';
+        $('#additional-requirements').val(current ? current + '\n' + text : text);
+      });
+
+      $('#btn-preset-packaging').on('click', function () {
+        var current = $('#additional-requirements').val();
+        var text = 'Packaging: Individual polybag, 50pcs per carton, custom labeling available.';
+        $('#additional-requirements').val(current ? current + '\n' + text : text);
+      });
+
+      $('#btn-preset-quality').on('click', function () {
+        var current = $('#additional-requirements').val();
+        var text = 'Quality: ISO 9001 certified factory, AQL 2.5 inspection standard.';
+        $('#additional-requirements').val(current ? current + '\n' + text : text);
+      });
+    });
+  </script>
+</body>
+
+</html>

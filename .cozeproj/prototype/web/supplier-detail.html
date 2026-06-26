@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet"/>
+
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      /* === 品牌色 === */
+      --color-primary:              #1E40AF;
+      --color-primary-container:    #DBEAFE;
+      --color-on-primary:           #ffffff;
+      /* === 背景 / 表面 === */
+      --color-background:                 #F8FAFC;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #F1F5F9;
+      --color-surface-container-high:     #E2E8F0;
+      --color-surface-container-highest:  #CBD5E1;
+      /* === 文字 === */
+      --color-on-surface:           #1E293B;
+      --color-on-surface-variant:   #64748B;
+      /* === 功能色 === */
+      --color-success:  #059669;
+      --color-error:    #DC2626;
+      --color-warning:  #F59E0B;
+      /* === 边框 === */
+      --color-outline:          #CBD5E1;
+      --color-outline-variant:  #E2E8F0;
+      /* === 圆角 === */
+      --radius-sm:   0.25rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.5rem;
+      --radius-full: 9999px;
+      /* === 阴影 === */
+      --shadow-card:   0 2px 8px rgba(0,0,0,0.08);
+      --shadow-float:  0 10px 25px rgba(0,0,0,0.1);
+      --shadow-dialog: 0 25px 50px rgba(0,0,0,0.15);
+      /* === 字体 === */
+      --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+    }
+  </style>
+
+  <!-- 图片兜底 -->
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans">
+
+  <!-- @nav:start 客户端顶部导航 -->
+  <header class="bg-surface/95 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/20">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
+      <div class="flex items-center gap-8">
+        <a href="home.html" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+            <i data-lucide="package" class="w-4 h-4 text-on-primary"></i>
+          </div>
+          <span class="font-bold text-lg text-on-surface">ACMAOYI</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="home.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Home</a>
+          <a href="products.html" class="px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors rounded-md">Products</a>
+          <a href="suppliers.html" class="px-3 py-1.5 text-sm font-semibold text-primary hover:text-primary transition-colors rounded-md" aria-current="page">Agents</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="inquiry.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="message-square-plus" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+        </a>
+        <a href="sample-cart.html" class="relative p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+        </a>
+        <a href="favorites.html" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+          <i data-lucide="heart" class="w-5 h-5"></i>
+        </a>
+        <a href="admin-dashboard.html" class="ml-2 bg-primary text-on-primary px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">Admin</a>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end 客户端顶部导航 -->
+
+  <main class="max-w-7xl mx-auto px-6 py-6">
+    <!-- @main-content:start -->
+
+    <!-- 面包屑导航 -->
+    <nav id="breadcrumb" class="flex items-center gap-1.5 text-sm mb-6" aria-label="Breadcrumb">
+      <a href="home.html" class="text-on-surface-variant hover:text-primary transition-colors">Home</a>
+      <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-on-surface-variant/50"></i>
+      <a href="suppliers.html" class="text-on-surface-variant hover:text-primary transition-colors">Agents</a>
+      <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-on-surface-variant/50"></i>
+      <span class="text-on-surface font-medium">Shenzhen Xinda Stainless Steel</span>
+    </nav>
+
+    <!-- 供应商头部 -->
+    <section id="supplier-header" class="bg-surface rounded-lg shadow-card p-6 mb-8">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <h1 class="text-2xl font-bold text-on-surface">Shenzhen Xinda Stainless Steel Co., Ltd.</h1>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium bg-success/15 text-success">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+              Verified
+            </span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-on-surface-variant mb-3">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+            <span>Longgang District, Shenzhen, Guangdong, China</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- 标签-成立年份 -->
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container text-on-surface-variant">
+              <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+              Est. 2008
+            </span>
+            <!-- 标签-员工数 -->
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container text-on-surface-variant">
+              <i data-lucide="users" class="w-3.5 h-3.5"></i>
+              200 Employees
+            </span>
+            <!-- 标签-业务类型 -->
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container text-on-surface-variant">
+              <i data-lucide="factory" class="w-3.5 h-3.5"></i>
+              Manufacturer
+            </span>
+            <!-- 标签-出口比例 -->
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-surface-container text-on-surface-variant">
+              <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+              80% Export
+            </span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="btn-favorite" class="p-2.5 rounded-md border border-outline-variant/20 text-on-surface-variant hover:text-error hover:border-error/30 transition-colors" title="Add to Favorites">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+          </button>
+          <button id="btn-share" class="p-2.5 rounded-md border border-outline-variant/20 text-on-surface-variant hover:text-primary hover:border-primary/30 transition-colors" title="Share">
+            <i data-lucide="share-2" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 主内容双栏布局 -->
+    <div class="flex flex-col lg:flex-row gap-8">
+
+      <!-- 左侧主内容 -->
+      <div class="flex-1 min-w-0 space-y-8">
+
+        <!-- 公司简介 -->
+        <section id="company-intro" class="bg-surface rounded-lg shadow-card p-5">
+          <h2 class="text-base font-semibold text-on-surface mb-3 flex items-center gap-2">
+            <i data-lucide="building-2" class="w-4 h-4 text-primary"></i>
+            Company Profile
+          </h2>
+          <p class="text-sm text-on-surface leading-relaxed">
+            Shenzhen Xinda Stainless Steel Co., Ltd. is a leading manufacturer of premium stainless steel products, specializing in pipes, tubes, sheets, and custom fabrication solutions. With over 16 years of experience, we serve clients across 50+ countries in construction, automotive, food processing, and chemical industries. Our state-of-the-art facility spans 25,000 sqm with advanced automated production lines, ensuring consistent quality and competitive pricing for bulk orders. We are committed to sustainable manufacturing practices and hold multiple international certifications.
+          </p>
+        </section>
+
+        <!-- 认证资质 -->
+        <section id="certifications" class="bg-surface rounded-lg shadow-card p-5">
+          <h2 class="text-base font-semibold text-on-surface mb-4 flex items-center gap-2">
+            <i data-lucide="award" class="w-4 h-4 text-primary"></i>
+            Certifications &amp; Qualifications
+          </h2>
+          <div class="flex flex-wrap gap-3">
+            <!-- 认证卡片-ISO 9001 -->
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-primary/5 border border-primary/10">
+              <i data-lucide="badge-check" class="w-5 h-5 text-primary shrink-0"></i>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">ISO 9001:2015</div>
+                <div class="text-xs text-on-surface-variant">Quality Management</div>
+              </div>
+            </div>
+            <!-- 认证卡片-ISO 14001 -->
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-primary/5 border border-primary/10">
+              <i data-lucide="badge-check" class="w-5 h-5 text-primary shrink-0"></i>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">ISO 14001:2015</div>
+                <div class="text-xs text-on-surface-variant">Environmental Mgmt</div>
+              </div>
+            </div>
+            <!-- 认证卡片-CE -->
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-primary/5 border border-primary/10">
+              <i data-lucide="badge-check" class="w-5 h-5 text-primary shrink-0"></i>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">CE Certification</div>
+                <div class="text-xs text-on-surface-variant">European Compliance</div>
+              </div>
+            </div>
+            <!-- 认证卡片-SGS -->
+            <div class="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-primary/5 border border-primary/10">
+              <i data-lucide="badge-check" class="w-5 h-5 text-primary shrink-0"></i>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">SGS Audited</div>
+                <div class="text-xs text-on-surface-variant">Third-party Verified</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 工厂展示 -->
+        <section id="factory-gallery" class="bg-surface rounded-lg shadow-card p-5">
+          <h2 class="text-base font-semibold text-on-surface mb-4 flex items-center gap-2">
+            <i data-lucide="image" class="w-4 h-4 text-primary"></i>
+            Factory Showcase
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- 工厂图片-生产车间 -->
+            <div class="relative rounded-lg overflow-hidden aspect-[4/3]">
+              <img src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=600&h=450&fit=crop" alt="不锈钢管自动化生产车间" data-category="商业科技" class="w-full h-full object-cover">
+            </div>
+            <!-- 工厂图片-质检实验室 -->
+            <div class="relative rounded-lg overflow-hidden aspect-[4/3]">
+              <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=450&fit=crop" alt="质量检测实验室全景" data-category="商业科技" class="w-full h-full object-cover">
+            </div>
+            <!-- 工厂图片-仓储中心 -->
+            <div class="relative rounded-lg overflow-hidden aspect-[4/3]">
+              <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=450&fit=crop" alt="成品仓储物流中心" data-category="商业科技" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </section>
+
+        <!-- 生产能力 -->
+        <section id="production-capacity" class="bg-surface rounded-lg shadow-card p-5">
+          <h2 class="text-base font-semibold text-on-surface mb-4 flex items-center gap-2">
+            <i data-lucide="gauge" class="w-4 h-4 text-primary"></i>
+            Production Capacity
+          </h2>
+          <div class="grid grid-cols-2 gap-4">
+            <!-- 指标卡片-产线 -->
+            <div class="p-4 rounded-lg bg-surface-container">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-md bg-primary/10 flex items-center justify-center">
+                  <i data-lucide="cog" class="w-4.5 h-4.5 text-primary"></i>
+                </div>
+                <div class="text-2xl font-bold text-primary">200+</div>
+              </div>
+              <div class="text-sm font-medium text-on-surface">Modern Production Lines</div>
+              <div class="text-xs text-on-surface-variant mt-0.5">Fully automated CNC systems</div>
+            </div>
+            <!-- 指标卡片-员工 -->
+            <div class="p-4 rounded-lg bg-surface-container">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-md bg-primary/10 flex items-center justify-center">
+                  <i data-lucide="hard-hat" class="w-4.5 h-4.5 text-primary"></i>
+                </div>
+                <div class="text-2xl font-bold text-primary">200</div>
+              </div>
+              <div class="text-sm font-medium text-on-surface">Skilled Workforce</div>
+              <div class="text-xs text-on-surface-variant mt-0.5">Experienced technicians &amp; engineers</div>
+            </div>
+            <!-- 指标卡片-排产 -->
+            <div class="p-4 rounded-lg bg-surface-container">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-md bg-primary/10 flex items-center justify-center">
+                  <i data-lucide="clock" class="w-4.5 h-4.5 text-primary"></i>
+                </div>
+                <div class="text-2xl font-bold text-primary">7d</div>
+              </div>
+              <div class="text-sm font-medium text-on-surface">Flexible Scheduling</div>
+              <div class="text-xs text-on-surface-variant mt-0.5">Custom lead time from 7 days</div>
+            </div>
+            <!-- 指标卡片-品控 -->
+            <div class="p-4 rounded-lg bg-surface-container">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-md bg-primary/10 flex items-center justify-center">
+                  <i data-lucide="check-circle" class="w-4.5 h-4.5 text-primary"></i>
+                </div>
+                <div class="text-2xl font-bold text-primary">99.5%</div>
+              </div>
+              <div class="text-sm font-medium text-on-surface">Quality Assurance</div>
+              <div class="text-xs text-on-surface-variant mt-0.5">Pass rate on final inspection</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 质量保证 -->
+        <section id="quality-assurance" class="bg-surface rounded-lg shadow-card p-5">
+          <h2 class="text-base font-semibold text-on-surface mb-4 flex items-center gap-2">
+            <i data-lucide="shield" class="w-4 h-4 text-primary"></i>
+            Quality Assurance Process
+          </h2>
+          <div class="space-y-3">
+            <!-- 质保项-产前检验 -->
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container/50">
+              <div class="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="clipboard-check" class="w-4 h-4 text-success"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">Pre-production Inspection</div>
+                <div class="text-xs text-on-surface-variant mt-0.5">Raw material verification, specification compliance check, and sample approval before mass production begins.</div>
+              </div>
+            </div>
+            <!-- 质保项-过程质检 -->
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container/50">
+              <div class="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="search-check" class="w-4 h-4 text-success"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">In-process Quality Checks</div>
+                <div class="text-xs text-on-surface-variant mt-0.5">Real-time monitoring at 12 critical control points during manufacturing, including dimensional tolerance and surface finish checks.</div>
+              </div>
+            </div>
+            <!-- 质保项-终检认证 -->
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-surface-container/50">
+              <div class="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center shrink-0 mt-0.5">
+                <i data-lucide="file-check" class="w-4 h-4 text-success"></i>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-on-surface">Final Testing &amp; Certification</div>
+                <div class="text-xs text-on-surface-variant mt-0.5">Comprehensive mechanical and chemical testing, with mill test certificates (MTC) and third-party inspection reports provided for every shipment.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 产品列表 -->
+        <section id="product-list" class="bg-surface rounded-lg shadow-card p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-semibold text-on-surface flex items-center gap-2">
+              <i data-lucide="package" class="w-4 h-4 text-primary"></i>
+              Products
+            </h2>
+            <a href="products.html" class="text-sm text-primary font-medium hover:underline">View All</a>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- 产品卡片-1 -->
+            <div class="p-4 rounded-lg border border-outline-variant/20 hover:shadow-card transition-shadow">
+              <div class="flex items-start gap-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1632309283324-6f6a53f5a6b4?w=120&h=120&fit=crop" alt="304不锈钢圆管" data-category="商业科技" class="w-20 h-20 rounded-md object-cover shrink-0">
+                <div class="min-w-0">
+                  <a href="product-detail.html?id=1" class="text-sm font-semibold text-on-surface hover:text-primary transition-colors line-clamp-2">304 Stainless Steel Round Pipe</a>
+                  <div class="text-xs text-on-surface-variant mt-1">OD: 6-630mm | Wall: 0.5-30mm</div>
+                </div>
+              </div>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">1-9 Tons</span>
+                  <span class="font-semibold text-on-surface">$2,850 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">10-49 Tons</span>
+                  <span class="font-semibold text-on-surface">$2,680 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-primary/5 rounded">
+                  <span class="text-primary font-medium">50+ Tons</span>
+                  <span class="font-semibold text-primary">$2,450 / Ton</span>
+                </div>
+              </div>
+            </div>
+            <!-- 产品卡片-2 -->
+            <div class="p-4 rounded-lg border border-outline-variant/20 hover:shadow-card transition-shadow">
+              <div class="flex items-start gap-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?w=120&h=120&fit=crop" alt="316不锈钢方管" data-category="商业科技" class="w-20 h-20 rounded-md object-cover shrink-0">
+                <div class="min-w-0">
+                  <a href="product-detail.html?id=2" class="text-sm font-semibold text-on-surface hover:text-primary transition-colors line-clamp-2">316L Stainless Steel Square Tube</a>
+                  <div class="text-xs text-on-surface-variant mt-1">Size: 10x10-200x200mm</div>
+                </div>
+              </div>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">1-9 Tons</span>
+                  <span class="font-semibold text-on-surface">$3,420 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">10-49 Tons</span>
+                  <span class="font-semibold text-on-surface">$3,200 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-primary/5 rounded">
+                  <span class="text-primary font-medium">50+ Tons</span>
+                  <span class="font-semibold text-primary">$2,950 / Ton</span>
+                </div>
+              </div>
+            </div>
+            <!-- 产品卡片-3 -->
+            <div class="p-4 rounded-lg border border-outline-variant/20 hover:shadow-card transition-shadow">
+              <div class="flex items-start gap-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=120&h=120&fit=crop" alt="304不锈钢板材" data-category="商业科技" class="w-20 h-20 rounded-md object-cover shrink-0">
+                <div class="min-w-0">
+                  <a href="product-detail.html?id=3" class="text-sm font-semibold text-on-surface hover:text-primary transition-colors line-clamp-2">304 Stainless Steel Sheet / Plate</a>
+                  <div class="text-xs text-on-surface-variant mt-1">Thickness: 0.3-100mm</div>
+                </div>
+              </div>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">1-9 Tons</span>
+                  <span class="font-semibold text-on-surface">$2,680 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">10-49 Tons</span>
+                  <span class="font-semibold text-on-surface">$2,520 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-primary/5 rounded">
+                  <span class="text-primary font-medium">50+ Tons</span>
+                  <span class="font-semibold text-primary">$2,280 / Ton</span>
+                </div>
+              </div>
+            </div>
+            <!-- 产品卡片-4 -->
+            <div class="p-4 rounded-lg border border-outline-variant/20 hover:shadow-card transition-shadow">
+              <div class="flex items-start gap-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=120&h=120&fit=crop" alt="不锈钢装饰管" data-category="商业科技" class="w-20 h-20 rounded-md object-cover shrink-0">
+                <div class="min-w-0">
+                  <a href="product-detail.html?id=4" class="text-sm font-semibold text-on-surface hover:text-primary transition-colors line-clamp-2">201 Decorative Stainless Steel Pipe</a>
+                  <div class="text-xs text-on-surface-variant mt-1">OD: 6-114mm | Polished / Brushed</div>
+                </div>
+              </div>
+              <div class="space-y-1 text-xs">
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">1-9 Tons</span>
+                  <span class="font-semibold text-on-surface">$1,580 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-surface-container rounded">
+                  <span class="text-on-surface-variant">10-49 Tons</span>
+                  <span class="font-semibold text-on-surface">$1,420 / Ton</span>
+                </div>
+                <div class="flex justify-between items-center px-2 py-1 bg-primary/5 rounded">
+                  <span class="text-primary font-medium">50+ Tons</span>
+                  <span class="font-semibold text-primary">$1,280 / Ton</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- 右侧联系信息 -->
+      <aside class="lg:w-80 shrink-0">
+        <div class="sticky top-24 space-y-4">
+
+          <!-- 联系方式卡片 -->
+          <div id="contact-card" class="bg-surface rounded-lg shadow-card p-5">
+            <h3 class="text-base font-semibold text-on-surface mb-4 flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-primary"></i>
+              Contact Information
+            </h3>
+            <div class="space-y-4">
+              <!-- Business Hours -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-md bg-surface-container flex items-center justify-center shrink-0">
+                  <i data-lucide="clock" class="w-4 h-4 text-on-surface-variant"></i>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-on-surface">Business Hours</div>
+                  <div class="text-xs text-on-surface-variant mt-0.5">Mon-Sat: 9:00 AM - 6:00 PM (CST)</div>
+                </div>
+              </div>
+              <!-- Response Time -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-md bg-surface-container flex items-center justify-center shrink-0">
+                  <i data-lucide="zap" class="w-4 h-4 text-on-surface-variant"></i>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-on-surface">Response Time</div>
+                  <div class="text-xs text-on-surface-variant mt-0.5">Usually within <span class="font-semibold text-success">24 hours</span></div>
+                </div>
+              </div>
+              <!-- Main Products -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-md bg-surface-container flex items-center justify-center shrink-0">
+                  <i data-lucide="tag" class="w-4 h-4 text-on-surface-variant"></i>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-on-surface">Main Products</div>
+                  <div class="text-xs text-on-surface-variant mt-0.5">Stainless Steel Pipes, Tubes, Sheets, Custom Fabrication</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 分隔线 -->
+            <div class="border-t border-outline-variant/20 my-4"></div>
+
+            <!-- Send Inquiry Button -->
+            <button id="btn-send-inquiry" class="w-full bg-primary text-on-primary px-4 py-3 rounded-md text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center justify-center gap-2">
+              <i data-lucide="message-square-plus" class="w-4 h-4"></i>
+              Send Inquiry Now
+            </button>
+
+            <!-- Secondary actions -->
+            <div class="mt-3 flex gap-2">
+              <button id="btn-request-sample" class="flex-1 bg-surface-container text-on-surface px-3 py-2 rounded-md text-xs font-medium hover:bg-surface-container-high active:scale-[0.98] transition-all inline-flex items-center justify-center gap-1.5">
+                <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
+                Request Sample
+              </button>
+              <button id="btn-add-to-cart" class="flex-1 bg-surface-container text-on-surface px-3 py-2 rounded-md text-xs font-medium hover:bg-surface-container-high active:scale-[0.98] transition-all inline-flex items-center justify-center gap-1.5">
+                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                Sample Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- 供应商评分摘要 -->
+          <div class="bg-surface rounded-lg shadow-card p-5">
+            <h3 class="text-sm font-semibold text-on-surface mb-3">Supplier Rating</h3>
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-on-surface-variant">Response Rate</span>
+                <span class="text-sm font-semibold text-success">98%</span>
+              </div>
+              <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-full bg-success rounded-full" style="width:98%"></div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-xs text-on-surface-variant">On-time Delivery</span>
+                <span class="text-sm font-semibold text-primary">95%</span>
+              </div>
+              <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-full bg-primary rounded-full" style="width:95%"></div>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-xs text-on-surface-variant">Repeat Order Rate</span>
+                <span class="text-sm font-semibold text-warning">87%</span>
+              </div>
+              <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-full bg-warning rounded-full" style="width:87%"></div>
+              </div>
+            </div>
+            <div class="border-t border-outline-variant/20 mt-4 pt-3">
+              <div class="flex items-center gap-2 text-xs text-on-surface-variant">
+                <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                <span>Trusted by <span class="font-semibold text-on-surface">340+</span> buyers worldwide</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- @main-content:end -->
+  </main>
+
+  <script>lucide.createIcons();</script>
+
+  <script>
+  $(function() {
+
+    // 收藏按钮 - 点击切换收藏状态：
+    // 1. 切换图标为实心心形
+    // 2. 切换按钮颜色为红色
+    // 3. 更新 title 属性
+    var isFavorited = false;
+    $('#btn-favorite').on('click', function() {
+      isFavorited = !isFavorited;
+      if (isFavorited) {
+        $(this).removeClass('text-on-surface-variant border-outline-variant/20 hover:text-error hover:border-error/30')
+               .addClass('text-error border-error/30 hover:text-on-surface-variant hover:border-outline-variant/20');
+        $(this).attr('title', 'Remove from Favorites');
+        $(this).find('i').attr('data-lucide', 'heart');
+        // 替换为实心图标
+        $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>');
+      } else {
+        $(this).removeClass('text-error border-error/30 hover:text-on-surface-variant hover:border-outline-variant/20')
+               .addClass('text-on-surface-variant border-outline-variant/20 hover:text-error hover:border-error/30');
+        $(this).attr('title', 'Add to Favorites');
+        $(this).html('<i data-lucide="heart" class="w-5 h-5"></i>');
+        lucide.createIcons();
+      }
+    });
+
+    // 分享按钮 - 点击后应实现：
+    // 1. 弹出分享弹窗，包含链接复制、邮件分享、社交媒体分享选项
+    // 2. 点击复制链接后将链接复制到剪贴板并显示成功提示
+    $('#btn-share').on('click', function() {
+      console.log('Share supplier: Shenzhen Xinda Stainless Steel Co., Ltd.');
+    });
+
+    // 发送询盘按钮 - 点击跳转到询盘页面，携带供应商信息
+    $('#btn-send-inquiry').on('click', function() {
+      window.location.href = 'inquiry.html?supplier=xinda-stainless';
+    });
+
+    // 请求样品按钮 - 点击跳转到样品购物车页面
+    $('#btn-request-sample').on('click', function() {
+      window.location.href = 'sample-cart.html?supplier=xinda-stainless';
+    });
+
+    // 加入样品车按钮 - 点击跳转到样品购物车页面
+    $('#btn-add-to-cart').on('click', function() {
+      window.location.href = 'sample-cart.html?supplier=xinda-stainless';
+    });
+
+  });
+  </script>
+
+</body>
+
+</html>
