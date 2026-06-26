@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { getCompanyInfo, getContactInfo, getSocialLinks } from '@/config/brand-config';
@@ -15,9 +16,13 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 text-white font-bold text-lg">
-                A
-              </div>
+              <Image
+                src="/logo.jpg"
+                alt="ACMAOYI"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-lg object-contain"
+              />
               <span className="font-semibold text-lg">{companyInfo.name}</span>
             </div>
             <p className="text-sm text-gray-600 mb-4">
