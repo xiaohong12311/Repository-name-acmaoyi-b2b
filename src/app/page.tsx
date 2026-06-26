@@ -93,7 +93,7 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
               className="absolute right-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
             >
               <Search className="w-4 h-4" />
-              <span className="hidden sm:inline">{t.common.search}</span>
+              <span className="hidden sm:inline">{content.search_placeholder || tl.searchPlaceholder || 'Search'}</span>
             </button>
           </div>
         </form>
