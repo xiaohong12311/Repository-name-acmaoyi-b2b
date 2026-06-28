@@ -11,7 +11,7 @@ export const brandConfig = {
     name: 'Acmaoyi',                    // 公司名称
     fullName: 'Acmaoyi Beauty Supply',  // 公司全称
     slogan: 'Professional B2B Beauty Wholesale Platform', // 品牌标语
-    description: 'Connecting quality beauty manufacturers with global buyers. Professional wholesale platform for cosmetics, skincare, and beauty products.', // 公司简介
+    description: 'Connecting premium Chinese manufacturers with global buyers. Professional B2B wholesale platform.', // 公司简介
     
     // 联系方式
     email: 'hongxiaohong12311@outlook.com',
