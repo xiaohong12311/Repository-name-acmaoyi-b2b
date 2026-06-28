@@ -18,9 +18,9 @@ export function Footer() {
               <Image
                 src="/logo.jpg"
                 alt="ACMAOYI"
-                width={40}
-                height={40}
-                className="h-10 w-10 rounded-lg object-contain"
+                width={80}
+                height={80}
+                className="h-10 w-10 rounded-lg object-cover"
               />
               <span className="font-semibold text-lg text-white">{companyInfo.name}</span>
             </div>

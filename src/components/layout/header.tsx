@@ -40,8 +40,8 @@ export function Header() {
           <Image
             src="/logo.jpg"
             alt={companyInfo.name}
-            width={44}
-            height={44}
+            width={88}
+            height={88}
             className="h-11 w-11 rounded-lg object-cover"
             priority
           />
