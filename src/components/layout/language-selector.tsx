@@ -9,11 +9,11 @@ export function LanguageSelector() {
 
   return (
     <div className="flex items-center gap-1">
-      <Globe className="h-4 w-4 text-gray-500" />
+      <Globe className="h-4 w-4 text-white/80" />
       <select
         value={language}
         onChange={(e) => setLanguage(e.target.value as 'en' | 'fr' | 'sw')}
-        className="bg-transparent border-none text-sm text-gray-600 cursor-pointer focus:outline-none"
+        className="bg-transparent border-none text-sm text-white/90 cursor-pointer focus:outline-none"
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>

@@ -60,7 +60,7 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
   };
 
   return (
-    <section className="relative overflow-hidden py-16 md:py-24 min-h-[480px]">
+    <section className="relative overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24 min-h-[480px]">
       {/* Background Image */}
       <Image
         src="/hero-bg.jpg"
