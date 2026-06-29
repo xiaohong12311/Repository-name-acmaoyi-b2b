@@ -60,11 +60,18 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
   };
 
   return (
-    <section className="relative overflow-hidden py-16 md:py-24" style={{ background: 'linear-gradient(135deg, #1E3A8A 0%, #1E40AF 40%, #2563EB 100%)' }}>
-      {/* Decorative circles */}
-      <div className="absolute top-10 left-10 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3" />
-      <div className="absolute top-1/2 left-1/3 w-48 h-48 bg-white/5 rounded-full" />
+    <section className="relative overflow-hidden py-16 md:py-24 min-h-[480px]">
+      {/* Background Image */}
+      <Image
+        src="/hero-bg.jpg"
+        alt=""
+        fill
+        className="object-cover object-center"
+        priority
+        sizes="100vw"
+      />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-black/50" />
 
       <div className="container mx-auto px-6 relative text-center">
         <Badge className="bg-white/15 text-white border-0 mb-6 px-4 py-2 text-sm backdrop-blur-sm">
