@@ -459,7 +459,7 @@ export default function HomePage() {
 
   // Section order from DB, or default order
   const sectionOrder = sectionsLoading
-    ? ['hero', 'core_features', 'categories', 'featured_products', 'featured_suppliers', 'more_features', 'trust_indicators', 'trust_stats', 'cta']
+    ? ['hero', 'categories', 'featured_products', 'core_features', 'featured_suppliers', 'more_features', 'trust_indicators', 'trust_stats', 'cta']
     : sections.filter(s => s.is_visible).map(s => s.section_type);
 
   return (
