@@ -14,10 +14,10 @@ export const brandConfig = {
     description: 'Connecting premium Chinese manufacturers with global buyers. Professional B2B wholesale platform.', // 公司简介
     
     // 联系方式
-    email: 'hongxiaohong12311@outlook.com',
-    phone: '+86 15827634276',
-    whatsapp: '+86 15827634276',       // WhatsApp 号码（可选）
-    address: '16 Amoyi Street',        // 公司地址
+    email: 'acmaoyi@gmail.com',
+    phone: '+86 19924277263',
+    whatsapp: '+86 19924277263',       // WhatsApp 号码（可选）
+    address: 'Unit 103, Building K\nWest City Smart Park\n31 Xicai Road, Baiyun District\nGuangzhou City\nCHINA',        // 公司地址
   },
 
   // ========== 网站信息 ==========

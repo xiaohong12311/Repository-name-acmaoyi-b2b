@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react';
 import { getCompanyInfo, getContactInfo, getSocialLinks } from '@/config/brand-config';
 
 export function Footer() {
@@ -39,10 +39,16 @@ export function Footer() {
                   <span>{contactInfo.phone}</span>
                 </div>
               )}
+              {contactInfo.whatsapp && (
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="h-4 w-4" />
+                  <span>WhatsApp: {contactInfo.whatsapp.replace(/^\+86\s*/, '')}</span>
+                </div>
+              )}
               {contactInfo.address && (
                 <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5" />
-                  <span className="text-xs">{contactInfo.address}</span>
+                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                  <span className="text-xs whitespace-pre-line">{contactInfo.address}</span>
                 </div>
               )}
             </div>
