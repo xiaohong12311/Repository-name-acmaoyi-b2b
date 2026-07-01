@@ -48,7 +48,7 @@ export const en = {
     moreCoreFeatures: 'More Core Features',
     favorites: 'Favorites',
     favoritesDesc: 'Save products for later inquiries',
-    supplierPortal: 'Supplier Portal',
+    supplierPortal: 'Agent Portal',
     supplierPortalDesc: 'Manufacturers showcase products',
     getCatalog: 'Get Catalog',
     getCatalogDesc: 'Download product catalog PDF',

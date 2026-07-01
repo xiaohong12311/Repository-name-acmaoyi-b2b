@@ -48,7 +48,7 @@ export const fr = {
     moreCoreFeatures: 'Plus de Fonctionnalités',
     favorites: 'Favoris',
     favoritesDesc: 'Sauvegardez pour demandes ultérieures',
-    supplierPortal: 'Portail Fournisseur',
+    supplierPortal: 'Portail Agent',
     supplierPortalDesc: 'Les fabricants présentent leurs produits',
     getCatalog: 'Obtenir le Catalogue',
     getCatalogDesc: 'Télécharger le catalogue PDF',

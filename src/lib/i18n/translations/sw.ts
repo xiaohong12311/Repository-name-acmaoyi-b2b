@@ -48,7 +48,7 @@ export const sw = {
     moreCoreFeatures: 'Zaidi ya Vipengele vya Msingi',
     favorites: 'Vipendwa',
     favoritesDesc: 'Hifadhi bidhaa kwa maombi ya baadaye',
-    supplierPortal: 'Lango la Msambazaji',
+    supplierPortal: 'Lango la Agent',
     supplierPortalDesc: 'Watengenezaji wanaonyesha bidhaa',
     getCatalog: 'Pata Catalogue',
     getCatalogDesc: 'Pakua catalogue ya PDF',

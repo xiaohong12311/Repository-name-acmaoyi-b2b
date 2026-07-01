@@ -98,7 +98,7 @@ export default function SupplierLoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">
-            {isRegister ? 'Supplier Registration' : 'Supplier Portal'}
+            {isRegister ? 'Agent Registration' : 'Agent Portal'}
           </CardTitle>
           <p className="text-sm text-gray-500 mt-2">
             {isRegister 
