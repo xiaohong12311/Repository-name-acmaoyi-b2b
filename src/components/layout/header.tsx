@@ -56,8 +56,8 @@ export function Header() {
               className={cn(
                 'text-sm font-bold px-3 py-2 rounded-lg transition-colors',
                 isActive(link.href)
-                  ? 'text-white bg-white/20'
-                  : 'text-white/90 hover:text-white hover:bg-white/10'
+                  ? 'text-blue-900 font-bold bg-blue-900/10'
+                  : 'text-blue-900 font-bold hover:text-blue-800 hover:bg-blue-900/10'
               )}
             >
               {link.label}
@@ -70,7 +70,7 @@ export function Header() {
           {/* Favorites */}
           <Link href="/favorites">
             <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-white/10">
-              <Heart className="h-[18px] w-[18px] text-white" />
+              <Heart className="h-[18px] w-[18px] text-blue-900" />
               {favorites.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-primary text-primary-foreground">
                   {favorites.length}
@@ -82,7 +82,7 @@ export function Header() {
           {/* Sample Cart */}
           <Link href="/sample-cart">
             <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-white/10">
-              <ShoppingCart className="h-[18px] w-[18px] text-white" />
+              <ShoppingCart className="h-[18px] w-[18px] text-blue-900" />
               {sampleCart.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-success text-success-foreground">
                   {sampleCart.length}
@@ -94,7 +94,7 @@ export function Header() {
           {/* Inquiry */}
           <Link href="/inquiry">
             <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-white/10">
-              <MessageSquarePlus className="h-[18px] w-[18px] text-white" />
+              <MessageSquarePlus className="h-[18px] w-[18px] text-blue-900" />
               {inquiryItems.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-warning text-white">
                   {inquiryItems.length}
@@ -110,7 +110,7 @@ export function Header() {
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-white/10">
-                <Menu className="h-5 w-5 text-white" />
+                <Menu className="h-5 w-5 text-blue-900" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-72">
