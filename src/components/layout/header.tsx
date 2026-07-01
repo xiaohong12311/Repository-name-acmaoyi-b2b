@@ -19,6 +19,8 @@ export function Header() {
   const { t } = useLanguage();
   const pathname = usePathname();
 
+  const isHome = pathname === '/';
+
   const navLinks = [
     { href: '/', label: t.nav.home },
     { href: '/products', label: t.nav.products },
@@ -31,6 +33,12 @@ export function Header() {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
   };
+
+  // Home page: white text on dark hero; Other pages: deep blue on light background
+  const textColor = isHome ? 'text-white' : 'text-blue-900';
+  const hoverBg = isHome ? 'hover:bg-white/10' : 'hover:bg-blue-900/10';
+  const activeBg = isHome ? 'bg-white/10' : 'bg-blue-900/10';
+  const hoverText = isHome ? 'hover:text-white/90' : 'hover:text-blue-800';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full">
@@ -56,8 +64,8 @@ export function Header() {
               className={cn(
                 'text-sm font-bold px-3 py-2 rounded-lg transition-colors',
                 isActive(link.href)
-                  ? 'text-blue-900 font-bold bg-blue-900/10'
-                  : 'text-blue-900 font-bold hover:text-blue-800 hover:bg-blue-900/10'
+                  ? cn(textColor, 'font-bold', activeBg)
+                  : cn(textColor, 'font-bold', hoverText, hoverBg)
               )}
             >
               {link.label}
@@ -69,8 +77,8 @@ export function Header() {
         <div className="flex items-center gap-1">
           {/* Favorites */}
           <Link href="/favorites">
-            <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-white/10">
-              <Heart className="h-[18px] w-[18px] text-blue-900" />
+            <Button variant="ghost" size="icon" className={cn('relative h-9 w-9', hoverBg)}>
+              <Heart className={cn('h-[18px] w-[18px]', textColor)} />
               {favorites.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-primary text-primary-foreground">
                   {favorites.length}
@@ -81,8 +89,8 @@ export function Header() {
 
           {/* Sample Cart */}
           <Link href="/sample-cart">
-            <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-white/10">
-              <ShoppingCart className="h-[18px] w-[18px] text-blue-900" />
+            <Button variant="ghost" size="icon" className={cn('relative h-9 w-9', hoverBg)}>
+              <ShoppingCart className={cn('h-[18px] w-[18px]', textColor)} />
               {sampleCart.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-success text-success-foreground">
                   {sampleCart.length}
@@ -93,8 +101,8 @@ export function Header() {
 
           {/* Inquiry */}
           <Link href="/inquiry">
-            <Button variant="ghost" size="icon" className="relative h-9 w-9 hover:bg-white/10">
-              <MessageSquarePlus className="h-[18px] w-[18px] text-blue-900" />
+            <Button variant="ghost" size="icon" className={cn('relative h-9 w-9', hoverBg)}>
+              <MessageSquarePlus className={cn('h-[18px] w-[18px]', textColor)} />
               {inquiryItems.length > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[10px] bg-warning text-white">
                   {inquiryItems.length}
@@ -109,8 +117,8 @@ export function Header() {
           {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="h-9 w-9 hover:bg-white/10">
-                <Menu className="h-5 w-5 text-blue-900" />
+              <Button variant="ghost" size="icon" className={cn('h-9 w-9', hoverBg)}>
+                <Menu className={cn('h-5 w-5', textColor)} />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-72">

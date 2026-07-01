@@ -1,19 +1,26 @@
 'use client';
 
 import { useLanguage } from '@/hooks/use-language';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function LanguageSelector() {
   const { language, setLanguage, languages } = useLanguage();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
+  const textColor = isHome ? 'text-white/90' : 'text-blue-900';
+  const iconColor = isHome ? 'text-white/80' : 'text-blue-900';
 
   return (
     <div className="flex items-center gap-1">
-      <Globe className="h-4 w-4 text-white/80" />
+      <Globe className={cn('h-4 w-4', iconColor)} />
       <select
         value={language}
         onChange={(e) => setLanguage(e.target.value as 'en' | 'fr' | 'sw')}
-        className="bg-transparent border-none text-sm text-white/90 cursor-pointer focus:outline-none"
+        className={cn('bg-transparent border-none text-sm cursor-pointer focus:outline-none', textColor)}
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>
