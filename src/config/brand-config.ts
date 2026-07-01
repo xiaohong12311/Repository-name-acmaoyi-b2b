@@ -31,9 +31,9 @@ export const brandConfig = {
   social: {
     facebook: '',                      // Facebook 主页链接（如：https://facebook.com/acmaoyi）
     tiktok: '',                        // TikTok 主页链接（如：https://tiktok.com/@acmaoyi）
-    instagram: '',                     // Instagram 镜接（可选）
-    twitter: '',                       // Twitter 镜接（可选）
-    linkedin: '',                      // LinkedIn 镜接（可选）
+    instagram: 'https://www.instagram.com/acmaoyi',  // Instagram 链接
+    twitter: 'https://x.com/ACMaoyi',                // X (Twitter) 链接
+    linkedin: '',                      // LinkedIn 链接（可选）
   },
 
   // ========== 广告追踪 Pixel ==========
