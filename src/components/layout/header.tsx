@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,23 @@ export function Header() {
   const pathname = usePathname();
 
   const isHome = pathname === '/';
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Home page top: white text on dark hero; Home page scrolled / Other pages: deep blue on light background
+  const useDarkText = !isHome || scrolled;
+  const textColor = useDarkText ? 'text-blue-900' : 'text-white';
+  const hoverBg = useDarkText ? 'hover:bg-blue-900/10' : 'hover:bg-white/10';
+  const activeBg = useDarkText ? 'bg-blue-900/10' : 'bg-white/10';
+  const hoverText = useDarkText ? 'hover:text-blue-800' : 'hover:text-white/90';
 
   const navLinks = [
     { href: '/', label: t.nav.home },
@@ -33,12 +51,6 @@ export function Header() {
     if (href === '/') return pathname === '/';
     return pathname.startsWith(href);
   };
-
-  // Home page: white text on dark hero; Other pages: deep blue on light background
-  const textColor = isHome ? 'text-white' : 'text-blue-900';
-  const hoverBg = isHome ? 'hover:bg-white/10' : 'hover:bg-blue-900/10';
-  const activeBg = isHome ? 'bg-white/10' : 'bg-blue-900/10';
-  const hoverText = isHome ? 'hover:text-white/90' : 'hover:text-blue-800';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full">
