@@ -48,7 +48,7 @@ const sectionTypes = [
   { value: 'core_features', label: '核心功能' },
   { value: 'categories', label: '分类展示' },
   { value: 'featured_products', label: '推荐产品' },
-  { value: 'featured_suppliers', label: '推荐供应商' },
+  { value: 'featured_suppliers', label: '推荐Agent' },
   { value: 'more_features', label: '更多功能' },
   { value: 'trust_indicators', label: '信任指标' },
   { value: 'trust_stats', label: '信任统计' },

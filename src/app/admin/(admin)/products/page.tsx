@@ -184,7 +184,7 @@ export default function ProductsPage() {
           <Input value={product.category} onChange={e => setProduct({ ...product, category: e.target.value })} />
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-1 block">供应商</label>
+          <label className="text-sm font-medium text-gray-700 mb-1 block">Agent</label>
           <select
             value={product.supplier_id || ''}
             onChange={e => setProduct({ ...product, supplier_id: e.target.value ? Number(e.target.value) : null })}
@@ -322,7 +322,7 @@ export default function ProductsPage() {
                   </div>
                   <p className="text-sm text-gray-500 truncate">{product.name}</p>
                   <p className="text-xs text-gray-400 mt-1">
-                    供应商: {getSupplierName(product.supplier_id)} · MOQ: {product.moq} {product.unit}
+                    Agent: {getSupplierName(product.supplier_id)} · MOQ: {product.moq} {product.unit}
                     {product.tier_prices.length > 0 && ` · 起: $${product.tier_prices[0].price}`}
                   </p>
                 </div>

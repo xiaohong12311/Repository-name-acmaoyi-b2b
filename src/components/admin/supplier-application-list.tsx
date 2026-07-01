@@ -184,7 +184,7 @@ export function SupplierApplicationList() {
         </div>
       ) : applications.length === 0 ? (
         <div className="text-center py-8 text-muted-foreground">
-          暂无供应商申请
+          暂无Agent申请
         </div>
       ) : (
         <div className="space-y-3">
@@ -368,7 +368,7 @@ export function SupplierApplicationList() {
                 checked={createSupplier} 
                 onCheckedChange={(checked) => setCreateSupplier(checked === true)}
               />
-              <Label className="cursor-pointer">通过后自动创建供应商档案</Label>
+              <Label className="cursor-pointer">通过后自动创建Agent档案</Label>
             </div>
           </div>
           <DialogFooter className="gap-2">

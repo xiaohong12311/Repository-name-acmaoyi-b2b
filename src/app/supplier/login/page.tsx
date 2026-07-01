@@ -102,7 +102,7 @@ export default function SupplierLoginPage() {
           </CardTitle>
           <p className="text-sm text-gray-500 mt-2">
             {isRegister 
-              ? 'Create your supplier account to manage products'
+              ? 'Create your agent account to manage products'
               : 'Login to manage your products and orders'}
           </p>
         </CardHeader>

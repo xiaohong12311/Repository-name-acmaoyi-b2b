@@ -180,7 +180,7 @@ export default function SampleCartPage() {
                     <span className="font-semibold text-foreground">Total</span>
                     <span className="text-xl font-bold text-foreground tabular-nums">${subtotal.toFixed(2)}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Final pricing confirmed by supplier</p>
+                  <p className="text-xs text-muted-foreground mt-1">Final pricing confirmed by agent</p>
                 </div>
 
                 <Dialog>

@@ -101,7 +101,7 @@ export default function ProductsPage() {
                         <div className="w-10 h-5 bg-muted rounded-full peer-checked:bg-primary transition-colors" />
                         <div className="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform peer-checked:translate-x-5" />
                       </div>
-                      <span className="text-sm text-muted-foreground">Verified suppliers only</span>
+                      <span className="text-sm text-muted-foreground">Verified agents only</span>
                     </label>
                   </CardContent>
                 </Card>

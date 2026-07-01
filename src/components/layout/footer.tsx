@@ -120,7 +120,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/supplier-join" className="text-sm text-gray-300 hover:text-white">
-                  Become a Supplier
+                  Become an Agent
                 </Link>
               </li>
               <li>
@@ -155,7 +155,7 @@ export function Footer() {
           <div className="flex gap-4">
             <Link href="#" className="hover:text-white">Privacy Policy</Link>
             <Link href="#" className="hover:text-white">Terms of Service</Link>
-            <Link href="#" className="hover:text-white">Supplier Agreement</Link>
+            <Link href="#" className="hover:text-white">Agent Agreement</Link>
           </div>
         </div>
       </div>

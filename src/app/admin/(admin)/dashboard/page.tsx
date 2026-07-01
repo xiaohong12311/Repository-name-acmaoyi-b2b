@@ -60,7 +60,7 @@ export default function AdminDashboardPage() {
   const statCards = [
     { label: '页面板块', value: stats.sections, icon: Layers, color: 'text-blue-600 bg-blue-100', href: '/admin/sections' },
     { label: '产品数量', value: stats.products, icon: ShoppingBag, color: 'text-green-600 bg-green-100', href: '/admin/products' },
-    { label: '供应商数量', value: stats.suppliers, icon: Factory, color: 'text-purple-600 bg-purple-100', href: '/admin/manage-suppliers' },
+    { label: 'Agent数量', value: stats.suppliers, icon: Factory, color: 'text-purple-600 bg-purple-100', href: '/admin/manage-suppliers' },
     { label: '询盘单', value: stats.inquiries, icon: MessageSquare, color: 'text-orange-600 bg-orange-100', href: '/admin/inquiries' },
   ];
 
@@ -112,7 +112,7 @@ export default function AdminDashboardPage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">管理产品</h3>
-                <p className="text-sm text-gray-500">添加产品、选择供应商商品</p>
+                <p className="text-sm text-gray-500">添加产品、选择Agent商品</p>
               </div>
             </div>
           </Card>
@@ -124,8 +124,8 @@ export default function AdminDashboardPage() {
                 <Users className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">管理供应商</h3>
-                <p className="text-sm text-gray-500">供应商信息与认证管理</p>
+                <h3 className="font-semibold text-gray-900">管理Agent</h3>
+                <p className="text-sm text-gray-500">Agent信息与认证管理</p>
               </div>
             </div>
           </Card>

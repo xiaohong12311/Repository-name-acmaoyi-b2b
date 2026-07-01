@@ -293,7 +293,7 @@ export default function ProductDetailPage() {
                     </div>
                     <Link href={`/suppliers/${supplier.id}`}>
                       <Button variant="outline" size="sm" className="gap-1">
-                        View Supplier
+                        View Agent
                         <ArrowRight className="h-3 w-3" />
                       </Button>
                     </Link>

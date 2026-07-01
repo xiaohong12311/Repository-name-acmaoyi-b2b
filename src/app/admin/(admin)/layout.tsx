@@ -23,7 +23,7 @@ const navItems = [
   { href: '/admin/dashboard', label: '仪表盘', icon: LayoutDashboard },
   { href: '/admin/sections', label: '板块管理', icon: Layers },
   { href: '/admin/products', label: '产品管理', icon: ShoppingBag },
-  { href: '/admin/manage-suppliers', label: '供应商管理', icon: Factory },
+  { href: '/admin/manage-suppliers', label: 'Agent管理', icon: Factory },
   { href: '/admin/inquiries', label: '询盘管理', icon: FileText },
   { href: '/admin/media', label: '媒体库', icon: ImageIcon },
   { href: '/admin/settings', label: '网站设置', icon: Settings },

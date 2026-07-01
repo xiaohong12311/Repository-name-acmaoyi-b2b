@@ -296,7 +296,7 @@ export default function SectionDetailPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <Badge variant="outline" className="text-xs">
-                      {item.item_type === 'product' ? '产品' : item.item_type === 'supplier' ? '供应商' : '自定义'}
+                      {item.item_type === 'product' ? '产品' : item.item_type === 'supplier' ? 'Agent' : '自定义'}
                     </Badge>
                     <span className="font-medium text-gray-900 truncate">{item.title || '无标题'}</span>
                   </div>
@@ -309,7 +309,7 @@ export default function SectionDetailPage() {
                   {item.item_type === 'supplier' && (
                     <div className="flex items-center gap-1 text-xs text-gray-500">
                       <Factory className="h-3 w-3" />
-                      供应商 ID: {item.reference_id}
+                      Agent ID: {item.reference_id}
                     </div>
                   )}
                 </div>
@@ -334,7 +334,7 @@ export default function SectionDetailPage() {
             {items.length === 0 && (
               <div className="text-center py-8 text-gray-500">
                 <p>暂无内容项目</p>
-                <p className="text-sm mt-1">点击"添加项目"来添加产品或供应商</p>
+                <p className="text-sm mt-1">点击"添加项目"来添加产品或Agent</p>
               </div>
             )}
           </div>
@@ -367,7 +367,7 @@ export default function SectionDetailPage() {
                 onClick={() => setAddItemType('supplier')}
                 className="gap-1"
               >
-                <Factory className="h-4 w-4" /> 从供应商选择
+                <Factory className="h-4 w-4" /> 从Agent选择
               </Button>
               <Button
                 variant={addItemType === 'custom' ? 'default' : 'outline'}
@@ -423,7 +423,7 @@ export default function SectionDetailPage() {
                     </div>
                   );
                 })}
-                {suppliers.length === 0 && <p className="text-center text-gray-500 py-4">暂无供应商</p>}
+                {suppliers.length === 0 && <p className="text-center text-gray-500 py-4">暂无Agent</p>}
               </div>
             )}
 

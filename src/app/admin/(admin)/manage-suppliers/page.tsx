@@ -114,7 +114,7 @@ export default function ManageSuppliersPage() {
   };
 
   const deleteSupplier = async (id: number) => {
-    if (!confirm('确定删除此供应商？')) return;
+    if (!confirm('确定删除此Agent？')) return;
     const token = getToken();
     if (!token) return;
     try {
@@ -242,16 +242,16 @@ export default function ManageSuppliersPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">供应商管理</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Agent管理</h1>
         <Button onClick={() => setShowAddForm(true)} className="gap-2">
-          <Plus className="h-4 w-4" /> 添加供应商
+          <Plus className="h-4 w-4" /> 添加Agent
         </Button>
       </div>
 
       <div className="flex gap-4 mb-4">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <Input placeholder="搜索供应商..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10" />
+          <Input placeholder="搜索Agent..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10" />
         </div>
       </div>
 
@@ -301,7 +301,7 @@ export default function ManageSuppliersPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 pt-8 overflow-y-auto">
           <div className="bg-white rounded-xl max-w-3xl w-full p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">添加供应商</h2>
+              <h2 className="text-lg font-semibold">添加Agent</h2>
               <Button variant="ghost" size="sm" onClick={() => setShowAddForm(false)}><X className="h-4 w-4" /></Button>
             </div>
             <SupplierForm supplier={newSupplier} setSupplier={setNewSupplier as (s: Omit<Supplier, 'id'> | Supplier) => void} onSave={addSupplier} onCancel={() => setShowAddForm(false)} />
@@ -313,7 +313,7 @@ export default function ManageSuppliersPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 pt-8 overflow-y-auto">
           <div className="bg-white rounded-xl max-w-3xl w-full p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">编辑供应商</h2>
+              <h2 className="text-lg font-semibold">编辑Agent</h2>
               <Button variant="ghost" size="sm" onClick={() => setEditingSupplier(null)}><X className="h-4 w-4" /></Button>
             </div>
             <SupplierForm supplier={editingSupplier} setSupplier={setEditingSupplier as (s: Omit<Supplier, 'id'> | Supplier) => void} onSave={updateSupplier} onCancel={() => setEditingSupplier(null)} />

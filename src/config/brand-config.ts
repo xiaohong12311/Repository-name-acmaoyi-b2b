@@ -53,15 +53,15 @@ export const brandConfig = {
   // ========== SEO 配置 ==========
   seo: {
     siteTitle: 'Acmaoyi - 专业BtoB批发平台',
-    siteDescription: 'Professional B2B wholesale platform for beauty products. Connect with verified suppliers, get competitive wholesale prices, and enjoy global shipping.',
-    keywords: 'B2B wholesale, beauty products, cosmetics wholesale, skincare wholesale, beauty supplier, wholesale platform',
+    siteDescription: 'Professional B2B wholesale platform for beauty products. Connect with verified agents, get competitive wholesale prices, and enjoy global shipping.',
+    keywords: 'B2B wholesale, beauty products, cosmetics wholesale, skincare wholesale, beauty agent, wholesale platform',
   },
 
   // ========== 认证信息（展示信任度）==========
   trust: {
-    verifiedSupplier: true,            // 是否显示 "Verified Supplier" 标识
+    verifiedSupplier: true,            // 是否显示 "Verified Agent" 标识
     yearsInBusiness: 5,                // 经营年限（用于展示）
-    totalSuppliers: 100,               // 供应商数量（用于展示）
+    totalSuppliers: 100,               // Agent数量（用于展示）
     totalProducts: 5000,               // 产品数量（用于展示）
     countriesServed: 'USA, South Africa, France, China', // 服务国家
   },

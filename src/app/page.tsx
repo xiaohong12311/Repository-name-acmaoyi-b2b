@@ -234,7 +234,7 @@ function DynamicCTA({ section }: { section: PageSection }) {
           <Link href={content.button2_link || '/supplier-join'}>
             <button className="bg-card text-foreground px-8 py-3 rounded-xl text-sm font-semibold hover:bg-muted active:scale-[0.98] transition-all border border-border inline-flex items-center gap-2">
               <Building2 className="w-4 h-4" />
-              {content.button2_text || 'Become a Supplier'}
+              {content.button2_text || 'Become an Agent'}
             </button>
           </Link>
         </div>
