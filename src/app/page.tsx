@@ -74,18 +74,8 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
       <div className="absolute inset-0 bg-black/50" />
 
       <div className="container mx-auto px-6 relative text-center">
-        <Badge className="bg-white/15 text-white border-0 mb-6 px-4 py-2 text-sm backdrop-blur-sm">
-          {content.badge || tl.heroBadge}
-        </Badge>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-          {section.title || `${companyInfo.name} - ${tl.heroTitle}`}
-        </h1>
-        <p className="text-lg md:text-xl text-blue-200 mb-8 md:mb-10 max-w-2xl mx-auto">
-          {section.subtitle || tl.heroSubtitle}
-        </p>
-
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+        <form onSubmit={handleSearch} className="max-w-md mx-auto">
           <div className="relative flex items-center">
             <Search className="absolute left-5 h-5 w-5 text-muted-foreground pointer-events-none" />
             <input
