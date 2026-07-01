@@ -27,31 +27,6 @@ export function Footer() {
             <p className="text-sm text-gray-300 mb-4">
               {companyInfo.description}
             </p>
-            {/* Contact Information */}
-            <div className="space-y-2 text-sm text-gray-300">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                <span>{contactInfo.email}</span>
-              </div>
-              {contactInfo.phone && (
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  <span>{contactInfo.phone}</span>
-                </div>
-              )}
-              {contactInfo.whatsapp && (
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  <span>WhatsApp: {contactInfo.whatsapp.replace(/^\+86\s*/, '')}</span>
-                </div>
-              )}
-              {contactInfo.address && (
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                  <span className="text-xs whitespace-pre-line">{contactInfo.address}</span>
-                </div>
-              )}
-            </div>
             {/* Social Links */}
             <div className="flex gap-4 mt-4">
               {socialLinks.twitter && (
@@ -157,11 +132,29 @@ export function Footer() {
           {/* Contact Us */}
           <div>
             <h3 className="font-semibold mb-4 text-white">Contact Us</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li>Hotline: +1 (888) 888-8888</li>
-              <li>Hours: Mon-Fri 9:00 AM - 6:00 PM</li>
-              <li>Email: support@b2b-platform.com</li>
-              <li>Address: 599 Wangshang Road, Binjiang District, Hangzhou</li>
+            <ul className="space-y-3 text-sm text-gray-300">
+              <li className="flex items-center gap-2">
+                <Mail className="h-4 w-4 shrink-0" />
+                <span>{contactInfo.email}</span>
+              </li>
+              {contactInfo.phone && (
+                <li className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 shrink-0" />
+                  <span>{contactInfo.phone}</span>
+                </li>
+              )}
+              {contactInfo.whatsapp && (
+                <li className="flex items-center gap-2">
+                  <MessageCircle className="h-4 w-4 shrink-0" />
+                  <span>WhatsApp: {contactInfo.whatsapp.replace(/^\+86\s*/, '')}</span>
+                </li>
+              )}
+              {contactInfo.address && (
+                <li className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                  <span className="text-xs whitespace-pre-line">{contactInfo.address}</span>
+                </li>
+              )}
             </ul>
           </div>
         </div>
