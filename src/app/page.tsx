@@ -60,7 +60,7 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
   };
 
   return (
-    <section className="relative overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24 min-h-[480px]">
+    <section className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-end justify-center pb-16 md:pb-24">
       {/* Background Image */}
       <Image
         src="/hero-bg.jpg"
@@ -74,8 +74,8 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
       <div className="absolute inset-0 bg-black/50" />
 
       <div className="container mx-auto px-6 relative text-center">
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="max-w-md mx-auto">
+        {/* Search Bar - positioned at bottom center of hero */}
+        <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
           <div className="relative flex items-center">
             <Search className="absolute left-5 h-5 w-5 text-muted-foreground pointer-events-none" />
             <input
