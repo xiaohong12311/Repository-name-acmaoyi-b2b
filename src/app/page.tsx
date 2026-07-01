@@ -9,6 +9,7 @@ import { ProductCard } from '@/components/product/product-card';
 import { SupplierCard } from '@/components/supplier/supplier-card';
 import { mockProducts, mockSuppliers, mockCategories } from '@/data/mock';
 import { getCompanyInfo } from '@/config/brand-config';
+import DynamicImageCarousel from '@/components/image-carousel';
 import {
   MessageSquarePlus,
   ShoppingCart,
@@ -334,6 +335,8 @@ export default function HomePage() {
             </div>
           </section>
         );
+      case 'image_carousel':
+        return <DynamicImageCarousel key={type} section={section} />;
       case 'featured_products':
         return (
           <section key={type} className="py-14 px-6">
@@ -449,7 +452,7 @@ export default function HomePage() {
 
   // Section order from DB, or default order
   const sectionOrder = sectionsLoading
-    ? ['hero', 'featured_products', 'categories', 'core_features', 'featured_suppliers', 'more_features', 'trust_indicators', 'trust_stats', 'cta']
+    ? ['hero', 'image_carousel', 'featured_products', 'categories', 'core_features', 'featured_suppliers', 'more_features', 'trust_indicators', 'trust_stats', 'cta']
     : sections.filter(s => s.is_visible).map(s => s.section_type);
 
   return (
