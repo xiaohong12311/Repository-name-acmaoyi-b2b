@@ -75,7 +75,7 @@ function DynamicHero({ section, t, companyInfo }: { section: PageSection; t: any
 
       <div className="container mx-auto px-6 relative text-center">
         {/* Search Bar - positioned at bottom center of hero */}
-        <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+        <form onSubmit={handleSearch} className="max-w-md mx-auto">
           <div className="relative flex items-center">
             <Search className="absolute left-5 h-5 w-5 text-muted-foreground pointer-events-none" />
             <input
