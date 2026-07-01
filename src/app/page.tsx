@@ -336,7 +336,14 @@ export default function HomePage() {
           </section>
         );
       case 'image_carousel':
-        return <DynamicImageCarousel key={type} section={section} />;
+        return (
+          <section key={type} className="py-14 px-6">
+            <div className="container mx-auto">
+              <h2 className="text-3xl font-bold text-center mb-8">Top 10 Trending Products</h2>
+              <DynamicImageCarousel section={section} />
+            </div>
+          </section>
+        );
       case 'featured_products':
         return (
           <section key={type} className="py-14 px-6">
