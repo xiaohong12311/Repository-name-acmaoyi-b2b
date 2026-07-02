@@ -101,7 +101,7 @@ export default function DynamicImageCarousel({ section }: { section: any }) {
               className="flex-shrink-0"
               style={{ width: 'calc(33.333% - 11px)' }}
             >
-              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl group cursor-pointer">
+              <div className="relative w-full aspect-[2/3] overflow-hidden rounded-xl group cursor-pointer">
                 <img
                   src={slide.image_url}
                   alt={slide.title || `Slide ${idx + 1}`}
