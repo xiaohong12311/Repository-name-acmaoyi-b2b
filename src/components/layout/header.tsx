@@ -32,12 +32,12 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Home page top: white text on dark hero; Home page scrolled / Other pages: deep blue on light background
+  // Home page top: white text on dark hero; Home page scrolled / Other pages: red on light background
   const useDarkText = !isHome || scrolled;
-  const textColor = useDarkText ? 'text-blue-900' : 'text-white';
-  const hoverBg = useDarkText ? 'hover:bg-blue-900/10' : 'hover:bg-white/10';
-  const activeBg = useDarkText ? 'bg-blue-900/10' : 'bg-white/10';
-  const hoverText = useDarkText ? 'hover:text-blue-800' : 'hover:text-white/90';
+  const textColor = useDarkText ? 'text-red-600' : 'text-white';
+  const hoverBg = useDarkText ? 'hover:bg-red-600/10' : 'hover:bg-white/10';
+  const activeBg = useDarkText ? 'bg-red-600/10' : 'bg-white/10';
+  const hoverText = useDarkText ? 'hover:text-red-700' : 'hover:text-white/90';
 
   const navLinks = [
     { href: '/', label: t.nav.home },

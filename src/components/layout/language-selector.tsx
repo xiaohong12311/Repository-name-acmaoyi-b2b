@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -11,8 +12,21 @@ export function LanguageSelector() {
   const pathname = usePathname();
   const isHome = pathname === '/';
 
-  const textColor = isHome ? 'text-white/90' : 'text-blue-900';
-  const iconColor = isHome ? 'text-white/80' : 'text-blue-900';
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Home page top: white; Home page scrolled / Other pages: red
+  const useDarkText = !isHome || scrolled;
+  const textColor = useDarkText ? 'text-red-600' : 'text-white/90';
+  const iconColor = useDarkText ? 'text-red-600' : 'text-white/80';
 
   return (
     <div className="flex items-center gap-1">
