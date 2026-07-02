@@ -63,6 +63,7 @@ export interface Supplier {
   contactPhone: string;
   contactEmail: string;
   responseTime: string; // 平均响应时间
+  products?: Product[]; // 供应商的产品列表（详情页使用）
   status: 'active' | 'inactive';
 }
 

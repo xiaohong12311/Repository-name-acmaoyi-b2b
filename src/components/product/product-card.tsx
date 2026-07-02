@@ -56,7 +56,7 @@ export function ProductCard({ product, showTierPrices = true }: ProductCardProps
       <div className="relative aspect-square overflow-hidden bg-gray-100">
         <Link href={`/products/${product.id}`}>
           <Image
-            src={product.images[0]}
+            src={product.images[0] || product.mainImage || '/product-1.jpg'}
             alt={product.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"

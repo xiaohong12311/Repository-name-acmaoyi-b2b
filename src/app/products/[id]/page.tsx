@@ -11,12 +11,13 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFavorites, useSampleCart, useInquiry } from '@/hooks/use-b2b-store';
-import { getProductById, getSupplierById, getProductsBySupplier } from '@/data/mock';
+import { useProduct } from '@/hooks/use-products';
+import { useSupplier } from '@/hooks/use-suppliers';
 import { ProductCard } from '@/components/product/product-card';
 import { 
   Heart, ShoppingCart, MessageSquarePlus, Share2, 
   Package, Clock, Shield, Truck, Check, ChevronRight,
-  Star, ArrowRight, ShieldCheck, Minus, Plus
+  Star, ArrowRight, ShieldCheck, Minus, Plus, Loader2
 } from 'lucide-react';
 
 export default function ProductDetailPage() {
@@ -24,19 +25,27 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
   
-  const product = getProductById(productId);
-  const supplier = product ? getSupplierById(product.supplierId) : null;
-  const relatedProducts = product ? getProductsBySupplier(product.supplierId).filter(p => p.id !== productId) : [];
+  const { product, loading, error } = useProduct(productId);
+  const { supplier } = useSupplier(product?.supplierId || null);
   
   const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
   const { addToSampleCart } = useSampleCart();
   const { addToInquiry } = useInquiry();
   
-  const [quantity, setQuantity] = useState(product?.moq || 100);
+  const [quantity, setQuantity] = useState(100);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedTier, setSelectedTier] = useState(0);
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-3 text-muted-foreground">Loading product...</span>
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -350,24 +359,6 @@ export default function ProductDetailPage() {
           </Card>
         </div>
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold text-foreground">Related Products</h2>
-              <Link href="/products">
-                <Button variant="ghost" size="sm" className="gap-1 text-primary">
-                  View All <ArrowRight className="h-3 w-3" />
-                </Button>
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {relatedProducts.slice(0, 3).map(p => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

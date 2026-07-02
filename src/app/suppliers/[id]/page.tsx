@@ -8,10 +8,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductCard } from '@/components/product/product-card';
-import { getSupplierById, getProductsBySupplier } from '@/data/mock';
+import { useSupplier } from '@/hooks/use-suppliers';
 import { 
   MapPin, Factory, Users, Calendar, Award, Globe, Phone, Mail,
-  CheckCircle, Package, Shield, Truck, Clock, ChevronRight, Heart, Share2
+  CheckCircle, Package, Shield, Truck, Clock, ChevronRight, Heart, Share2, Loader2
 } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 
@@ -20,10 +20,18 @@ export default function SupplierDetailPage() {
   const supplierId = params.id as string;
   const { t } = useLanguage();
   
-  const supplier = getSupplierById(supplierId);
-  const supplierProducts = supplier ? getProductsBySupplier(supplierId) : [];
+  const { supplier, loading, error } = useSupplier(supplierId);
 
-  if (!supplier) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-3 text-muted-foreground">Loading agent...</span>
+      </div>
+    );
+  }
+
+  if (error || !supplier) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -168,10 +176,10 @@ export default function SupplierDetailPage() {
         {/* Products */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-foreground mb-4">{t.supplierDetail.products}</h2>
-          {supplierProducts.length > 0 ? (
+          {(supplier.products?.length ?? 0) > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {supplierProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
+              {supplier.products?.map(product => (
+                <ProductCard key={product.id} product={product as import('@/types').Product} />
               ))}
             </div>
           ) : (

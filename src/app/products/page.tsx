@@ -9,12 +9,14 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProductCard } from '@/components/product/product-card';
-import { mockProducts, mockCategories } from '@/data/mock';
-import { Search, Filter, Grid3x3 as Grid, List, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
+import { mockCategories } from '@/data/mock';
+import { useProducts } from '@/hooks/use-products';
+import { Search, Filter, Grid3x3 as Grid, List, ChevronRight, SlidersHorizontal, X, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 
 export default function ProductsPage() {
   const { t } = useLanguage();
+  const { products: dbProducts, loading, error } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('default');
@@ -22,7 +24,7 @@ export default function ProductsPage() {
   const [showFilters, setShowFilters] = useState(true);
 
   // Filter products
-  const filteredProducts = mockProducts.filter(product => {
+  const filteredProducts = dbProducts.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           product.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.categoryId === selectedCategory;
@@ -116,6 +118,18 @@ export default function ProductsPage() {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <span className="ml-3 text-muted-foreground">Loading products...</span>
+              </div>
+            ) : error ? (
+              <div className="text-center py-20">
+                <p className="text-destructive mb-4">{error}</p>
+                <Button variant="outline" onClick={() => window.location.reload()}>Retry</Button>
+              </div>
+            ) : (
+            <>
             {/* Toolbar */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -123,7 +137,7 @@ export default function ProductsPage() {
                   <SlidersHorizontal className="h-4 w-4" />
                 </Button>
                 <span className="text-sm text-muted-foreground">
-                  Showing {sortedProducts.length} of {mockProducts.length} products
+                  Showing {sortedProducts.length} of {dbProducts.length} products
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -185,6 +199,8 @@ export default function ProductsPage() {
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
+            )}
+            </>
             )}
           </div>
         </div>

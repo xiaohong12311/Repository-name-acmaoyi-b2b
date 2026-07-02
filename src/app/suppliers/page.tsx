@@ -8,18 +8,20 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { mockSuppliers, mockCategories } from '@/data/mock';
-import { Search, MapPin, ChevronRight, ShieldCheck, Clock, Users, Building2, X } from 'lucide-react';
+import { mockCategories } from '@/data/mock';
+import { useSuppliers } from '@/hooks/use-suppliers';
+import { Search, MapPin, ChevronRight, ShieldCheck, Clock, Users, Building2, X, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 
 export default function SuppliersPage() {
   const { t } = useLanguage();
+  const { suppliers: dbSuppliers, loading, error } = useSuppliers();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
 
-  const filteredSuppliers = mockSuppliers.filter(supplier => {
+  const filteredSuppliers = dbSuppliers.filter(supplier => {
     const matchesSearch = supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           supplier.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCountry = selectedCountry === 'all' || supplier.country === selectedCountry;
@@ -28,7 +30,7 @@ export default function SuppliersPage() {
     return matchesSearch && matchesCountry && matchesType && matchesVerified;
   });
 
-  const countries = [...new Set(mockSuppliers.map(s => s.country))];
+  const countries = [...new Set(dbSuppliers.map(s => s.country))];
   const hasFilters = searchQuery || selectedCountry !== 'all' || selectedType !== 'all' || verifiedOnly;
 
   return (
@@ -99,7 +101,17 @@ export default function SuppliersPage() {
         </Card>
 
         {/* Results */}
-        {filteredSuppliers.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="ml-3 text-muted-foreground">Loading agents...</span>
+          </div>
+        ) : error ? (
+          <div className="text-center py-20">
+            <p className="text-destructive mb-4">{error}</p>
+            <Button variant="outline" onClick={() => window.location.reload()}>Retry</Button>
+          </div>
+        ) : filteredSuppliers.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
               <Search className="h-7 w-7 text-muted-foreground" />
